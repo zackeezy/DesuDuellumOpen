@@ -1,0 +1,732 @@
+fileFormatVersion: 2
+guid: e168116811d0d1042a145c62fbe51be1
+timeCreated: 1516811979
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: spritesheettest_transparent_0
+    21300002: spritesheettest_transparent_1
+    21300004: spritesheettest_transparent_2
+    21300006: spritesheettest_transparent_3
+    21300008: spritesheettest_transparent_4
+    21300010: spritesheettest_transparent_5
+    21300012: spritesheettest_transparent_6
+    21300014: spritesheettest_transparent_7
+    21300016: spritesheettest_transparent_8
+    21300018: spritesheettest_transparent_9
+    21300020: spritesheettest_transparent_10
+    21300022: spritesheettest_transparent_11
+    21300024: spritesheettest_transparent_12
+    21300026: spritesheettest_transparent_13
+    21300028: spritesheettest_transparent_14
+    21300030: spritesheettest_transparent_15
+    21300032: spritesheettest_transparent_16
+    21300034: spritesheettest_transparent_17
+    21300036: spritesheettest_transparent_18
+    21300038: spritesheettest_transparent_19
+    21300040: spritesheettest_transparent_20
+    21300042: spritesheettest_transparent_21
+    21300044: spritesheettest_transparent_22
+    21300046: spritesheettest_transparent_23
+    21300048: spritesheettest_transparent_24
+    21300050: spritesheettest_transparent_25
+    21300052: spritesheettest_transparent_26
+    21300054: spritesheettest_transparent_27
+    21300056: spritesheettest_transparent_28
+    21300058: spritesheettest_transparent_29
+    21300060: spritesheettest_transparent_30
+    21300062: spritesheettest_transparent_31
+    21300064: spritesheettest_transparent_32
+    21300066: spritesheettest_transparent_33
+    21300068: spritesheettest_transparent_34
+    21300070: spritesheettest_transparent_35
+    21300072: spritesheettest_transparent_36
+    21300074: spritesheettest_transparent_37
+    21300076: spritesheettest_transparent_38
+    21300078: spritesheettest_transparent_39
+    21300080: spritesheettest_transparent_40
+    21300082: spritesheettest_transparent_41
+    21300084: spritesheettest_transparent_42
+    21300086: spritesheettest_transparent_43
+    21300088: spritesheettest_transparent_44
+    21300090: spritesheettest_transparent_45
+    21300092: spritesheettest_transparent_46
+    21300094: spritesheettest_transparent_47
+    21300096: spritesheettest_transparent_48
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: spritesheettest_transparent_0
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 572
+        width: 203
+        height: 101
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_1
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 528
+        width: 223
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_2
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 658
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_3
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 659
+        width: 15
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_4
+      rect:
+        serializedVersion: 2
+        x: 845
+        y: 555
+        width: 169
+        height: 138
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_5
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 544
+        width: 224
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_6
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 519
+        width: 193
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_7
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 632
+        width: 13
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_8
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 654
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_9
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 638
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_11
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 606
+        width: 6
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_12
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 536
+        width: 73
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_13
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 587
+        width: 22
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_14
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 565
+        width: 83
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_15
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 595
+        width: 5
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_16
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 549
+        width: 51
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_17
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 549
+        width: 27
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_18
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 570
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_19
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 558
+        width: 9
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_20
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 543
+        width: 42
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_21
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 537
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_22
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 554
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_23
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 539
+        width: 16
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_24
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 262
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_25
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 259
+        width: 247
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_26
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 261
+        width: 255
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_27
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 265
+        width: 237
+        height: 243
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_28
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 262
+        width: 247
+        height: 242
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_29
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 375
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_30
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 11
+        width: 239
+        height: 245
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_31
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 15
+        width: 245
+        height: 239
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_32
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 13
+        width: 230
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_33
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 9
+        width: 229
+        height: 245
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_34
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 252
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_35
+      rect:
+        serializedVersion: 2
+        x: 1062
+        y: 182
+        width: 126
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_36
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 216
+        width: 35
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_37
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 231
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_38
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 223
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_39
+      rect:
+        serializedVersion: 2
+        x: 1182
+        y: 205
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_40
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 210
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_41
+      rect:
+        serializedVersion: 2
+        x: 1102
+        y: 187
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_42
+      rect:
+        serializedVersion: 2
+        x: 1160
+        y: 158
+        width: 14
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_43
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 198
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_44
+      rect:
+        serializedVersion: 2
+        x: 1123
+        y: 175
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_45
+      rect:
+        serializedVersion: 2
+        x: 1148
+        y: 185
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_46
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 139
+        width: 9
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_47
+      rect:
+        serializedVersion: 2
+        x: 1165
+        y: 138
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheettest_transparent_48
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 106
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
