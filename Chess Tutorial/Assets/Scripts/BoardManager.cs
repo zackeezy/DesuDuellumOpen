@@ -9,8 +9,9 @@ public class BoardManager : MonoBehaviour {
 
 	public Token[,] Tokens{ set; get; }
 	private Token selectedToken;
+   // private Token moveFrom, moveTo;
 
-	private const float TILE_SIZE = 1.0f;
+    private const float TILE_SIZE = 1.0f;
 	private const float TILE_OFFSET = 0.5f;
 
 	private int selectionX = -1;
@@ -24,13 +25,16 @@ public class BoardManager : MonoBehaviour {
 	private bool blackWon = false;
 
 	public Text winText;
+    public Text whiteMoveText;
+    public Text blackMoveText;
 
 	// Use this for initialization
 	void Start () {
 		//SpawnToken (0, GetTileCenter(0, 0));
 		Instance = this;
 		SpawnAll();
-	}
+       // MoveLogText();
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -51,6 +55,10 @@ public class BoardManager : MonoBehaviour {
 		}
 	}
 
+    private void MoveLogText(){
+//        whiteMoveText.text = "Move: " + moveFrom.ToString() + moveTo.ToString();
+  //      blackMoveText.text = "Move: " + moveFrom.ToString() + moveTo.ToString();
+    }
 	private void SelectToken(int x, int y){
 		if (Tokens [x, y] == null) {
 			return;
@@ -61,6 +69,7 @@ public class BoardManager : MonoBehaviour {
 		}
 		allowedMoves = Tokens [x, y].PossibleMove ();
 		selectedToken = Tokens [x, y];
+       // moveFrom = selectedToken;
 		BoardHighlights.Instance.HighlightAllowedMoves (allowedMoves);
 	}
 
@@ -70,7 +79,7 @@ public class BoardManager : MonoBehaviour {
 			Token c = Tokens [x, y];
 		
 			if (c != null && c.isWhite != isWhiteTurn) {
-				
+//                moveTo = c;
 				activeToken.Remove (c.gameObject);
 				Destroy (c.gameObject);
 				tokenCaptured = true;
@@ -83,8 +92,9 @@ public class BoardManager : MonoBehaviour {
 
 			//send the token's position to the log
 			if(tokenCaptured){
-				//add an x to the the log
-			}
+               // MoveLogText();
+                //add an x to the the log
+            }
 
 			//If it reaches the enemy end line...
 			if(isWhiteTurn && y == 7){
