@@ -2,7 +2,7 @@
 <doc>
   <members>
     <assembly>
-      <name>UnityEngine.Analytics</name>
+      <name>UnityEngine.InputModule</name>
     </assembly>
   </members>
 </doc>
