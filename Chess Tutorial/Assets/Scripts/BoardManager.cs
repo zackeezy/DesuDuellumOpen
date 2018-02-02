@@ -91,12 +91,28 @@ public class BoardManager : MonoBehaviour {
 				//game over, white wins
 				whiteWon = true;
 				winText.text = "White Wins!";
-			}
+                //reset everything back to its place
+                foreach (GameObject gameObject in activeToken)
+                {
+                    Destroy(gameObject);
+                }
+                isWhiteTurn = true;
+                BoardHighlights.Instance.HideHighlights();
+                SpawnAll();
+            }
 			if (!isWhiteTurn && y == 0) {
 				//game over, black wins
 				blackWon = true;
 				winText.text = "Black Wins!";
- 			}
+                //reset everything back to its place
+                foreach (GameObject gameObject in activeToken)
+                {
+                    Destroy(gameObject);
+                }
+                isWhiteTurn = true;
+                BoardHighlights.Instance.HideHighlights();
+                SpawnAll();
+            }
 			isWhiteTurn = !isWhiteTurn;
 		}
 		BoardHighlights.Instance.HideHighlights ();
