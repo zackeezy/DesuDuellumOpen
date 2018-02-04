@@ -25,11 +25,16 @@ namespace Breakthrough_AI
             }
         }
         private PlayerColor _aiColor;
-        
+
+
+        private Grid _grid;
+        private Manipulations _manip;
 
         public Analyzer(PlayerColor aiColor)
         {
             _aiColor = aiColor;
+            _grid = new Grid();
+            _manip = new Manipulations();
         }
 
         //Get list of tokens, return origin coordinates, new coordinates.
@@ -38,13 +43,32 @@ namespace Breakthrough_AI
             throw new NotImplementedException("GetMove is not implemented.");
         }
 
+        private List<ulong> GetChildren(BitBoard board, PlayerColor color)
+        {
+            List<BitBoard> children = new List<BitBoard>();
+            ulong myBoard = color == PlayerColor.White ? board.whitePieces : board.blackPieces;
+
+            int piece = 0;
+
+            while (piece >= 0)
+            {
+                //Get Forward Move, add to list.
+                //Get West Attack, add to list.
+                //Get East Attack, add to list.
+                piece = _manip.BitScanForwardWithReset(ref myBoard);
+            }
+
+            throw new NotImplementedException();
+        }
+
+
         /// <summary>
         /// Performs the basic tree search to find the best possible move.
         /// Built from pseudocode taken from https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
         /// </summary>
         /// <returns></returns>
         private int AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer)
-        {            
+        {
             if (remainingDepth == 0 || IsGameOver(node))
             {
                 return Evaluate(node);

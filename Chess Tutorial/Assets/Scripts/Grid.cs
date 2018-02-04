@@ -8,8 +8,9 @@ namespace Breakthrough_AI
     /// <summary>
     /// Contains constants and methods that return predetermined spaces.
     /// </summary>
-    static class Grid
+    public class Grid
     {
+
         public class Squares
         {
             public const ulong A1 = 0x8000000000000000;
@@ -84,6 +85,7 @@ namespace Breakthrough_AI
             public const ulong G8 = 0x0000000000000002;
             public const ulong H8 = 0x0000000000000001;
         }
+
         public class Rows
         {
             public const ulong Row1 = Squares.A1 | Squares.B1 | Squares.C1 | Squares.D1
@@ -110,6 +112,7 @@ namespace Breakthrough_AI
             public const ulong Row8 = Squares.A8 | Squares.B8 | Squares.C8 | Squares.D8
                                     | Squares.E8 | Squares.F8 | Squares.G8 | Squares.H8;
         }
+
         public class Columns
         {
             public const ulong ColA = Squares.A1 | Squares.A2 | Squares.A3 | Squares.A4
@@ -136,10 +139,90 @@ namespace Breakthrough_AI
             public const ulong ColH = Squares.H1 | Squares.H2 | Squares.H3 | Squares.H4
                                     | Squares.H5 | Squares.H6 | Squares.H7 | Squares.H8;
         }
+
         public class Patterns
         {
             public const ulong WhiteStart = Rows.Row1 | Rows.Row2;
             public const ulong BlackStart = Rows.Row7 | Rows.Row8;
+        }
+
+        public class WhiteMasks
+        {
+            public static ulong[] Forward = new ulong[64]
+            {
+               0, 0, 0, 0, 0, 0, 0, 0,
+               Squares.H8, Squares.G8, Squares.F8, Squares.E8, Squares.D8, Squares.C8, Squares.B8, Squares.A8,
+               Squares.H7, Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7, Squares.A7,
+               Squares.H6, Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6, Squares.A6,
+               Squares.H5, Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5, Squares.A5,
+               Squares.H4, Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4, Squares.A4,
+               Squares.H3, Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3, Squares.A3,
+               Squares.H2, Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2, Squares.A2,
+            };
+
+            public static ulong[] EastAttack = new ulong[64]
+            {
+               0, 0, 0, 0, 0, 0, 0, 0,
+               0, Squares.H8, Squares.G8, Squares.F8, Squares.E8, Squares.D8, Squares.C8, Squares.B8,
+               0, Squares.H7, Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7,
+               0, Squares.H6, Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6,
+               0, Squares.H5, Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5,
+               0, Squares.H4, Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4,
+               0, Squares.H3, Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3,
+               0, Squares.H2, Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2,
+            };
+
+            public static ulong[] WestAttack = new ulong[64]
+            {
+               0, 0, 0, 0, 0, 0, 0, 0,
+               Squares.G8, Squares.F8, Squares.E8, Squares.D8, Squares.C8, Squares.B8, Squares.A8, 0,
+               Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7, Squares.A7, 0,
+               Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6, Squares.A6, 0,
+               Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5, Squares.A5, 0,
+               Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4, Squares.A4, 0,
+               Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3, Squares.A3, 0,
+               Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2, Squares.A2, 0,
+            };
+        }
+
+        public class BlackMasks
+        {
+            public static ulong[] Forward = new ulong[64]
+             {
+               Squares.H7, Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7, Squares.A7,
+               Squares.H6, Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6, Squares.A6,
+               Squares.H5, Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5, Squares.A5,
+               Squares.H4, Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4, Squares.A4,
+               Squares.H3, Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3, Squares.A3,
+               Squares.H2, Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2, Squares.A2,
+               Squares.H1, Squares.G1, Squares.F1, Squares.E1, Squares.D1, Squares.C1, Squares.B1, Squares.A1,
+               0, 0, 0, 0, 0, 0, 0, 0,
+             };
+
+            public static ulong[] EastAttack = new ulong[64]
+            {
+
+                0, Squares.H7, Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7,
+                0, Squares.H6, Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6,
+                0, Squares.H5, Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5,
+                0, Squares.H4, Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4,
+                0, Squares.H3, Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3,
+                0, Squares.H2, Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2,
+                0, Squares.H1, Squares.G1, Squares.F1, Squares.E1, Squares.D1, Squares.C1, Squares.B1,
+                0, 0, 0, 0, 0, 0, 0, 0,
+            };
+
+            public static ulong[] WestAttack = new ulong[64]
+            {
+               Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7, Squares.A7, 0,
+               Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6, Squares.A6, 0,
+               Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5, Squares.A5, 0,
+               Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4, Squares.A4, 0,
+               Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3, Squares.A3, 0,
+               Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2, Squares.A2, 0,
+               Squares.G1, Squares.F1, Squares.E1, Squares.D1, Squares.C1, Squares.B1, Squares.A1, 0,
+               0, 0, 0, 0, 0, 0, 0, 0,
+            };
         }
     }
 }

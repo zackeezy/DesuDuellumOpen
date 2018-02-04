@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Breakthrough_AI
 {
-    struct BitBoard
+    public struct BitBoard
     {
-        ulong whitePieces;
-        ulong blackPieces;
+        public ulong whitePieces;
+        public ulong blackPieces;
     }
 
     public enum PlayerColor
