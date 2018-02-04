@@ -13,6 +13,18 @@ namespace Breakthrough_AI
 
         public class Squares
         {
+            public static ulong[,] SquaresArray = new ulong[8,8]
+            {
+                { A1, B1, C1, D1, E1, F1, G1, H1, },
+                { A2, B2, C2, D2, E2, F2, G2, H2, },
+                { A3, B3, C3, D3, E3, F3, G3, H3, },
+                { A4, B4, C4, D4, E4, F4, G4, H4, },
+                { A5, B5, C5, D5, E5, F5, G5, H5, },
+                { A6, B6, C6, D6, E6, F6, G6, H6, },
+                { A7, B7, C7, D7, E7, F7, G7, H7, },
+                { A8, B8, C8, D8, E8, F8, G8, H8, },
+            };
+
             public const ulong A1 = 0x8000000000000000;
             public const ulong B1 = 0x4000000000000000;
             public const ulong C1 = 0x2000000000000000;
@@ -84,6 +96,18 @@ namespace Breakthrough_AI
             public const ulong F8 = 0x0000000000000004;
             public const ulong G8 = 0x0000000000000002;
             public const ulong H8 = 0x0000000000000001;
+
+            public static ulong[] CurrentSquare = new ulong[64]
+            {
+               Squares.H8, Squares.G8, Squares.F8, Squares.E8, Squares.D8, Squares.C8, Squares.B8, Squares.A8,
+               Squares.H7, Squares.G7, Squares.F7, Squares.E7, Squares.D7, Squares.C7, Squares.B7, Squares.A7,
+               Squares.H6, Squares.G6, Squares.F6, Squares.E6, Squares.D6, Squares.C6, Squares.B6, Squares.A6,
+               Squares.H5, Squares.G5, Squares.F5, Squares.E5, Squares.D5, Squares.C5, Squares.B5, Squares.A5,
+               Squares.H4, Squares.G4, Squares.F4, Squares.E4, Squares.D4, Squares.C4, Squares.B4, Squares.A4,
+               Squares.H3, Squares.G3, Squares.F3, Squares.E3, Squares.D3, Squares.C3, Squares.B3, Squares.A3,
+               Squares.H2, Squares.G2, Squares.F2, Squares.E2, Squares.D2, Squares.C2, Squares.B2, Squares.A2,
+               Squares.H1, Squares.G1, Squares.F1, Squares.E1, Squares.D1, Squares.C1, Squares.B1, Squares.A1,
+            };
         }
 
         public class Rows

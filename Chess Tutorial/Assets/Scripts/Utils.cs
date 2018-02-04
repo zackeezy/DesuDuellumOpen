@@ -5,8 +5,19 @@ using System.Text;
 
 namespace Breakthrough_AI
 {
-    public struct BitBoard
+    public class BitBoard
     {
+        public BitBoard()
+        {
+            whitePieces = 0;
+            blackPieces = 0;
+        }
+
+        public ulong CombinedBoard()
+        {
+            return whitePieces | blackPieces;
+        }
+
         public ulong whitePieces;
         public ulong blackPieces;
     }
