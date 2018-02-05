@@ -24,12 +24,15 @@ public class BoardManager : MonoBehaviour {
 	private bool blackWon = false;
 
 	public Text winText;
+    public GameObject GameWonPanel;
+    public GameObject GameWonText;
 
 	// Use this for initialization
 	void Start () {
 		//SpawnToken (0, GetTileCenter(0, 0));
 		Instance = this;
 		SpawnAll();
+        GameWonPanel.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -50,6 +53,12 @@ public class BoardManager : MonoBehaviour {
 			}
 		}
 	}
+
+    private void YouWon()
+    {
+        GameWonText.SetActive(true);
+        GameWonPanel.SetActive(true);
+    }
 
 	private void SelectToken(int x, int y){
 		if (Tokens [x, y] == null) {
@@ -91,6 +100,7 @@ public class BoardManager : MonoBehaviour {
 				//game over, white wins
 				whiteWon = true;
 				winText.text = "White Wins!";
+                YouWon();
                 //reset everything back to its place
                 foreach (GameObject gameObject in activeToken)
                 {
@@ -104,6 +114,7 @@ public class BoardManager : MonoBehaviour {
 				//game over, black wins
 				blackWon = true;
 				winText.text = "Black Wins!";
+                YouWon();
                 //reset everything back to its place
                 foreach (GameObject gameObject in activeToken)
                 {
