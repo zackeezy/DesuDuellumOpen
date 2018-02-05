@@ -10,68 +10,6 @@ namespace Breakthrough_AI
     /// </summary>
     public class Manipulations
     {
-        public ulong MovePiece(ulong piece, Direction direction, PlayerColor color)
-        {
-            if (color == PlayerColor.White)
-            {
-                switch (direction)
-                {
-                    case Direction.Forward:
-                        return MoveNorth(piece);
-                    case Direction.Left:
-                        return MoveNorth(MoveWest(piece));
-                    case Direction.Right:
-                        return MoveNorth(MoveEast(piece));
-                }
-            }
-            else //color == PlayerColor.Black
-            {
-                switch (direction)
-                {
-                    case Direction.Forward:
-                        return MoveSouth(piece);
-                    case Direction.Left:
-                        return MoveSouth(MoveEast(piece));
-                    case Direction.Right:
-                        return MoveSouth(MoveWest(piece));
-                }
-            }
-
-            throw new Exception("Improper Direction or Color.");
-        }
-
-        private ulong MoveNorth(ulong piece)
-        {
-            if ((piece & Grid.Rows.Row8) != 0)
-            {
-                throw new Exception("Invalid move, cannot move north from the top row.");
-            }
-            return piece >> 8;
-        }
-
-        private ulong MoveSouth(ulong piece)
-        {
-            if ((piece & Grid.Rows.Row1) != 0)
-            {
-                throw new Exception("Invalid move, cannot move south from the bottom row.");
-            }
-            return piece << 8;
-        }
-
-        private ulong MoveEast(ulong piece)
-        {
-            if ((piece & Grid.Columns.ColH) != 0)
-            {
-                throw new Exception("Invalid move, cannot move east from the bottom row.");
-            }
-            return piece >> 1;
-        }
-
-        private ulong MoveWest(ulong piece)
-        {
-            return piece << 1;
-        }
-
         public int[] index64 = new int[64]
         {
             0,  1, 48,  2, 57, 49, 28,  3,

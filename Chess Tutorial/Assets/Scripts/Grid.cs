@@ -13,6 +13,82 @@ namespace Breakthrough_AI
 
         public class Squares
         {
+            public static int XCoordinate(int location)
+            {
+                if ((CurrentSquare[location] & Columns.ColA) != 0)
+                {
+                    return 0;
+                }
+                if ((CurrentSquare[location] & Columns.ColB) != 0)
+                {
+                    return 1;
+                }
+                if ((CurrentSquare[location] & Columns.ColC) != 0)
+                {
+                    return 2;
+                }
+                if ((CurrentSquare[location] & Columns.ColD) != 0)
+                {
+                    return 3;
+                }
+                if ((CurrentSquare[location] & Columns.ColE) != 0)
+                {
+                    return 4;
+                }
+                if ((CurrentSquare[location] & Columns.ColF) != 0)
+                {
+                    return 5;
+                }
+                if ((CurrentSquare[location] & Columns.ColG) != 0)
+                {
+                    return 6;
+                }
+                if ((CurrentSquare[location] & Columns.ColH) != 0)
+                {
+                    return 7;
+                }
+
+                return 0946;
+            }
+
+            public static int YCoordinate(int location)
+            {
+                if ((CurrentSquare[location] & Rows.Row1) != 0)
+                {
+                    return 0;
+                }
+                if ((CurrentSquare[location] & Rows.Row2) != 0)
+                {
+                    return 1;
+                }
+                if ((CurrentSquare[location] & Rows.Row3) != 0)
+                {
+                    return 2;
+                }
+                if ((CurrentSquare[location] & Rows.Row4) != 0)
+                {
+                    return 3;
+                }
+                if ((CurrentSquare[location] & Rows.Row5) != 0)
+                {
+                    return 4;
+                }
+                if ((CurrentSquare[location] & Rows.Row6) != 0)
+                {
+                    return 5;
+                }
+                if ((CurrentSquare[location] & Rows.Row7) != 0)
+                {
+                    return 6;
+                }
+                if ((CurrentSquare[location] & Rows.Row8) != 0)
+                {
+                    return 7;
+                }
+
+                return 0946;
+            }
+
             public static ulong[,] SquaresArray = new ulong[8,8]
             {
                 { A1, B1, C1, D1, E1, F1, G1, H1, },

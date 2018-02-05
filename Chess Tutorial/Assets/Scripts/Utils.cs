@@ -31,7 +31,7 @@ namespace Breakthrough_AI
     public enum Direction
     {
         Forward = 0,
-        Left = 1,
-        Right = 2,
+        East = 1,
+        West = 2,
     }
 }

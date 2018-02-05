@@ -38,7 +38,7 @@ namespace Breakthrough_AI
             _manip = new Manipulations();
         }
 
-        public BitBoard GetMove(List<Token> tokens)
+        public List<int> GetMove(List<Token> tokens)
         {
             BitBoard currentBoard = new BitBoard();
             foreach(Token token in tokens)
@@ -49,7 +49,7 @@ namespace Breakthrough_AI
                 }
                 else
                 {
-                    currentBoard.blackPieces = currentBoard.whitePieces | Grid.Squares.SquaresArray[token.currentX, token.currentY];
+                    currentBoard.blackPieces = currentBoard.blackPieces | Grid.Squares.SquaresArray[token.currentX, token.currentY];
                 }
             }
 
@@ -60,7 +60,7 @@ namespace Breakthrough_AI
             //Decent place for parallelization.
             foreach (BitBoard child in children)
             {
-                int score = AlphaBetaLoop(currentBoard, MAX_DEPTH, Int32.MinValue, Int32.MaxValue, true);
+                int score = AlphaBetaLoop(currentBoard, MAX_DEPTH, Int32.MinValue, Int32.MaxValue, false);
                 if (score >= bestScore)
                 {
                     bestChild = child;
@@ -68,8 +68,33 @@ namespace Breakthrough_AI
                 }
             }
 
-            //convert bestChild to return value. Talk with Andres about the return value
-            return bestChild;
+            ulong movedPiece = 0;
+            List<int> coordinates = new List<int>();
+
+            if (_aiColor == PlayerColor.White)
+            {
+                movedPiece = bestChild.whitePieces ^ currentBoard.whitePieces;
+                int destination = _manip.BitScanForwardWithReset(ref movedPiece);
+                int start = _manip.BitScanForwardWithReset(ref movedPiece);
+                coordinates.Add(Grid.Squares.XCoordinate(start));
+                coordinates.Add(Grid.Squares.YCoordinate(start));
+                coordinates.Add(Grid.Squares.XCoordinate(destination));
+                coordinates.Add(Grid.Squares.YCoordinate(destination));
+
+            }
+            else
+            {
+                movedPiece = bestChild.blackPieces ^ currentBoard.blackPieces;
+                int start = _manip.BitScanForwardWithReset(ref movedPiece);
+                int destination = _manip.BitScanForwardWithReset(ref movedPiece);
+                coordinates.Add(Grid.Squares.XCoordinate(start));
+                coordinates.Add(Grid.Squares.YCoordinate(start));
+                coordinates.Add(Grid.Squares.XCoordinate(destination));
+                coordinates.Add(Grid.Squares.YCoordinate(destination));
+            }
+
+
+            return coordinates;
         }
 
         private List<BitBoard> GetChildren(BitBoard board, PlayerColor color)
@@ -237,6 +262,7 @@ namespace Breakthrough_AI
             return false;
         }
 
+        //TODO: Make Random moves.
         private int Evaluate(BitBoard origin)
         {
             throw new NotImplementedException();
