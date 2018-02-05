@@ -3,8 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+//This File contains small functions and classes that don't really have a better home.
+//If what you are looking for doesn't fit into the other classes, it probably lives here.
 namespace Breakthrough_AI
 {
+    public class Utils
+    {
+        public static PlayerColor FlipColor(PlayerColor color)
+        {
+            if (color == PlayerColor.Black)
+            {
+                return PlayerColor.White;
+            }
+
+            return PlayerColor.Black;
+        }
+    }
+   
     public class BitBoard
     {
         public BitBoard()
@@ -26,12 +41,5 @@ namespace Breakthrough_AI
     {
         White = 0,
         Black = 1,
-    }
-
-    public enum Direction
-    {
-        Forward = 0,
-        East = 1,
-        West = 2,
     }
 }

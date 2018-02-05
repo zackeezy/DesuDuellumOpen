@@ -26,18 +26,16 @@ namespace Breakthrough_AI
         }
         private PlayerColor _aiColor;
 
-        private Grid _grid;
-        private Manipulations _manip;
-
         private const int MAX_DEPTH = 5;
 
         public Analyzer(PlayerColor aiColor)
         {
             _aiColor = aiColor;
-            _grid = new Grid();
-            _manip = new Manipulations();
         }
 
+        /// <summary>
+        /// The outerward facing function that will return the move the AI wishes to take.
+        /// </summary>
         public List<int> GetMove(List<Token> tokens)
         {
             BitBoard currentBoard = new BitBoard();
@@ -45,11 +43,11 @@ namespace Breakthrough_AI
             {
                 if (token.isWhite)
                 {
-                    currentBoard.whitePieces = currentBoard.whitePieces | Grid.Squares.SquaresArray[token.currentX, token.currentY];
+                    currentBoard.whitePieces = currentBoard.whitePieces | Converters.Squares[token.currentX, token.currentY];
                 }
                 else
                 {
-                    currentBoard.blackPieces = currentBoard.blackPieces | Grid.Squares.SquaresArray[token.currentX, token.currentY];
+                    currentBoard.blackPieces = currentBoard.blackPieces | Converters.Squares[token.currentX, token.currentY];
                 }
             }
 
@@ -74,48 +72,51 @@ namespace Breakthrough_AI
             if (_aiColor == PlayerColor.White)
             {
                 movedPiece = bestChild.whitePieces ^ currentBoard.whitePieces;
-                int destination = _manip.BitScanForwardWithReset(ref movedPiece);
-                int start = _manip.BitScanForwardWithReset(ref movedPiece);
-                coordinates.Add(Grid.Squares.XCoordinate(start));
-                coordinates.Add(Grid.Squares.YCoordinate(start));
-                coordinates.Add(Grid.Squares.XCoordinate(destination));
-                coordinates.Add(Grid.Squares.YCoordinate(destination));
+                int destination = BitsMagic.BitScanForwardWithReset(ref movedPiece);
+                int start = BitsMagic.BitScanForwardWithReset(ref movedPiece);
+                coordinates.Add(Converters.XCoordinate(start));
+                coordinates.Add(Converters.YCoordinate(start));
+                coordinates.Add(Converters.XCoordinate(destination));
+                coordinates.Add(Converters.YCoordinate(destination));
 
             }
             else
             {
                 movedPiece = bestChild.blackPieces ^ currentBoard.blackPieces;
-                int start = _manip.BitScanForwardWithReset(ref movedPiece);
-                int destination = _manip.BitScanForwardWithReset(ref movedPiece);
-                coordinates.Add(Grid.Squares.XCoordinate(start));
-                coordinates.Add(Grid.Squares.YCoordinate(start));
-                coordinates.Add(Grid.Squares.XCoordinate(destination));
-                coordinates.Add(Grid.Squares.YCoordinate(destination));
+                int start = BitsMagic.BitScanForwardWithReset(ref movedPiece);
+                int destination = BitsMagic.BitScanForwardWithReset(ref movedPiece);
+                coordinates.Add(Converters.XCoordinate(start));
+                coordinates.Add(Converters.YCoordinate(start));
+                coordinates.Add(Converters.XCoordinate(destination));
+                coordinates.Add(Converters.YCoordinate(destination));
             }
 
 
             return coordinates;
         }
 
+        /// <summary>
+        /// Will return a list of all of the possible moves for the given board.
+        /// </summary>
         private List<BitBoard> GetChildren(BitBoard board, PlayerColor color)
         {
             List<BitBoard> children = new List<BitBoard>();
             ulong myBoard = color == PlayerColor.White ? board.whitePieces : board.blackPieces;
 
-            int piece = _manip.BitScanForwardWithReset(ref myBoard);
+            int piece = BitsMagic.BitScanForwardWithReset(ref myBoard);
 
             while (piece >= 0)
             {
                 if (color == PlayerColor.White)
                 {
-                    ulong forward = Grid.WhiteMasks.Forward[piece];
-                    ulong east = Grid.WhiteMasks.EastAttack[piece];
-                    ulong west = Grid.WhiteMasks.WestAttack[piece];
+                    ulong forward = Masks.WhiteMasks.Forward[piece];
+                    ulong east = Masks.WhiteMasks.EastAttack[piece];
+                    ulong west = Masks.WhiteMasks.WestAttack[piece];
 
                     if (forward != 0 && (forward & board.CombinedBoard()) == 0 )
                     {
                         BitBoard child = new BitBoard();
-                        child.whitePieces = board.whitePieces & ~Grid.Squares.CurrentSquare[piece];
+                        child.whitePieces = board.whitePieces & ~Masks.CurrentSquare[piece];
                         child.whitePieces = child.whitePieces | forward;
                         child.blackPieces = board.blackPieces;
                         children.Add(child);
@@ -124,7 +125,7 @@ namespace Breakthrough_AI
                     if (east != 0 && (east & board.whitePieces) == 0)
                     {
                         BitBoard child = new BitBoard();
-                        child.whitePieces = board.whitePieces & ~Grid.Squares.CurrentSquare[piece];
+                        child.whitePieces = board.whitePieces & ~Masks.CurrentSquare[piece];
                         child.whitePieces = child.whitePieces | east;
                         child.blackPieces = board.blackPieces & ~east;
                         children.Add(child);
@@ -133,7 +134,7 @@ namespace Breakthrough_AI
                     if (west != 0 && (west & board.whitePieces) == 0)
                     {
                         BitBoard child = new BitBoard();
-                        child.whitePieces = board.whitePieces & ~Grid.Squares.CurrentSquare[piece];
+                        child.whitePieces = board.whitePieces & ~Masks.CurrentSquare[piece];
                         child.whitePieces = child.whitePieces | west;
                         child.blackPieces = board.blackPieces & ~west;
                         children.Add(child);
@@ -141,14 +142,14 @@ namespace Breakthrough_AI
                 }
                 else
                 {
-                    ulong forward = Grid.BlackMasks.Forward[piece];
-                    ulong east = Grid.BlackMasks.EastAttack[piece];
-                    ulong west = Grid.BlackMasks.WestAttack[piece];
+                    ulong forward = Masks.BlackMasks.Forward[piece];
+                    ulong east = Masks.BlackMasks.EastAttack[piece];
+                    ulong west = Masks.BlackMasks.WestAttack[piece];
 
                     if (forward != 0 && (forward & board.CombinedBoard()) == 0)
                     {
                         BitBoard child = new BitBoard();
-                        child.blackPieces = board.blackPieces & ~Grid.Squares.CurrentSquare[piece];
+                        child.blackPieces = board.blackPieces & ~Masks.CurrentSquare[piece];
                         child.blackPieces = child.blackPieces | forward;
                         child.whitePieces = board.whitePieces;
                         children.Add(child);
@@ -157,7 +158,7 @@ namespace Breakthrough_AI
                     if (east != 0 && (east & board.blackPieces) == 0)
                     {
                         BitBoard child = new BitBoard();
-                        child.blackPieces = board.blackPieces & ~Grid.Squares.CurrentSquare[piece];
+                        child.blackPieces = board.blackPieces & ~Masks.CurrentSquare[piece];
                         child.blackPieces = child.blackPieces | east;
                         child.whitePieces = board.whitePieces & ~east;
                         children.Add(child);
@@ -166,33 +167,22 @@ namespace Breakthrough_AI
                     if (west != 0 && (west & board.blackPieces) == 0)
                     {
                         BitBoard child = new BitBoard();
-                        child.blackPieces = board.blackPieces & ~Grid.Squares.CurrentSquare[piece];
+                        child.blackPieces = board.blackPieces & ~Masks.CurrentSquare[piece];
                         child.blackPieces = child.blackPieces | west;
                         child.whitePieces = board.whitePieces & ~west;
                         children.Add(child);
                     }
                 }
-                piece = _manip.BitScanForwardWithReset(ref myBoard);
+                piece = BitsMagic.BitScanForwardWithReset(ref myBoard);
             }
 
             return children;
-        }
-
-        public PlayerColor FlipColor(PlayerColor color)
-        {
-            if (color == PlayerColor.Black)
-            {
-                return PlayerColor.White;
-            }
-
-            return PlayerColor.Black;
         }
 
         /// <summary>
         /// Performs the basic tree search to find the best possible move.
         /// Built from pseudocode taken from https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
         /// </summary>
-        /// <returns></returns>
         private int AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer)
         {
             if (remainingDepth == 0 || IsGameOver(node))
@@ -200,7 +190,7 @@ namespace Breakthrough_AI
                 return Evaluate(node);
             }
 
-            PlayerColor side = maximizingPlayer ? _aiColor : FlipColor(_aiColor);
+            PlayerColor side = maximizingPlayer ? _aiColor : Utils.FlipColor(_aiColor);
 
             List<BitBoard> children = GetChildren(node, side);
 
@@ -234,35 +224,40 @@ namespace Breakthrough_AI
             }
         }
 
+        /// <summary>
+        /// Tells if somebody has won the game.
+        /// </summary>
         private bool IsGameOver(BitBoard bitBoard)
         {
             ulong myWhitePieces = bitBoard.whitePieces;
             ulong myBlackPieces = bitBoard.blackPieces;
 
-            int piece = _manip.BitScanForwardWithReset(ref myWhitePieces);
+            int piece = BitsMagic.BitScanForwardWithReset(ref myWhitePieces);
             while (piece >= 0)
             {
-                if ((Grid.Squares.CurrentSquare[piece] & Grid.Rows.Row8) != 0)
+                if ((Masks.CurrentSquare[piece] & Grid.Row8) != 0)
                 {
                     return true;
                 }
-                piece = _manip.BitScanForwardWithReset(ref myWhitePieces);
+                piece = BitsMagic.BitScanForwardWithReset(ref myWhitePieces);
             }
 
-            piece = _manip.BitScanForwardWithReset(ref myBlackPieces);
+            piece = BitsMagic.BitScanForwardWithReset(ref myBlackPieces);
             while (piece >= 0)
             {
-                if ((Grid.Squares.CurrentSquare[piece] & Grid.Rows.Row1) != 0)
+                if ((Masks.CurrentSquare[piece] & Grid.Row1) != 0)
                 {
                     return true;
                 }
-                piece = _manip.BitScanForwardWithReset(ref myBlackPieces);
+                piece = BitsMagic.BitScanForwardWithReset(ref myBlackPieces);
             }
 
             return false;
         }
 
-        //TODO: Make Random moves.
+        /// <summary>
+        /// Returns a heuristic score for the board.  
+        /// </summary>
         private int Evaluate(BitBoard origin)
         {
             throw new NotImplementedException();
