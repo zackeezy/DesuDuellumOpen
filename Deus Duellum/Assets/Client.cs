@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Client : MonoBehaviour 
 {
@@ -14,6 +15,9 @@ public class Client : MonoBehaviour
 	private NetworkStream stream;
 	private StreamWriter writer;
 	private StreamReader reader;
+
+	public Button clientButton;
+	public Button serverButton;
 
 	public List<GameClient> players = new List<GameClient>();
 
@@ -87,11 +91,11 @@ public class Client : MonoBehaviour
 				break;
 
 			case "SMOV":
-				CheckerBoard.Instance.TryMove(int.Parse(aData[1]), int.Parse(aData[2]), int.Parse(aData[3]), int.Parse(aData[4]));
+				//CheckerBoard.Instance.TryMove(int.Parse(aData[1]), int.Parse(aData[2]), int.Parse(aData[3]), int.Parse(aData[4]));
 				break;
 
 			case "SMSG":
-				CheckerBoard.Instance.ChatMessage(aData[1]);
+				//CheckerBoard.Instance.ChatMessage(aData[1]);
 				break;
 		}
 	}
@@ -103,8 +107,8 @@ public class Client : MonoBehaviour
 
 		players.Add(gc);
 
-		if (players.Count == 2)
-			GameManager.Instance.StartGame();
+		if (players.Count == 2){}
+			//GameManager.Instance.StartGame();
 	}
 
 	private void OnApplicationQuit()

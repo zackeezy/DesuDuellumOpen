@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Server : MonoBehaviour 
 {
@@ -11,6 +12,9 @@ public class Server : MonoBehaviour
 
 	private List<ServerClient> clients;
 	private List<ServerClient> disconnectList;
+
+	public Button clientButton;
+	public Button serverButton;
 
 	private TcpListener server; // need to include System.Net.Sockets namespace to use TcpListener and TcpClient
 	private bool serverStarted;
