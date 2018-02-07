@@ -20,6 +20,19 @@ namespace Breakthrough_AI
         }
     }
    
+    public class AlphaBetaNode
+    {
+        public BitBoard Child;
+        public BitBoard Parent;
+        public int Value;
+
+        public AlphaBetaNode()
+        {
+            Child = new BitBoard();
+            Parent = new BitBoard();
+        }
+    }
+
     public class BitBoard
     {
         public BitBoard()

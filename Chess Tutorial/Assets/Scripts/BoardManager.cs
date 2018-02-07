@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Breakthrough_AI;
 
 public class BoardManager : MonoBehaviour {
 	public static BoardManager Instance{ set; get;}
@@ -25,9 +26,12 @@ public class BoardManager : MonoBehaviour {
 
 	public Text winText;
 
+    private Analyzer _analyzer;
+
 	// Use this for initialization
 	void Start () {
-		//SpawnToken (0, GetTileCenter(0, 0));
+        //SpawnToken (0, GetTileCenter(0, 0));
+        _analyzer = new Analyzer(PlayerColor.Black);
 		Instance = this;
 		SpawnAll();
 	}
@@ -46,9 +50,23 @@ public class BoardManager : MonoBehaviour {
 				else {
 				//move token
 					MoveToken(selectionX,selectionY);
-				}
-			}
+
+                    List<Token> tokens = new List<Token>();
+                    foreach (Token token in Tokens)
+                    {
+                        if (token != null)
+                        {
+                            tokens.Add(token);
+                        }
+                    }
+
+                    List<int> coordinates = _analyzer.GetMove(tokens);
+                    SelectToken(coordinates[0], coordinates[1]);
+                    MoveToken(coordinates[2], coordinates[3]);
+                }
+            }
 		}
+
 	}
 
 	private void SelectToken(int x, int y){

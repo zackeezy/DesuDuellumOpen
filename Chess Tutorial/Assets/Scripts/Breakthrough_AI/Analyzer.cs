@@ -28,9 +28,12 @@ namespace Breakthrough_AI
 
         private const int MAX_DEPTH = 5;
 
+        private Random _random; 
+
         public Analyzer(PlayerColor aiColor)
         {
             _aiColor = aiColor;
+            _random = new Random();
         }
 
         /// <summary>
@@ -51,27 +54,14 @@ namespace Breakthrough_AI
                 }
             }
 
-            List<BitBoard> children = GetChildren(currentBoard, _aiColor);
-            BitBoard bestChild = children[0];
-            int bestScore = Int32.MinValue;
-
-            //Decent place for parallelization.
-            foreach (BitBoard child in children)
-            {
-                int score = AlphaBetaLoop(currentBoard, MAX_DEPTH, Int32.MinValue, Int32.MaxValue, false);
-                if (score >= bestScore)
-                {
-                    bestChild = child;
-                    bestScore = score;
-                }
-            }
+            AlphaBetaNode bestOption = AlphaBetaLoop(currentBoard, MAX_DEPTH, Int32.MinValue, Int32.MaxValue, true);
 
             ulong movedPiece = 0;
             List<int> coordinates = new List<int>();
 
             if (_aiColor == PlayerColor.White)
             {
-                movedPiece = bestChild.whitePieces ^ currentBoard.whitePieces;
+                movedPiece = bestOption.Child.whitePieces ^ currentBoard.whitePieces;
                 int destination = BitsMagic.BitScanForwardWithReset(ref movedPiece);
                 int start = BitsMagic.BitScanForwardWithReset(ref movedPiece);
                 coordinates.Add(Converters.XCoordinate(start));
@@ -82,7 +72,7 @@ namespace Breakthrough_AI
             }
             else
             {
-                movedPiece = bestChild.blackPieces ^ currentBoard.blackPieces;
+                movedPiece = bestOption.Child.blackPieces ^ currentBoard.blackPieces;
                 int start = BitsMagic.BitScanForwardWithReset(ref movedPiece);
                 int destination = BitsMagic.BitScanForwardWithReset(ref movedPiece);
                 coordinates.Add(Converters.XCoordinate(start));
@@ -183,11 +173,16 @@ namespace Breakthrough_AI
         /// Performs the basic tree search to find the best possible move.
         /// Built from pseudocode taken from https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
         /// </summary>
-        private int AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer)
+        private AlphaBetaNode AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer)
         {
+            AlphaBetaNode returnValue = new AlphaBetaNode();
+            returnValue.Parent = node;
+
             if (remainingDepth == 0 || IsGameOver(node))
             {
-                return Evaluate(node);
+                returnValue.Child = node;
+                returnValue.Value = Evaluate(node);
+                return returnValue;
             }
 
             PlayerColor side = maximizingPlayer ? _aiColor : Utils.FlipColor(_aiColor);
@@ -198,29 +193,47 @@ namespace Breakthrough_AI
             {
                 int value = Int32.MinValue;
 
+                AlphaBetaNode workingNode = new AlphaBetaNode();
+
                 foreach (BitBoard child in children)
                 {
-                    value = Math.Max(value, AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false));
+                    workingNode = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false);
+
+                    if (value < workingNode.Value)
+                    {
+                        returnValue.Child = child;
+                        returnValue.Value = workingNode.Value;
+                    }
+                    value = Math.Max(value, workingNode.Value);
                     alpha = Math.Max(alpha, value);
 
                     if (beta < alpha) break;
                 }
 
-                return value;
+                return returnValue;
             }
             else
             {
                 int value = Int32.MaxValue;
+                AlphaBetaNode workingNode = new AlphaBetaNode();
 
                 foreach (BitBoard child in children)
                 {
-                    value = Math.Min(value, AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true));
+                    workingNode = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true);
+
+                    if (value > workingNode.Value)
+                    {
+                        returnValue.Child = child;
+                        returnValue.Value = workingNode.Value;
+                    }
+
+                    value = Math.Min(value, workingNode.Value);
                     beta = Math.Min(beta, value);
 
                     if (beta < alpha) break;
                 }
 
-                return value;
+                return returnValue;
             }
         }
 
@@ -260,7 +273,7 @@ namespace Breakthrough_AI
         /// </summary>
         private int Evaluate(BitBoard origin)
         {
-            throw new NotImplementedException();
+            return _random.Next(-1000,1000);
         }
     }
 }
