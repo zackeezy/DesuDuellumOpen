@@ -1,4 +1,7 @@
 sceneSetups:
-- path: Assets/Scenes/AI_CharacterSelectMenu.unity
+- path: Assets/Scenes/Local_Game.unity
   isLoaded: 1
   isActive: 1
+- path: Assets/Scenes/Online_Game.unity
+  isLoaded: 1
+  isActive: 0
