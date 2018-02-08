@@ -44,6 +44,7 @@ public class Server : MonoBehaviour {
                 //TODO: add code for starting game
                 GameObject temp = Instantiate(playerObject, transform.position, transform.rotation);
                 players.Add(recvConnectionId, temp);
+                Debug.Log("ConnectEvent Triggered.");
                 break;
             case NetworkEventType.DataEvent:
                 string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);

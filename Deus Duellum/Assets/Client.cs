@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine;
 using UnityEngine.Networking;
 
 public class Client : MonoBehaviour {
@@ -11,7 +10,7 @@ public class Client : MonoBehaviour {
     int maxConnections = 10;
     int reliableChannelId;
     int hostId;
-    int socketPort;
+    int socketPort = 7778;
     byte error;
 
     // Use this for initialization
@@ -49,9 +48,9 @@ public class Client : MonoBehaviour {
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, null);
+        hostId = NetworkTransport.AddHost(topology, socketPort, "127.0.0.1");
         Debug.Log("Socket open. Host ID is: " + hostId);
-        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", socketPort, 0, out error);
+        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", 8888, 0, out error);
     }
 
     public void Disconnect()
