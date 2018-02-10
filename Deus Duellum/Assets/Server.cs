@@ -43,6 +43,7 @@ public class Server : MonoBehaviour {
             case NetworkEventType.ConnectEvent:
                 //TODO: add code for starting game
                 GameObject temp = Instantiate(playerObject, transform.position, transform.rotation);
+                temp.GetComponent<Player>().server = this;
                 players.Add(recvConnectionId, temp);
                 Debug.Log("ConnectEvent Triggered.");
                 break;
@@ -75,5 +76,11 @@ public class Server : MonoBehaviour {
         float xMov = float.Parse(x);
         float yMove = float.Parse(y);
         obj.transform.Translate(xMov, 0, yMove);
+    }
+
+    public void SendNetworkMessage(string message)
+    {
+        byte[] buffer = Encoding.Unicode.GetBytes(message);
+        NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 }

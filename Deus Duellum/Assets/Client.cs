@@ -13,6 +13,8 @@ public class Client : MonoBehaviour {
     int socketPort = 7778;
     byte error;
 
+    public GameObject player;
+
     // Use this for initialization
     void Start()
     {
@@ -39,6 +41,22 @@ public class Client : MonoBehaviour {
             case NetworkEventType.DisconnectEvent:
                 break;
             case NetworkEventType.DataEvent:
+                string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
+                Debug.Log("Receiving " + msg);
+                string[] splitData = msg.Split('|');
+                switch (splitData[0])
+                {
+                    case "MOVE":
+                        //TODO: add code for move
+                        Move(splitData[1], splitData[2], player);
+                        break;
+                    case "EMOTE":
+                        //TODO: add code for emote
+                        break;
+                    case "MESSAGE":
+
+                        break;
+                }
                 break;
         }
     }
@@ -58,7 +76,14 @@ public class Client : MonoBehaviour {
         NetworkTransport.Disconnect(hostId, connectionId, out error);
     }
 
-    public void sendMessage(string message)
+    public void Move(string x, string y, GameObject obj)
+    {
+        float xMov = float.Parse(x);
+        float yMove = float.Parse(y);
+        obj.transform.Translate(xMov, 0, yMove);
+    }
+
+    public void SendNetworkMessage(string message)
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
         NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
