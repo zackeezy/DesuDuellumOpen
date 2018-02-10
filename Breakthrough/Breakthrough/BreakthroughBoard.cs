@@ -20,7 +20,6 @@ namespace Breakthrough
 
         public BreakthroughBoard()
         {
-            //token = new Token();
             move = new Move();
             gameBoard = new string[boardSize, boardSize];
             GameBoardHorizontal = "+---";
