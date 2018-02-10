@@ -59,7 +59,8 @@ namespace Breakthrough
                  {
                     Console.Write(GameBoardHorizontal);
                  }
-            Console.Write("+\n\n");
+            Console.Write("+\n");
+            Console.WriteLine("    A   B   C   D   E   F   G   H\n");
                 move.GetMove();
             }
         }

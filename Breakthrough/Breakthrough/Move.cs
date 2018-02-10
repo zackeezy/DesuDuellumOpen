@@ -85,7 +85,7 @@ namespace Breakthrough
         private void RearrangeTokens()
         {
             tokens[toX, toY] = tokens[fromX, fromY];
-            tokens[fromX, fromY] = SPACE;//once moved, make it null
+            tokens[fromX, fromY] = DASH;//once moved, place a dash in its place
         }
 
 

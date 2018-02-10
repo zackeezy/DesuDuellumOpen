@@ -11,6 +11,7 @@ namespace Breakthrough
         public const char WHITE_SYMBOL = 'W';
         public const char BLACK_SYMBOL = 'B';
         public const char SPACE = ' ';
+        public const char DASH = '-';
         public static char[,] tokens;
 
         public Token()

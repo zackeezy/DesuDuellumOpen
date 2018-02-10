@@ -5,3 +5,9 @@ C:\Users\Andres\Documents\Capstone\Breakthrough\Breakthrough\obj\Debug\Breakthro
 C:\Users\Andres\Documents\Capstone\Breakthrough\Breakthrough\obj\Debug\Breakthrough.csproj.CoreCompileInputs.cache
 C:\Users\Andres\Documents\Capstone\Breakthrough\Breakthrough\obj\Debug\Breakthrough.exe
 C:\Users\Andres\Documents\Capstone\Breakthrough\Breakthrough\obj\Debug\Breakthrough.pdb
+C:\Users\Andres\Documents\GitHub\DeusDuellum\Breakthrough\Breakthrough\bin\Debug\Breakthrough.exe.config
+C:\Users\Andres\Documents\GitHub\DeusDuellum\Breakthrough\Breakthrough\bin\Debug\Breakthrough.exe
+C:\Users\Andres\Documents\GitHub\DeusDuellum\Breakthrough\Breakthrough\bin\Debug\Breakthrough.pdb
+C:\Users\Andres\Documents\GitHub\DeusDuellum\Breakthrough\Breakthrough\obj\Debug\Breakthrough.csprojResolveAssemblyReference.cache
+C:\Users\Andres\Documents\GitHub\DeusDuellum\Breakthrough\Breakthrough\obj\Debug\Breakthrough.exe
+C:\Users\Andres\Documents\GitHub\DeusDuellum\Breakthrough\Breakthrough\obj\Debug\Breakthrough.pdb
