@@ -34,35 +34,35 @@ namespace Breakthrough_AI
         {
             int xcoord = 0;
 
-            if ((Masks.CurrentSquare[location] & Grid.ColA) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColA) != 0)
             {
                 xcoord = 0;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColB) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColB) != 0)
             {
                 xcoord = 1;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColC) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColC) != 0)
             {
                 xcoord = 2;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColD) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColD) != 0)
             {
                 xcoord = 3;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColE) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColE) != 0)
             {
                 xcoord = 4;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColF) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColF) != 0)
             {
                 xcoord = 5;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColG) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColG) != 0)
             {
                 xcoord = 6;
             }
-            if ((Masks.CurrentSquare[location] & Grid.ColH) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.ColH) != 0)
             {
                 xcoord = 7;
             }
@@ -78,35 +78,35 @@ namespace Breakthrough_AI
         {
             int ycoord = 0;
 
-            if ((Masks.CurrentSquare[location] & Grid.Row1) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row1) != 0)
             {
                 ycoord = 0;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row2) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row2) != 0)
             {
                 ycoord = 1;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row3) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row3) != 0)
             {
                 ycoord = 2;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row4) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row4) != 0)
             {
                 ycoord = 3;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row5) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row5) != 0)
             {
                 ycoord = 4;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row6) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row6) != 0)
             {
                 ycoord = 5;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row7) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row7) != 0)
             {
                 ycoord = 6;
             }
-            if ((Masks.CurrentSquare[location] & Grid.Row8) != 0)
+            if ((Masks.OrientationMasks.CurrentSquare[location] & Grid.Row8) != 0)
             {
                 ycoord = 7;
             }
