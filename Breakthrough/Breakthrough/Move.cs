@@ -15,7 +15,7 @@ namespace Breakthrough
 
         public bool Exit { set; get; }
         public bool isWhiteTurn = true;
-        public bool isWhite;
+        public bool isWhite=true;
 
         public Move()
         {
@@ -30,7 +30,7 @@ namespace Breakthrough
         {
             GetInput();
 
-            if (!Exit)
+            if (!Exit /*&& allowMove()*/)
             {
                 RearrangeTokens();
             }
@@ -41,22 +41,22 @@ namespace Breakthrough
             {
                 //get input and validate it
                 Console.WriteLine("Enter White Token's from coordinate X");
-                Exit = validateInput(int.TryParse(Console.ReadLine(), out fromX));
+                Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out fromX));
 
                 if (!Exit)//if previous validation passed, move to the next coordinates
                 {
                     Console.WriteLine("Enter White Token's from coordinate Y");
-                    Exit = validateInput(int.TryParse(Console.ReadLine(), out fromY));
+                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out fromY));
                 }
                 if (!Exit)//if previous validation passed, move to the next coordinates
                 {
                     Console.WriteLine("Enter White Token's to coordinate X");
-                    Exit = validateInput(int.TryParse(Console.ReadLine(), out toX));
+                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out toX));
                 }
                 if (!Exit)//if previous validation passed, move to the next coordinates
                 {
                     Console.WriteLine("Enter White Token's to coordinate Y");
-                    Exit = validateInput(int.TryParse(Console.ReadLine(), out toY));
+                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out toY));
                 }
                 isWhiteTurn = false;
             }
@@ -83,6 +83,14 @@ namespace Breakthrough
                 }
                 isWhiteTurn = true;
             }
+            //if (isWhiteTurn && toY == 7)
+            //{
+            //    Console.WriteLine("White wins");
+            //}
+            //if (!isWhiteTurn && toY == 0)
+            //{
+            //    Console.WriteLine("Black Wins");
+            //}
         }
         private bool BlackValidateInput(bool parsed)
         {
@@ -101,21 +109,10 @@ namespace Breakthrough
             {
                 error = true;
             }
-            ////toX == 0 && toY == 0 ||
-            //else if ( toX != fromX - 1 && toY != fromY - 1)
-            //{
-            //    error = true;
-            //}
-            ////toX == 7 && toY == 0 || 
-            //else if (toX != fromX + 1 && toY != fromY - 1)
-            //{
-            //    error = true;
-            //}
-            ////toY == 0 ||
-            //else if ( toX != fromX && toY != fromY - 1)
-            //{
-            //    error = true;
-            //}
+            else if (fromX == toX && fromY == toY)
+            {
+                error = true;
+            }
             if (error)
             {
                 Console.WriteLine("Invalid input. Exiting program now.");
@@ -123,7 +120,7 @@ namespace Breakthrough
 
             return error;
         }
-        private bool validateInput(bool parsed)
+        private bool whiteValidateInput(bool parsed)
         {
             bool error = false;
 
@@ -140,21 +137,10 @@ namespace Breakthrough
             {
                 error = true;
             }
-            //toX == 0 && toY == 7 ||
-            //else if ( toX != fromX - 1 && toY != fromY + 1)
-            //{
-            //    error = true;
-            //}
-            ////toX == 7 && toY == 7 ||
-            //else if ( toX != fromX + 1 && toY != fromY + 1)
-            //{
-            //    error = true;
-            //}
-            ////toY == 7 ||
-            //else if ( toX != fromX && toY != fromY + 1)
-            //{
-            //    error = true;
-            //}
+            else if (fromX == toX && fromY == toY)
+            {
+                error = true;
+            }
             if (error)
             {
                 Console.WriteLine("Invalid input. Exiting program now.");
@@ -162,11 +148,72 @@ namespace Breakthrough
 
             return error;
         }
+        private bool allowMove()
+        {
+            bool isAllowed = false;
+            if (isWhite)
+            {
+                //diagonal left
+                if (fromX != 0 && fromY != 7)
+                {
+                    if (toX == fromX - 1 && toY == fromY + 1)
+                    {
+                        isAllowed = true;
+                    }
+                }
+                //diagonal right
+                if (fromX != 7 && fromY != 7)
+                {
+                    if (toX == fromX + 1 && toY == fromY + 1)
+                    {
+                        isAllowed = true;
+                    }
+                }
+                //middle
+                if (fromY != 7)
+                {
+                    if (toX == fromX && toY == fromY + 1)
+                    {
+                        isAllowed = true;
+                    }
+                }
+                isWhite = false;
+            }
+            else
+            {
+                //diagonal left
+                if (fromX != 0 && fromY != 0)
+                {
+                    if (toX == fromX - 1 && toY == fromY - 1)
+                    {
+                        isAllowed = true;
+                    }
+                }
+                //diagonal right
+                if(fromX!=7 && fromY != 0)
+                {
+                    if (toX == fromX + 1 && toY == fromY - 1)
+                    {
+                        isAllowed = true;
+                    }
+                }
+                if(fromY!=0)
+                {
+                    if (toX == fromX && toY == fromY - 1)
+                    {
+                        isAllowed = true;
+                    }
+                }
+                isWhite = true;
+            }
+            return isAllowed;
+        }
 
         private void RearrangeTokens()
         {
-            tokens[toX, toY] = tokens[fromX, fromY];
-            tokens[fromX, fromY] = DASH;//once moved, place a dash in its place
+               tokens[toX, toY] = tokens[fromX, fromY];
+               tokens[fromX, fromY] = DASH;//once moved, place a dash in its place
+         
         }
     }
 }
