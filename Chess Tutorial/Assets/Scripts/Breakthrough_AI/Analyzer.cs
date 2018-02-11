@@ -32,16 +32,18 @@ namespace Breakthrough_AI
         {
             public const int WIN = Int32.MaxValue;
             public const int LOSS = Int32.MinValue;
-            public const int VERTICAL_CONNECTION = 2;
-            public const int HORIZONTAL_CONNECTION = 2;
-            public const int PROTECTED = 2;
-            public const int ATTACKED = 1;
-            public const int DANGER_LOW = 2;
-            public const int DANGER_MED = 4;
-            public const int DANGER_HIGH = 6;
-            public const int FLAT_DANGER = 2;
-            public const int MOVEMENT = 1;
-            public const int COLUMN_HOLE_PENALTY = 1;
+            public const int VERTICAL_CONNECTION = 100;
+            public const int HORIZONTAL_CONNECTION = 100;
+            public const int PROTECTED = 250;
+            public const int ATTACKED = 100;
+            public const int DANGER_LOW = 500;
+            public const int DANGER_HIGH = 10000;
+            public const int FLAT_DANGER = 100;
+            public const int IMMEDIATE_MOVEMENT = 150;
+            public const int COLUMN_HOLE_PENALTY = 200;
+            public const int BASE_MOBILITY = 10000;
+            public const int MOBILITY_PENALTY = 625;
+            public const int HOME_ROW_MOVED = 5000;
         }
 
         private Random _random; 
@@ -293,307 +295,460 @@ namespace Breakthrough_AI
         /// Returns a heuristic score for the board. 
         /// Initially based on the article by Roman Atachiants, found at  https://www.codeproject.com/Articles/37024/Simple-AI-for-the-Game-of-Breakthrough
         /// </summary>
-        private int Evaluate(BitBoard origin)
+        private int Evaluate(BitBoard board)
         {
-            int score = 0;
+            int totalScore = 0;
 
-            //Add up scores for the following features
-            //Winning Postition - The score for if a side has won.
-            //Piece Almost Win - Prediction of if a piece will win in a few moves
-            //Piece Value - Puts a value on a piece
-            //Piece Danger Value - Positional Value of a piece (row * danger_value)
-            //Piece High Danger Value - Feature for the highest danger value of a piece
-            //Piece Attack Value - Value that weights an attack on a pawn, cumulative.
-            //Piece Protection Value - Value that weights the protection on a piece, culumative.
-            //Connection Horizontal - Chracterizes a two pawn horizontal connection.
-            //Connection Vertical - Characterizes a two pawns vertical connection.
-            //Piece Mobility value - Valorize the number of valid moves for a piece.
-            //Column Hole Value - Penalty on columns without a piece on them.
-            //Home Ground Value - Valorizes Pieces on the Home Row.
-
-
-            /*
-             * General Outline for Evaluation:
-             *  We will begin by generating two scores, one for black, and one for white.
-             *  For each side,
-             *      First, check if already won, and return if found.
-             *      Next, iterate through all pieces, generating scores.
-             *      Finally, calculate penalties for the total board.
-             *  Next, combine total scores, with negative modifiers for opponent side, positive for player side.
-             *  Return the final score.
-             */
-
-            if (IsGameOver(origin))
+            //Skips the evaluation if somebody has won the game.
+            if (IsGameOver(board))
             {
-                if ((Grid.Row1 & origin.blackPieces) != 0)
+                if ((Grid.Row1 & board.blackPieces) != 0)
                 {
-                    if (_aiColor == PlayerColor.Black)
-                    {
-                        return Weights.WIN;
-                    }
-                    else
-                    {
-                        return Weights.LOSS;
-                    }
+                    return _aiColor == PlayerColor.Black ?  Weights.WIN : Weights.LOSS;
                 }
-                else if ((Grid.Row8 & origin.whitePieces) != 0)
+                else if ((Grid.Row8 & board.whitePieces) != 0)
                 {
-                    if (_aiColor == PlayerColor.White)
-                    {
-                        return Weights.WIN;
-                    }
-                    else
-                    {
-                        return Weights.LOSS;
-                    }
+                    return _aiColor == PlayerColor.White ? Weights.WIN : Weights.LOSS;
                 }
             }
 
+            //Accumulate Score for each White Piece.
             int whiteScore = 0;
-            ulong whitePieces = origin.whitePieces;
+            ulong whitePieces = board.whitePieces;
             int iterator = BitsMagic.BitScanForwardWithReset(ref whitePieces);
             while (iterator >= 0)
             {
-                int pieceScore = 0;
+                whiteScore += GenerateBlockingPatternScore(board, iterator, PlayerColor.White);
 
-                if ((origin.whitePieces & Masks.OrientationMasks.Above[iterator]) != 0)
+                int pieceProtectionScore = GenerateProtectionScore(board, iterator, PlayerColor.White);
+                whiteScore += pieceProtectionScore;
+                int pieceAttackedPenalty = GenerateAttackedPenalty(board, iterator, PlayerColor.White);
+
+                if(pieceAttackedPenalty > 0)
                 {
-                    pieceScore += Weights.VERTICAL_CONNECTION;
-                }
-
-                if ((origin.whitePieces & Masks.OrientationMasks.RightOf[iterator]) != 0)
-                {
-                    pieceScore += Weights.HORIZONTAL_CONNECTION;
-                }
-
-                int pieceProtectedScore = 0;
-                if ((origin.whitePieces & Masks.BlackMasks.EastAttack[iterator]) != 0)
-                {
-                    pieceProtectedScore += Weights.PROTECTED;
-                }
-
-                if ((origin.whitePieces & Masks.BlackMasks.WestAttack[iterator]) != 0)
-                {
-                    pieceProtectedScore += Weights.PROTECTED;
-                }
-
-                int pieceAttackedValue = 0;
-
-                if ((origin.blackPieces & Masks.WhiteMasks.EastAttack[iterator]) != 0)
-                {
-                    pieceAttackedValue += Weights.ATTACKED;
-                }
-
-                if ((origin.blackPieces & Masks.WhiteMasks.WestAttack[iterator]) != 0)
-                {
-                    pieceAttackedValue += Weights.ATTACKED;
-                }
-
-                if (pieceAttackedValue > 0)
-                {
-                    pieceScore -= pieceAttackedValue;
-                    if (pieceProtectedScore == 0)
+                    whiteScore -= pieceAttackedPenalty;
+                    if (pieceProtectionScore == 0)
                     {
-                        pieceScore -= pieceAttackedValue;
+                        whiteScore -= pieceAttackedPenalty;
                     }
                 }
                 else
                 {
-                    if (pieceProtectedScore != 0)
+                    if(pieceProtectionScore != 0)
                     {
-                        if ((Masks.OrientationMasks.CurrentSquare[iterator] & Grid.Row5) != 0)
+                        if(Masks.OrientationMasks.CurrentRow[iterator] == 6)
                         {
-                            pieceScore += Weights.DANGER_LOW;
+                            whiteScore += Weights.DANGER_LOW;
                         }
-                        else if ((Masks.OrientationMasks.CurrentSquare[iterator] & Grid.Row6) != 0)
+                        else if(Masks.OrientationMasks.CurrentRow[iterator] == 7)
                         {
-                            pieceScore += Weights.DANGER_MED;
-                        }
-                        else if ((Masks.OrientationMasks.CurrentSquare[iterator] & Grid.Row7) != 0)
-                        {
-                            pieceScore += Weights.DANGER_HIGH;
+                            whiteScore += Weights.DANGER_HIGH;
                         }
                     }
                 }
 
-                pieceScore += Masks.OrientationMasks.CurrentRow[iterator] * Weights.FLAT_DANGER;
+                whiteScore += GenerateDangerScore(board, iterator, PlayerColor.White);
 
-                if ((origin.CombinedBoard() & Masks.WhiteMasks.Forward[iterator]) == 0)
-                {
-                    pieceScore += Weights.MOVEMENT;
-                }
-                if ((origin.whitePieces & Masks.WhiteMasks.EastAttack[iterator]) == 0)
-                {
-                    pieceScore += Weights.MOVEMENT;
-                }
-                if ((origin.whitePieces & Masks.WhiteMasks.WestAttack[iterator]) == 0)
-                {
-                    pieceScore += Weights.MOVEMENT;
-                }
+                whiteScore += GenerateMobilityScore(board, iterator, PlayerColor.White);
 
-                whiteScore += pieceScore;
                 iterator = BitsMagic.BitScanForwardWithReset(ref whitePieces);
             }
 
-            if ((origin.whitePieces & Grid.ColA) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColB) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColC) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColD) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColE) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColF) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColG) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.whitePieces & Grid.ColH) == 0)
-            {
-                whiteScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
+            whiteScore -= GenerateColumnHolePenalty(board, PlayerColor.White);
+            whiteScore -= GenerateHomeRowProtectionPenalty(board, PlayerColor.White);
 
+
+            //Acculmulate score for all black pieces.
             int blackScore = 0;
-            ulong blackPieces = origin.blackPieces;
+            ulong blackPieces = board.whitePieces;
             iterator = BitsMagic.BitScanForwardWithReset(ref blackPieces);
             while (iterator >= 0)
             {
-                int pieceScore = 0;
+                blackScore += GenerateBlockingPatternScore(board, iterator, PlayerColor.Black);
 
-                if ((origin.blackPieces & Masks.OrientationMasks.Above[iterator]) != 0)
+                int pieceProtectionScore = GenerateProtectionScore(board, iterator, PlayerColor.Black);
+                blackScore += pieceProtectionScore;
+                int pieceAttackedPenalty = GenerateAttackedPenalty(board, iterator, PlayerColor.Black);
+
+                if (pieceAttackedPenalty > 0)
                 {
-                    pieceScore += Weights.VERTICAL_CONNECTION;
-                }
-
-                if ((origin.blackPieces & Masks.OrientationMasks.RightOf[iterator]) != 0)
-                {
-                    pieceScore += Weights.HORIZONTAL_CONNECTION;
-                }
-
-                int pieceProtectedScore = 0;
-                if ((origin.blackPieces & Masks.WhiteMasks.EastAttack[iterator]) != 0)
-                {
-                    pieceProtectedScore += Weights.PROTECTED;
-                }
-
-                if ((origin.blackPieces & Masks.WhiteMasks.WestAttack[iterator]) != 0)
-                {
-                    pieceProtectedScore += Weights.PROTECTED;
-                }
-
-                int pieceAttackedValue = 0;
-
-                if ((origin.whitePieces & Masks.BlackMasks.EastAttack[iterator]) != 0)
-                {
-                    pieceAttackedValue += Weights.ATTACKED;
-                }
-
-                if ((origin.whitePieces & Masks.BlackMasks.WestAttack[iterator]) != 0)
-                {
-                    pieceAttackedValue += Weights.ATTACKED;
-                }
-
-                if (pieceAttackedValue > 0)
-                {
-                    pieceScore -= pieceAttackedValue;
-                    if (pieceProtectedScore == 0)
+                    blackScore -= pieceAttackedPenalty;
+                    if (pieceProtectionScore == 0)
                     {
-                        pieceScore -= pieceAttackedValue;
+                        blackScore -= pieceAttackedPenalty;
                     }
                 }
                 else
                 {
-                    if (pieceProtectedScore != 0)
+                    if (pieceProtectionScore != 0)
                     {
-                        if ((Masks.OrientationMasks.CurrentSquare[iterator] & Grid.Row4) != 0)
+                        if (Masks.OrientationMasks.CurrentRow[iterator] == 3)
                         {
-                            pieceScore += Weights.DANGER_LOW;
+                            blackScore += Weights.DANGER_LOW;
                         }
-                        else if ((Masks.OrientationMasks.CurrentSquare[iterator] & Grid.Row3) != 0)
+                        else if (Masks.OrientationMasks.CurrentRow[iterator] == 2)
                         {
-                            pieceScore += Weights.DANGER_MED;
-                        }
-                        else if ((Masks.OrientationMasks.CurrentSquare[iterator] & Grid.Row2) != 0)
-                        {
-                            pieceScore += Weights.DANGER_HIGH;
+                            blackScore += Weights.DANGER_HIGH;
                         }
                     }
                 }
 
-                pieceScore += (9 - Masks.OrientationMasks.CurrentRow[iterator]) * Weights.FLAT_DANGER;
+                blackScore += GenerateDangerScore(board, iterator, PlayerColor.Black);
+                blackScore += GenerateMobilityScore(board, iterator, PlayerColor.Black);
 
-                if ((origin.CombinedBoard() & Masks.BlackMasks.Forward[iterator]) == 0)
-                {
-                    pieceScore += Weights.MOVEMENT;
-                }
-                if ((origin.blackPieces & Masks.BlackMasks.EastAttack[iterator]) == 0)
-                {
-                    pieceScore += Weights.MOVEMENT;
-                }
-                if ((origin.blackPieces & Masks.BlackMasks.WestAttack[iterator]) == 0)
-                {
-                    pieceScore += Weights.MOVEMENT;
-                }
-
-                blackScore += pieceScore;
                 iterator = BitsMagic.BitScanForwardWithReset(ref blackPieces);
             }
 
-            if ((origin.blackPieces & Grid.ColA) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColB) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColC) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColD) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColE) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColF) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColG) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
-            if ((origin.blackPieces & Grid.ColH) == 0)
-            {
-                blackScore -= Weights.COLUMN_HOLE_PENALTY;
-            }
+            blackScore -= GenerateColumnHolePenalty(board, PlayerColor.Black);
+            blackScore -= GenerateHomeRowProtectionPenalty(board, PlayerColor.Black);
 
+
+            //Finalize Score
             if (_aiColor == PlayerColor.White)
             {
-                score = whiteScore - blackScore;
+                totalScore = whiteScore - blackScore;
             }
             else
             {
-                score = blackScore = whiteScore;
+                totalScore = blackScore = whiteScore;
+            }
+
+            return totalScore;
+        }
+
+        private int GenerateBlockingPatternScore(BitBoard board, int index, PlayerColor color)
+        {
+            /*
+             * Generate a score for a piece's blocking patterns.  Does it form vertical
+             * and horizontal chains of pieces.  Eventually should check for if the chains 
+             * exist in the mobility triangles of high danger enemy pieces.
+             */
+            int score = 0;
+
+            if (color == PlayerColor.White)
+            {
+                if((board.whitePieces & Masks.OrientationMasks.Above[index]) != 0)
+                {
+                    score += Weights.VERTICAL_CONNECTION;
+                }
+
+                if ((board.whitePieces & Masks.OrientationMasks.RightOf[index]) != 0)
+                {
+                    score += Weights.HORIZONTAL_CONNECTION;
+                }
+            }
+            else if (color == PlayerColor.Black)
+            {
+                if ((board.blackPieces & Masks.OrientationMasks.Above[index]) != 0)
+                {
+                    score += Weights.VERTICAL_CONNECTION;
+                }
+
+                if ((board.blackPieces & Masks.OrientationMasks.RightOf[index]) != 0)
+                {
+                    score += Weights.HORIZONTAL_CONNECTION;
+                }
+            }
+
+            return score;
+        }
+
+        private int GenerateMobilityScore(BitBoard board, int index, PlayerColor color)
+        {
+            /*
+             * Generate a score for a pieces mobility.  This takes into account immediate moves,
+             * as well as the entire mobility triangle of the piece.  The less enemy pieces
+             * in the triangle, the better the score.
+             */
+            int score = Weights.BASE_MOBILITY;
+
+            if (color == PlayerColor.White)
+            {
+                ulong enemyPiecesInTriangle = board.blackPieces & Masks.WhiteMasks.MobilityTriangleList[index];
+                int iterator = BitsMagic.BitScanForwardWithReset(ref enemyPiecesInTriangle);
+                int pieceCount = 0;
+                do
+                {
+                    if (iterator >= 0) pieceCount++;
+                    iterator = BitsMagic.BitScanForwardWithReset(ref enemyPiecesInTriangle);
+                } while (iterator >= 0);
+
+                score -= pieceCount * Weights.MOBILITY_PENALTY;
+
+                if ((board.CombinedBoard() & Masks.WhiteMasks.Forward[index]) == 0)
+                {
+                    score += Weights.IMMEDIATE_MOVEMENT;
+                }
+                if ((board.whitePieces & Masks.WhiteMasks.EastAttack[index]) == 0)
+                {
+                    score += Weights.IMMEDIATE_MOVEMENT;
+                }
+                if ((board.whitePieces & Masks.WhiteMasks.WestAttack[index]) == 0)
+                {
+                    score += Weights.IMMEDIATE_MOVEMENT;
+                }
+            }
+            else if (color == PlayerColor.Black)
+            {
+                ulong enemyPiecesInTriangle = board.whitePieces & Masks.BlackMasks.MobilityTriangleList[index];
+                int iterator = BitsMagic.BitScanForwardWithReset(ref enemyPiecesInTriangle);
+                int pieceCount = 0;
+                do
+                {
+                    if (iterator >= 0) pieceCount++;
+                    iterator = BitsMagic.BitScanForwardWithReset(ref enemyPiecesInTriangle);
+                } while (iterator >= 0);
+
+                score -= pieceCount * Weights.MOBILITY_PENALTY;
+
+                if ((board.CombinedBoard() & Masks.BlackMasks.Forward[index]) == 0)
+                {
+                    score += Weights.IMMEDIATE_MOVEMENT;
+                }
+                if ((board.blackPieces & Masks.BlackMasks.EastAttack[index]) == 0)
+                {
+                    score += Weights.IMMEDIATE_MOVEMENT;
+                }
+                if ((board.blackPieces & Masks.BlackMasks.WestAttack[index]) == 0)
+                {
+                    score += Weights.IMMEDIATE_MOVEMENT;
+                }
+            }
+
+            return score;
+        }
+
+        private int GenerateColumnHolePenalty(BitBoard board, PlayerColor color)
+        {
+            /*
+             * Generates a penalty for not having sufficient coverage of all columns.  
+             * Pieces must sufficiently threaten every column on the board. (I'm not sure 
+             * that I actually agree with this score.  I feel like simply prioritizing home
+             * row protection should be sufficient.)
+             */
+            int penalty = 0;
+
+            if (color == PlayerColor.White)
+            {
+                if ((board.whitePieces & Grid.ColA) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColB) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColC) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColD) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColE) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColF) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColG) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.whitePieces & Grid.ColH) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+            }
+            else if(color == PlayerColor.Black)
+            {
+                if ((board.blackPieces & Grid.ColA) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColB) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColC) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColD) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColE) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColF) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColG) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+                if ((board.blackPieces & Grid.ColH) == 0)
+                {
+                    penalty += Weights.COLUMN_HOLE_PENALTY;
+                }
+            }
+
+            return penalty;
+        }
+
+        private int GenerateHomeRowProtectionPenalty(BitBoard board, PlayerColor color)
+        {
+            /*
+             * If the back four have moved, create a large penalty.  
+             */
+            int penalty = 0;
+
+            if (color == PlayerColor.White)
+            {
+                if ((board.whitePieces & Grid.A2) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+                if ((board.whitePieces & Grid.A3) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+                if ((board.whitePieces & Grid.A6) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+                if ((board.whitePieces & Grid.A7) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+            }
+            else if (color == PlayerColor.Black)
+            {
+                if ((board.blackPieces & Grid.H2) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+                if ((board.blackPieces & Grid.H3) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+                if ((board.blackPieces & Grid.H6) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+                if ((board.blackPieces & Grid.H7) == 0)
+                {
+                    penalty += Weights.HOME_ROW_MOVED;
+                }
+            }
+
+            return penalty;
+        }
+
+        private int GenerateAlmostWinScore(BitBoard origin, int index)
+        {
+            /*
+             * Generate score that is a function of piece danger and mobility.  
+             * Higher danger plus less potential blockers makes a high score.
+             */
+            int score = 0;
+
+            return score;
+        }
+
+        private int GenerateDangerScore(BitBoard board, int index, PlayerColor color)
+        {
+            /*
+             * Generates a score based simply on proximity to enemy home row.
+             */
+            int score = 0;
+
+            if (color == PlayerColor.White)
+            {
+                score = Masks.OrientationMasks.CurrentRow[index] * Weights.FLAT_DANGER;
+            }
+            else if (color == PlayerColor.Black)
+            {
+                score = (9 - Masks.OrientationMasks.CurrentRow[index])* Weights.FLAT_DANGER;
+            }
+
+            return score;
+        }
+
+        private int GenerateAttackedPenalty(BitBoard board, int index, PlayerColor color)
+        {
+            /*
+             * Generates a penalty based on number of pieces attacking this piece, doubled
+             * if the piece is unprotected.
+             */
+            int penalty = 0;
+
+            if (color == PlayerColor.White)
+            {
+                if ((board.blackPieces & Masks.WhiteMasks.EastAttack[index]) != 0)
+                {
+                    penalty += Weights.ATTACKED;
+                }
+
+                if ((board.blackPieces & Masks.WhiteMasks.WestAttack[index]) != 0)
+                {
+                    penalty += Weights.ATTACKED;
+                }
+            }
+            else if (color == PlayerColor.Black)
+            {
+                if ((board.whitePieces & Masks.BlackMasks.EastAttack[index]) != 0)
+                {
+                    penalty += Weights.ATTACKED;
+                }
+
+                if ((board.whitePieces & Masks.BlackMasks.WestAttack[index]) != 0)
+                {
+                    penalty += Weights.ATTACKED;
+                }
+            }
+
+            return penalty;
+        }
+
+        private int GenerateProtectionScore(BitBoard board, int index, PlayerColor color)
+        {
+            /*
+             * Generates a score for having pieces protectecting the piece in question.
+             * We use the opposite color's attack patterns to quickly check if we are 
+             * protected.
+             */
+            int score = 0;
+
+            if (color == PlayerColor.White)
+            {
+                if ((board.whitePieces & Masks.BlackMasks.EastAttack[index]) != 0)
+                {
+                    score += Weights.PROTECTED;
+                }
+
+                if ((board.whitePieces & Masks.BlackMasks.WestAttack[index]) != 0)
+                {
+                    score += Weights.PROTECTED;
+                }
+            }
+            else if (color == PlayerColor.Black)
+            {
+                if ((board.blackPieces & Masks.WhiteMasks.EastAttack[index]) != 0)
+                {
+                    score += Weights.PROTECTED;
+                }
+
+                if ((board.blackPieces & Masks.WhiteMasks.WestAttack[index]) != 0)
+                {
+                    score += Weights.PROTECTED;
+                }
             }
 
             return score;
