@@ -44,9 +44,9 @@ namespace Breakthrough
             }
         }
 
-        public static implicit operator Token(char v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator Token(char v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
