@@ -4,20 +4,8 @@ using UnityEngine;
 
 public class ToggleOpen : MonoBehaviour {
 
-    private bool isOpen = false;
-    public GameObject toToggle = null;
-
-    public void toggleOpen()
+    public void toggleOpen(GameObject panel)
     {
-        isOpen = !isOpen;
-        setVisibility();
-    }
-
-    private void setVisibility()
-    {
-        if (toToggle != null)
-        {
-            toToggle.SetActive(isOpen);
-        }
+        panel.SetActive(!panel.activeSelf);
     }
 }
