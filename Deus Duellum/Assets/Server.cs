@@ -8,14 +8,16 @@ using UnityEngine.Networking;
 public class Server : MonoBehaviour {
 
     int connectionId;
-    int maxConnections = 10;
+    int maxConnections = 2;
     int reliableChannelId;
     int hostId;
     int socketPort = 8888;
     byte error;
 
-    public GameObject playerObject;
-    public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
+    int hostIdClient;
+    int connectionIdClient;
+    public GameObject clientObj;
+    public GameObject player;
 
 	// Use this for initialization
 	void Start () {
@@ -43,9 +45,9 @@ public class Server : MonoBehaviour {
         {
             case NetworkEventType.ConnectEvent:
                 //TODO: add code for starting game
-                GameObject temp = Instantiate(playerObject, transform.position, transform.rotation);
-                temp.GetComponent<Player>().server = this;
-                players.Add(recvConnectionId, temp);
+                clientObj = Instantiate(player, transform.position, transform.rotation);
+                clientObj.GetComponent<Player>().server = this;
+                connectionIdClient = recvConnectionId;
                 Debug.Log("ConnectEvent Triggered.");
                 break;
             case NetworkEventType.DataEvent:
@@ -56,7 +58,7 @@ public class Server : MonoBehaviour {
                 {
                     case "MOVE":
                         //TODO: add code for move
-                        Move(splitData[1], splitData[2], players[recvConnectionId]);
+                        Move(splitData[1], splitData[2], clientObj);
                         break;
                     case "EMOTE":
                         //TODO: add code for emote
@@ -72,6 +74,16 @@ public class Server : MonoBehaviour {
         }
 	}
 
+    public void Connect()
+    {
+        ConnectionConfig config = new ConnectionConfig();
+        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
+        HostTopology topology = new HostTopology(config, maxConnections);
+        hostId = NetworkTransport.AddHost(topology, socketPort, "127.0.0.1");
+        Debug.Log("Socket open. Host ID is: " + hostId);
+        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", 8888, 0, out error);
+    }
+
     public void Move(string x, string y, GameObject obj)
     {
         float xMov = float.Parse(x);
@@ -81,7 +93,9 @@ public class Server : MonoBehaviour {
 
     public void SendNetworkMessage(string message)
     {
+
         byte[] buffer = Encoding.Unicode.GetBytes(message);
-        NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
+
+        NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 }

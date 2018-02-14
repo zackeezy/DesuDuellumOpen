@@ -13,6 +13,10 @@ public class Client : MonoBehaviour {
     int hostId;
     int socketPort = 7778;
     byte error;
+    string recvIP;
+
+    int hostIdServer;
+    int connectionIdServer;
 
     public GameObject player;
 
@@ -20,7 +24,11 @@ public class Client : MonoBehaviour {
     void Start()
     {
         NetworkTransport.Init();
-       
+        ConnectionConfig config = new ConnectionConfig();
+        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
+        HostTopology topology = new HostTopology(config, maxConnections);
+        hostId = NetworkTransport.AddHost(topology, socketPort, null);
+        Debug.Log("Socket open. Host ID is: " + hostId);
     }
 
     // Update is called once per frame
@@ -38,6 +46,8 @@ public class Client : MonoBehaviour {
         switch (recvNetworkEvent)
         {
             case NetworkEventType.ConnectEvent:
+                connectionIdServer = recvConnectionId;
+                hostIdServer = recvHostId;
                 break;
             case NetworkEventType.DisconnectEvent:
                 break;
@@ -87,6 +97,6 @@ public class Client : MonoBehaviour {
     public void SendNetworkMessage(string message)
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
-        NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
+        NetworkTransport.Send(hostIdServer, connectionIdServer, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 }
