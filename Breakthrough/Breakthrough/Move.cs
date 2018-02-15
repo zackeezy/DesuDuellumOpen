@@ -61,44 +61,44 @@ namespace Breakthrough
         {
             //get input and validate it
             Console.WriteLine("Enter Black Token's from coordinate X");
-            Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackFromX));
+            Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackFromY));
 
             if (!Exit)//if previous validation passed, move to the next coordinates
             {
                 Console.WriteLine("Enter Black Token's from coordinate Y");
-                Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackFromY));
+                Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackFromX));
             }
             if (!Exit)//if previous validation passed, move to the next coordinates
             {
                 Console.WriteLine("Enter Black Token's to coordinate X");
-                Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackToX));
+                Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackToY));
             }
             if (!Exit)//if previous validation passed, move to the next coordinates
             {
                 Console.WriteLine("Enter Black Token's to coordinate Y");
-                Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackToY));
+                Exit = BlackValidateInput(int.TryParse(Console.ReadLine(), out blackToX));
             }
         }
         private void WhiteGetInput()
         {
                 //get input and validate it
                 Console.WriteLine("Enter White Token's from coordinate X");
-                Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteFromX));
+                Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteFromY));
 
                 if (!Exit)//if previous validation passed, move to the next coordinates
                 {
                     Console.WriteLine("Enter White Token's from coordinate Y");
-                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteFromY));
+                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteFromX));
                 }
                 if (!Exit)//if previous validation passed, move to the next coordinates
                 {
                     Console.WriteLine("Enter White Token's to coordinate X");
-                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteToX));
+                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteToY));
                 }
                 if (!Exit)//if previous validation passed, move to the next coordinates
                 {
                     Console.WriteLine("Enter White Token's to coordinate Y");
-                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteToY));
+                    Exit = whiteValidateInput(int.TryParse(Console.ReadLine(), out whiteToX));
                 }
              
             //if (isWhiteTurn && toY == 7)
