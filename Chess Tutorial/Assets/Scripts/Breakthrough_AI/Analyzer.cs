@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
-
 namespace Breakthrough_AI
 {
     /// <summary>
@@ -38,7 +36,7 @@ namespace Breakthrough_AI
             public const int ATTACKED = 100;
             public const int DANGER_LOW = 500;
             public const int DANGER_HIGH = 10000;
-            public const int FLAT_DANGER = 100;
+            public const int FLAT_DANGER = 10000;
             public const int IMMEDIATE_MOVEMENT = 150;
             public const int COLUMN_HOLE_PENALTY = 200;
             public const int BASE_MOBILITY = 10000;
@@ -46,12 +44,9 @@ namespace Breakthrough_AI
             public const int HOME_ROW_MOVED = 5000;
         }
 
-        private Random _random; 
-
         public Analyzer(PlayerColor aiColor)
         {
             _aiColor = aiColor;
-            _random = new Random();
         }
 
         /// <summary>

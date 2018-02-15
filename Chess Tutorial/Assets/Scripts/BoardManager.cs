@@ -3,10 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Breakthrough_AI;
+using System.Runtime.InteropServices;
 
 public class BoardManager : MonoBehaviour {
-	public static BoardManager Instance{ set; get;}
-	private bool[,] allowedMoves{ set; get;}
+    public static BoardManager Instance { set; get; }
+    private bool[,] allowedMoves { set; get; }
+
+    public Text testtext;
+
+    
+    [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+    public static extern int GetMove();
 
 	public Token[,] Tokens{ set; get; }
 	private Token selectedToken;
@@ -82,7 +89,22 @@ public class BoardManager : MonoBehaviour {
 		BoardHighlights.Instance.HighlightAllowedMoves (allowedMoves);
 	}
 
-	private void MoveToken(int x, int y){
+    public void notGetMove()
+    {
+        testtext.text = "getting Move...";
+        try
+        {
+            testtext.text = "got Move " + GetMove();
+        }
+        catch (System.Exception e)
+        {
+            testtext.text = e.GetType().Name;
+        }
+    }
+
+    private void MoveToken(int x, int y){
+        //Debug.Log(GetMove());
+        
 		bool tokenCaptured = false;
 		if (allowedMoves[x,y]) {
 			Token c = Tokens [x, y];
