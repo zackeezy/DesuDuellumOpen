@@ -8,17 +8,18 @@ public class BoardManager : MonoBehaviour {
     //CHANGE TO WORK WITH GAME CORE...
 
 	public static BoardManager Instance{ set; get;}
-	private bool[,] allowedMoves{ set; get;}
+	private bool[,] AllowedMoves{ set; get;}
 
 	public Token[,] Tokens{ set; get; }
-	private Token selectedToken;
+	public Token selectedToken;
 
-    //not sure what these should be...
+    //not sure what these should be...or if need them...
 	private const float TILE_SIZE = 1.0f;
-	private const float TILE_OFFSET = 0.5f;
+    private const float TILE_OFFSET = 0.5f;
+    private const float TOKEN_OFFSET = 1.222f;
 
-	private int selectionX = -1;
-	private int selectionY = -1;
+    public int selectionX = -1;
+	public int selectionY = -1;
 
 	//public List<GameObject> tokenPrefabs;
 	private List<GameObject> activeToken;
@@ -27,12 +28,12 @@ public class BoardManager : MonoBehaviour {
 	private bool whiteWon = false;
 	private bool blackWon = false;
 
-	//public Text winText;
- //   public GameObject GameWonPanel;
- //   public GameObject GameWonText;
+    //public Text winText;
+    //public GameObject GameWonPanel;
+    //public GameObject GameWonText;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		//SpawnToken (0, GetTileCenter(0, 0));
 		Instance = this;
 		//SpawnAll();
@@ -42,59 +43,92 @@ public class BoardManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//DrawBoard ();
-		UpdateSelection ();
+		//UpdateSelection ();
 
-		if (Input.GetMouseButtonDown (0) && !whiteWon && !blackWon) {
-			if (selectionX >= 0 && selectionY >= 0) {
-				if (selectedToken == null) {
-				//Select the token
-					SelectToken(selectionX, selectionY);
-				} 
-				else {
-				//move token
-					MoveToken(selectionX, selectionY);
-				}
-			}
-		}
+		//if (Input.GetMouseButtonDown (0) && !whiteWon && !blackWon) {
+		//	if (selectionX >= 0 && selectionY >= 0) {
+		//		if (selectedToken == null) {
+		//		//Select the token
+		//			SelectToken(selectionX, selectionY);
+		//		} 
+		//		else {
+		//		//move token
+		//			MoveToken(selectionX, selectionY);
+		//		}
+		//	}
+		//}
 	}
+
+    public void TokenClicked(int x, int y, Token selected)
+    {
+        //if the game is not over and same team
+        if (!whiteWon && !blackWon && selected.isWhite == isWhiteTurn)
+        {
+            Debug.Log("selected: " + x + ", " + y);
+            //select that token
+            selectionX = x;
+            selectionY = y;
+            selectedToken = selected;
+            //get the valid moves from game core
+
+            //highlight those moves
+        }
+    }
+
+    public void TileClicked(int x, int y)
+    {
+        //if a token is selected
+        if (selectedToken != null)
+        {
+            Debug.Log("moving to: " + x + ", " + y);
+            //if that spot is a valid move, then TWEEN the selected token there
+            //also remove the other token if it was captured
+            MoveToken(x, y);
+        }
+    }
 
     private void YouWon()
     {
+        //show that they won the game, ask about a rematch?
+
         //GameWonText.SetActive(true);
         //GameWonPanel.SetActive(true);
     }
 
-	private void SelectToken(int x, int y){
-		if (Tokens [x, y] == null) {
-			return;
-		}
+ //   private void SelectToken(int x, int y){
+	//	if (Tokens [x, y] == null) {
+	//		return;
+	//	}
 			
-		if (Tokens [x, y].isWhite != isWhiteTurn) {
-			return;
-		}
-		allowedMoves = Tokens [x, y].PossibleMove ();
-		selectedToken = Tokens [x, y];
-		BoardHighlights.Instance.HighlightAllowedMoves (allowedMoves);
-	}
+	//	if (Tokens [x, y].isWhite != isWhiteTurn) {
+	//		return;
+	//	}
+	//	//AllowedMoves = Tokens [x, y].PossibleMove ();
+	//	//selectedToken = Tokens [x, y];
+	//	//BoardHighlights.Instance.HighlightAllowedMoves (AllowedMoves);
+	//}
 
 	private void MoveToken(int x, int y){
 		bool tokenCaptured = false;
-		if (allowedMoves[x,y]) {
-			Token c = Tokens [x, y];
+		//if (AllowedMoves[x,y]) {
+			//Token c = Tokens [x, y];
 		
-			if (c != null && c.isWhite != isWhiteTurn) {
+			//if (c != null && c.isWhite != isWhiteTurn) {
 				
-				activeToken.Remove (c.gameObject);
-				Destroy (c.gameObject);
-				tokenCaptured = true;
-			}
+			//	activeToken.Remove (c.gameObject);
+			//	Destroy (c.gameObject);
+			//	tokenCaptured = true;
+			//}
 
-			Tokens [selectedToken.currentX, selectedToken.currentY] = null;
-			
-            //Tween the position here?
+			//Tokens [selectedToken.currentX, selectedToken.currentY] = null;
+
+            //Tween the position here
+            //LeanTween.moveLocalX(selectedToken.gameObject, selectedToken.transform.position.x + TOKEN_OFFSET, 1);
+            //LeanTween.moveLocalZ(selectedToken.gameObject, selectedToken.transform.position.z + TOKEN_OFFSET, 1);
+
             //selectedToken.transform.position = GetTileCenter (x, y);
 			selectedToken.SetPosition (x, y);
-			Tokens [x, y] = selectedToken;
+			//Tokens [x, y] = selectedToken;
 
 			//send the token's position to the log
 			if(tokenCaptured){
@@ -132,11 +166,10 @@ public class BoardManager : MonoBehaviour {
                 //SpawnAll();
             }
 			isWhiteTurn = !isWhiteTurn;
-		}
+		//}
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
 	}
-
 
 	private Vector3 GetTileCenter(int x, int y){
 		Vector3 origin = Vector3.zero;
@@ -145,22 +178,22 @@ public class BoardManager : MonoBehaviour {
 		return origin;
 	}
 
-	private void UpdateSelection(){
-		if (!Camera.main) {
-			return;
-		}
+	//private void UpdateSelection(){
+	//	if (!Camera.main) {
+	//		return;
+	//	}
 
-		RaycastHit hit;
-        //??????????
-		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 50.0f, LayerMask.GetMask ("BoardPlane"))) {
-			//Debug.Log (hit.point);
-			selectionX = (int)hit.point.x;
-			selectionY = (int)hit.point.z;
-		} else {
-			selectionX = -1;
-			selectionY = -1;
-		}
-	}
+	//	RaycastHit hit;
+ //       //??????????
+	//	if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 50.0f, LayerMask.GetMask ("BoardPlane"))) {
+	//		//Debug.Log (hit.point);
+	//		selectionX = (int)hit.point.x;
+	//		selectionY = (int)hit.point.z;
+	//	} else {
+	//		selectionX = -1;
+	//		selectionY = -1;
+	//	}
+	//}
 
     //private void DrawBoard(){
     //	Vector3 widthline = Vector3.right * 8;
