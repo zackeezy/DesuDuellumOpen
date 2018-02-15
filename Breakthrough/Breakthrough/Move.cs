@@ -193,7 +193,7 @@ namespace Breakthrough
                         isAllowed = true;
                     }
                 }
-                isWhite = false;
+       
             }
             else if (!isWhite && tokens[blackFromX, blackFromY] == 'B')
             {
@@ -223,7 +223,6 @@ namespace Breakthrough
                         isAllowed = true;
                     }
                 }
-                isWhite = true;
             }
 
             return isAllowed;
