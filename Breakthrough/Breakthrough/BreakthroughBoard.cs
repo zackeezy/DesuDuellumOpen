@@ -33,7 +33,7 @@ namespace Breakthrough
                 Console.Clear();
                 Console.WriteLine("    A   B   C   D   E   F   G   H");
 
-                for (int i = 0; i < boardSize;i++)
+                for (int i = 7; i >= 0;i--)
                 {
                     Console.Write("  ");//left spacing two spaces
                     for(int j = 0; j < boardSize; j++)
