@@ -110,21 +110,24 @@ public class BoardManager : MonoBehaviour {
 
 	private void MoveToken(int x, int y){
 		bool tokenCaptured = false;
-		//if (AllowedMoves[x,y]) {
-			//Token c = Tokens [x, y];
-		
-			//if (c != null && c.isWhite != isWhiteTurn) {
-				
-			//	activeToken.Remove (c.gameObject);
-			//	Destroy (c.gameObject);
-			//	tokenCaptured = true;
-			//}
+        //if (AllowedMoves[x,y]) {
+        //Token c = Tokens [x, y];
 
-			//Tokens [selectedToken.currentX, selectedToken.currentY] = null;
+        //ask the game core if a piece was captured and destroy it
 
-            //Tween the position here
-            //LeanTween.moveLocalX(selectedToken.gameObject, selectedToken.transform.position.x + TOKEN_OFFSET, 1);
-            //LeanTween.moveLocalZ(selectedToken.gameObject, selectedToken.transform.position.z + TOKEN_OFFSET, 1);
+        //if (c != null && c.isWhite != isWhiteTurn) {
+        //	activeToken.Remove (c.gameObject);
+        //	Destroy (c.gameObject);
+        //	tokenCaptured = true;
+        //}
+
+        //Tokens [selectedToken.currentX, selectedToken.currentY] = null;
+
+        //Tween the position here
+        //TODO: make it check the direction they are actually trying to move to
+        //TODO: make it actually move to the right spot
+            LeanTween.moveLocalX(selectedToken.gameObject, selectedToken.transform.position.x + TOKEN_OFFSET, 1);
+            LeanTween.moveLocalZ(selectedToken.gameObject, selectedToken.transform.position.z + TOKEN_OFFSET, 1);
 
             //selectedToken.transform.position = GetTileCenter (x, y);
 			selectedToken.SetPosition (x, y);
