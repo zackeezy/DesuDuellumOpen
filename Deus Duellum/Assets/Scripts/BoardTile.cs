@@ -17,7 +17,6 @@ public class BoardTile : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             //they clicked on a tile!
-            //tell the game core its coordinates, get valid moves back to highlight and tell the highlightmanager
             BoardManager.Instance.TileClicked(xCoordinate, yCoordinate, transform.position.x, transform.position.z);
         }
     }
