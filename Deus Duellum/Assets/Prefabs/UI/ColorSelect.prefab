@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 222820046989143252}
   - component: {fileID: 114305645864228398}
   - component: {fileID: 114424446883632368}
-  - component: {fileID: 114021787479466604}
   m_Layer: 5
   m_Name: WhiteButton
   m_TagString: Untagged
@@ -58,7 +57,6 @@ GameObject:
   - component: {fileID: 222472520933104838}
   - component: {fileID: 114008153193660828}
   - component: {fileID: 114409701662877134}
-  - component: {fileID: 114691452533833488}
   m_Layer: 5
   m_Name: BlackButton
   m_TagString: Untagged
@@ -122,8 +120,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907633084445234}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: -169.00002, z: 0}
-  m_LocalScale: {x: 3.9663966, y: 3.9663966, z: 3.9663966}
+  m_LocalPosition: {x: 109, y: -169.00003, z: 0}
+  m_LocalScale: {x: 3.9663968, y: 3.9663968, z: 3.9663968}
   m_Children:
   - {fileID: 224508744760811952}
   - {fileID: 224089007634545566}
@@ -158,19 +156,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114021787479466604
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1374192886509008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 0
-  characterSelectText: {fileID: 0}
 --- !u!114 &114305645864228398
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,7 +255,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114691452533833488}
+      - m_Target: {fileID: 0}
         m_MethodName: setFirst
         m_Mode: 6
         m_Arguments:
@@ -322,7 +307,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114691452533833488}
+      - m_Target: {fileID: 0}
         m_MethodName: setFirst
         m_Mode: 6
         m_Arguments:
@@ -401,19 +386,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Go Second
---- !u!114 &114691452533833488
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1512614680455178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 0
-  characterSelectText: {fileID: 0}
 --- !u!222 &222427451973894254
 CanvasRenderer:
   m_ObjectHideFlags: 1

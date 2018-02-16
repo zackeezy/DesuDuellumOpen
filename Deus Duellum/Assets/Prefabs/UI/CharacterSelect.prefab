@@ -54,7 +54,6 @@ GameObject:
   - component: {fileID: 222680656273691138}
   - component: {fileID: 114676596794854518}
   - component: {fileID: 114382481023092428}
-  - component: {fileID: 114628196987768386}
   m_Layer: 5
   m_Name: CharacterButton1
   m_TagString: Untagged
@@ -73,7 +72,6 @@ GameObject:
   - component: {fileID: 222377878829074996}
   - component: {fileID: 114439976965020818}
   - component: {fileID: 114584745852918076}
-  - component: {fileID: 114667255585106590}
   m_Layer: 5
   m_Name: CharacterButton2
   m_TagString: Untagged
@@ -92,7 +90,6 @@ GameObject:
   - component: {fileID: 222115911933156312}
   - component: {fileID: 114181830728332934}
   - component: {fileID: 114123258765869068}
-  - component: {fileID: 114197463240306036}
   m_Layer: 5
   m_Name: CharacterButton3
   m_TagString: Untagged
@@ -107,8 +104,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1227834675859464}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000090783615, y: -58, z: 0}
-  m_LocalScale: {x: 3.9663966, y: 3.9663966, z: 3.9663966}
+  m_LocalPosition: {x: -0.00009078362, y: -58, z: 0}
+  m_LocalScale: {x: 3.9663968, y: 3.9663968, z: 3.9663968}
   m_Children:
   - {fileID: 224728512196456956}
   - {fileID: 224214941741541036}
@@ -156,7 +153,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114197463240306036}
+      - m_Target: {fileID: 0}
         m_MethodName: setCharacter
         m_Mode: 3
         m_Arguments:
@@ -196,18 +193,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114197463240306036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1727939235222824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 0
 --- !u!114 &114382481023092428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -247,7 +232,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114197463240306036}
+      - m_Target: {fileID: 0}
         m_MethodName: setCharacter
         m_Mode: 3
         m_Arguments:
@@ -313,10 +298,10 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Player 1 Select a Character
@@ -359,7 +344,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114197463240306036}
+      - m_Target: {fileID: 0}
         m_MethodName: setCharacter
         m_Mode: 3
         m_Arguments:
@@ -372,30 +357,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114628196987768386
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438497621883844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 0
---- !u!114 &114667255585106590
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1601007290476732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 0
 --- !u!114 &114676596794854518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -516,6 +477,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.8, y: 41.2}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 2, y: 41.518036}
+  m_SizeDelta: {x: 500, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}

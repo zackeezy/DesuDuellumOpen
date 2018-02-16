@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 222775086337393392}
   - component: {fileID: 114046282730991206}
   - component: {fileID: 114337116862147508}
-  - component: {fileID: 114442712806104314}
   m_Layer: 5
   m_Name: HardDifficultyButton
   m_TagString: Untagged
@@ -41,7 +40,6 @@ GameObject:
   - component: {fileID: 222672035801008130}
   - component: {fileID: 114321189472339718}
   - component: {fileID: 114030837848441510}
-  - component: {fileID: 114987765231814018}
   m_Layer: 5
   m_Name: EasyDifficultyButton
   m_TagString: Untagged
@@ -122,8 +120,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1800796646385716}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -125, y: -169.00002, z: 0}
-  m_LocalScale: {x: 3.9663966, y: 3.9663966, z: 3.9663966}
+  m_LocalPosition: {x: -125, y: -169.00003, z: 0}
+  m_LocalScale: {x: 3.9663968, y: 3.9663968, z: 3.9663968}
   m_Children:
   - {fileID: 224489201453853418}
   - {fileID: 224336648391958756}
@@ -203,7 +201,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114987765231814018}
+      - m_Target: {fileID: 0}
         m_MethodName: setDifficulty
         m_Mode: 6
         m_Arguments:
@@ -309,7 +307,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114442712806104314}
+      - m_Target: {fileID: 0}
         m_MethodName: setDifficulty
         m_Mode: 6
         m_Arguments:
@@ -322,19 +320,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114442712806104314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1092220963969476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 1
-  characterSelectText: {fileID: 0}
 --- !u!114 &114681534696127482
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -401,19 +386,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Select a Difficulty
---- !u!114 &114987765231814018
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1219968690225238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7d64d808a88af40a78e3e9d2497bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: 1
-  characterSelectText: {fileID: 0}
 --- !u!222 &222304358385547108
 CanvasRenderer:
   m_ObjectHideFlags: 1
