@@ -1,0 +1,10 @@
+﻿  stdafx.cpp
+  AI_CPP.cpp
+  Analyzer.cpp
+c:\users\johneaton\source\repos\ai_cpp\ai_cpp\Analyzer.h(7): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+  dllmain.cpp
+     Creating library C:\Users\JohnEaton\source\repos\AI_CPP\x64\Release\AI_CPP.lib and object C:\Users\JohnEaton\source\repos\AI_CPP\x64\Release\AI_CPP.exp
+  Generating code
+  All 2 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  AI_CPP.vcxproj -> C:\Users\JohnEaton\source\repos\AI_CPP\x64\Release\AI_CPP.dll
