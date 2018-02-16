@@ -3,34 +3,37 @@
 #include "BitsMagic.h" 
 #include "Masks.h"
 
+
+
 Analyzer::Analyzer()
 {
 }
 
+PlayerColor Analyzer::AiColor = PlayerColor::White;
 
 Analyzer::~Analyzer()
 {
 }
 
 
-BitBoard * Analyzer::GetChildren(BitBoard board, PlayerColor color, int & childCount) 
+BitBoard * Analyzer::GetChildren(BitBoard board, PlayerColor color, int & childCount)
 {
     BitBoard * children = new BitBoard[childCount];
     unsigned long long myBoard = color == PlayerColor::White ? board.whitePieces : board.blackPieces;
     int iterator = 0;
     childCount = 0;
-    do 
+    do
     {
         iterator = BitsMagic::BitScanForwardWithReset(myBoard);
         if (iterator != -1)
         {
-            if (color == PlayerColor::White) 
+            if (color == PlayerColor::White)
             {
                 unsigned long long forward = Masks::WhiteMasks::Forward[iterator];
                 unsigned long long east = Masks::WhiteMasks::EastAttack[iterator];
                 unsigned long long west = Masks::WhiteMasks::WestAttack[iterator];
 
-                if (forward != 0 && (forward & board.CombinedBoard()) == 0) 
+                if (forward != 0 && (forward & board.CombinedBoard()) == 0)
                 {
                     BitBoard child;
                     child.whitePieces = board.whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator];

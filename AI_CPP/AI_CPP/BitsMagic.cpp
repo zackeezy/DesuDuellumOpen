@@ -13,7 +13,7 @@ BitsMagic::~BitsMagic()
 
 }
 
-int BitsMagic::_index64[64] = 
+int BitsMagic::_index64[64] =
 {
     0,  1, 48,  2, 57, 49, 28,  3,
     61, 58, 50, 42, 38, 29, 17,  4,
@@ -25,7 +25,7 @@ int BitsMagic::_index64[64] =
     25, 14, 19,  9, 13,  8,  7,  6
 };
 
-int BitsMagic::MyBitScanForward(unsigned long long pieces) 
+int BitsMagic::MyBitScanForward(unsigned long long pieces)
 {
     if (pieces == 0)
     {
@@ -35,7 +35,7 @@ int BitsMagic::MyBitScanForward(unsigned long long pieces)
     return _index64[(int)(((unsigned long long)((long long)pieces & -(long long)(pieces)) * BitsMagic::debruijn64) >> 58)];
 }
 
-int BitsMagic::BitScanForwardWithReset(unsigned long long & pieces) 
+int BitsMagic::BitScanForwardWithReset(unsigned long long & pieces)
 {
     int index = MyBitScanForward(pieces);
     pieces &= pieces - 1;

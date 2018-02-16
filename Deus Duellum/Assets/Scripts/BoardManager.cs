@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Breakthrough;
+using System.Runtime.InteropServices;
+using System;
 
 public class BoardManager : MonoBehaviour {
 
-	public static BoardManager Instance{ set; get;}
+    [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+    //public static extern IntPtr GetMove(int[] whiteCoordinates, int whiteCount, int[] blackCoordinates, int blackCount, int color);
+    public static extern int GetMove();
+
+    public static BoardManager Instance{ set; get;}
 
     public Token selectedToken;
     public int selectionX = -1;
@@ -43,6 +49,10 @@ public class BoardManager : MonoBehaviour {
 
     public void TokenClicked(int x, int y, Token selected)
     {
+        IntPtr timmy = new IntPtr();
+        int[] a = { 2 };
+        Debug.Log(GetMove());
+        //Debug.Log(timmy.ToInt32());
         if (whiteWon || blackWon || gameMode != PlayerType.Local)
         {
             return;

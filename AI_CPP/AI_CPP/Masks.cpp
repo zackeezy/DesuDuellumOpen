@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Masks.h"
 #include "Grid.h"
 Masks::Masks()
@@ -5,72 +6,12 @@ Masks::Masks()
 }
 Masks::~Masks()
 {
-    delete[] WhiteMasks::MobilityTriangleList;
+    
 }
 
 //WhiteMasks
-unsigned long long Masks::WhiteMasks::GenerateMobilityTriangle(int index)
-{
-    unsigned long long triangle = 0;
 
-    if (index == 0)
-    {
-        triangle = 0;
-    }
-    else if (index >= 8 && index <= 15)
-    {
-        if (index == 8)
-        {
-            triangle = Grid::H8 | Grid::G8;
-        }
-        else if (index == 9)
-        {
-            triangle = Grid::H8 | Grid::G8 | Grid::F8;
-        }
-        else if (index == 10)
-        {
-            triangle = Grid::E8 | Grid::G8 | Grid::F8;
-        }
-        else if (index == 11)
-        {
-            triangle = Grid::E8 | Grid::D8 | Grid::F8;
-        }
-        else if (index == 12)
-        {
-            triangle = Grid::E8 | Grid::D8 | Grid::C8;
-        }
-        else if (index == 13)
-        {
-            triangle = Grid::B8 | Grid::D8 | Grid::C8;
-        }
-        else if (index == 14)
-        {
-            triangle = Grid::B8 | Grid::A8 | Grid::C8;
-        }
-        else if (index == 15)
-        {
-            triangle = Grid::B8 | Grid::A8;
-        }
-    }
-    else
-    {
-        triangle |= GenerateMobilityTriangle(OrientationMasks::IndexOf[EastAttack[index]]) | GenerateMobilityTriangle(OrientationMasks::IndexOf[WestAttack[index]]) | GenerateMobilityTriangle(OrientationMasks::IndexOf[Forward[index]]);
-    }
 
-    return triangle;
-}
-
-unsigned long long * Masks::WhiteMasks::GenerateMobilityTriangleList()
-{
-    unsigned long long * list = new unsigned long long[64];
-
-    for (int i = 0; i < 64; i++)
-    {
-        list[i] = GenerateMobilityTriangle(i);
-    }
-
-    return list;
-}
 
 unsigned long long Masks::WhiteMasks::Forward[64] =
 {
@@ -108,72 +49,10 @@ unsigned long long Masks::WhiteMasks::WestAttack[64] =
     Grid::G2, Grid::F2, Grid::E2, Grid::D2, Grid::C2, Grid::B2, Grid::A2, 0,
 };
 
-unsigned long long * Masks::WhiteMasks::MobilityTriangleList = Masks::WhiteMasks::GenerateMobilityTriangleList();
+
 
 
 //BlackMasks
-unsigned long long * Masks::BlackMasks::GenerateMobilityTriangleList()
-{
-    unsigned long long * list = new unsigned long long[64];
-
-    for (int index = 0; index < 64; index++)
-    {
-        list[index] = GenerateMobilityTriangle(index);
-    }
-
-    return list;
-}
-
-unsigned long long Masks::BlackMasks::GenerateMobilityTriangle(int index)
-{
-    unsigned long long triangle = 0;
-
-    if (index == 0)
-    {
-        triangle = 0;
-    }
-    else if (index >= 48 && index <= 55)
-    {
-        if (index == 48)
-        {
-            triangle = Grid::H1 | Grid::G1;
-        }
-        else if (index == 49)
-        {
-            triangle = Grid::H1 | Grid::G1 | Grid::F1;
-        }
-        else if (index == 50)
-        {
-            triangle = Grid::E1 | Grid::G1 | Grid::F1;
-        }
-        else if (index == 51)
-        {
-            triangle = Grid::E1 | Grid::D1 | Grid::F1;
-        }
-        else if (index == 52)
-        {
-            triangle = Grid::E1 | Grid::D1 | Grid::C1;
-        }
-        else if (index == 53)
-        {
-            triangle = Grid::B1 | Grid::D1 | Grid::C1;
-        }
-        else if (index == 54)
-        {
-            triangle = Grid::B1 | Grid::A1 | Grid::C1;
-        }
-        else if (index == 55)
-        {
-            triangle = Grid::B1 | Grid::A1;
-        }
-    }
-    else
-    {
-        triangle |= GenerateMobilityTriangle(OrientationMasks::IndexOf[EastAttack[index]]) | GenerateMobilityTriangle(OrientationMasks::IndexOf[WestAttack[index]]) | GenerateMobilityTriangle(OrientationMasks::IndexOf[Forward[index]]);
-    }
-
-    return triangle;
-}
 
 unsigned long long Masks::BlackMasks::Forward[64] =
 {
@@ -211,7 +90,7 @@ unsigned long long Masks::BlackMasks::WestAttack[64] =
     0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-unsigned long long * Masks::BlackMasks::MobilityTriangleList = Masks::BlackMasks::GenerateMobilityTriangleList();
+
 
 
 //OrientationMasks
@@ -356,11 +235,11 @@ unsigned long long Masks::OrientationMasks::RightOf[64] =
 unsigned long long Masks::OrientationMasks::CoordinatesToUlong[8][8] =
 {
     { Grid::A1, Grid::A2, Grid::A3, Grid::A4, Grid::A5, Grid::A6, Grid::A7, Grid::A8, },
-    { Grid::B1, Grid::B2, Grid::B3, Grid::B4, Grid::B5, Grid::B6, Grid::B7, Grid::B8, },
-    { Grid::C1, Grid::C2, Grid::C3, Grid::C4, Grid::C5, Grid::C6, Grid::C7, Grid::C8, },
-    { Grid::D1, Grid::D2, Grid::D3, Grid::D4, Grid::D5, Grid::D6, Grid::D7, Grid::D8, },
-    { Grid::E1, Grid::E2, Grid::E3, Grid::E4, Grid::E5, Grid::E6, Grid::E7, Grid::E8, },
-    { Grid::F1, Grid::F2, Grid::F3, Grid::F4, Grid::F5, Grid::F6, Grid::F7, Grid::F8, },
-    { Grid::G1, Grid::G2, Grid::G3, Grid::G4, Grid::G5, Grid::G6, Grid::G7, Grid::G8, },
-    { Grid::H1, Grid::H2, Grid::H3, Grid::H4, Grid::H5, Grid::H6, Grid::H7, Grid::H8, },
+{ Grid::B1, Grid::B2, Grid::B3, Grid::B4, Grid::B5, Grid::B6, Grid::B7, Grid::B8, },
+{ Grid::C1, Grid::C2, Grid::C3, Grid::C4, Grid::C5, Grid::C6, Grid::C7, Grid::C8, },
+{ Grid::D1, Grid::D2, Grid::D3, Grid::D4, Grid::D5, Grid::D6, Grid::D7, Grid::D8, },
+{ Grid::E1, Grid::E2, Grid::E3, Grid::E4, Grid::E5, Grid::E6, Grid::E7, Grid::E8, },
+{ Grid::F1, Grid::F2, Grid::F3, Grid::F4, Grid::F5, Grid::F6, Grid::F7, Grid::F8, },
+{ Grid::G1, Grid::G2, Grid::G3, Grid::G4, Grid::G5, Grid::G6, Grid::G7, Grid::G8, },
+{ Grid::H1, Grid::H2, Grid::H3, Grid::H4, Grid::H5, Grid::H6, Grid::H7, Grid::H8, },
 };

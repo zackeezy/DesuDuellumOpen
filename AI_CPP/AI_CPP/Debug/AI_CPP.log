@@ -1,8 +1,0 @@
-﻿  stdafx.cpp
-  dllmain.cpp
-  Analyzer.cpp
-c:\users\johneaton\source\repos\ai_cpp\ai_cpp\analyzer.h(8): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
-  AI_CPP.cpp
-  Generating Code...
-     Creating library C:\Users\JohnEaton\source\repos\AI_CPP\Debug\AI_CPP.lib and object C:\Users\JohnEaton\source\repos\AI_CPP\Debug\AI_CPP.exp
-  AI_CPP.vcxproj -> C:\Users\JohnEaton\source\repos\AI_CPP\Debug\AI_CPP.dll

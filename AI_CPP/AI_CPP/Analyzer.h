@@ -1,11 +1,13 @@
 #pragma once
 #include "Utils.h"
 #include <climits>
+
+
 static class Analyzer
 {
 private:
     static const int MAX_DEPTH = 5;
-    
+
     static const int WIN = INT_MIN;
     static const int LOSS = INT_MAX;
     static const int VERTICAL_CONNECTION = 100;
@@ -35,6 +37,8 @@ private:
     static int GenerateProtectionScore(BitBoard board, int index, PlayerColor color);
 
 public:
+
+
     Analyzer();
     ~Analyzer();
     static PlayerColor AiColor;

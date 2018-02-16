@@ -1,13 +1,14 @@
 #pragma once
-static enum PlayerColor 
+enum PlayerColor
 {
     White = 0,
     Black = 1
 };
 
+
 class BitBoard
 {
-private: 
+private:
 
 public:
     unsigned long long whitePieces;
@@ -18,11 +19,11 @@ public:
     ~BitBoard();
 };
 
-class AlphaBetaNode 
+class AlphaBetaNode
 {
 private:
 
-public: 
+public:
     BitBoard Child;
     BitBoard Parent;
     int value;
