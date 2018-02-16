@@ -673,6 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51b41ae5b433934398fc5f3dae1040c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: 1
 --- !u!1001 &1378813043
 Prefab:
   m_ObjectHideFlags: 0
@@ -711,49 +712,6 @@ Prefab:
     - target: {fileID: 4604668355522262, guid: 49acb30541d88034dbc4270feedf0334, type: 2}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001708445334862, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 55906a9892c3160428809f64085f1300,
-        type: 3}
-    - target: {fileID: 114681534696127482, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 55906a9892c3160428809f64085f1300,
-        type: 3}
-    - target: {fileID: 114984139611142260, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 55906a9892c3160428809f64085f1300,
-        type: 3}
-    - target: {fileID: 114984139611142260, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001708445334862, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 114001708445334862, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_MinSize
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114681534696127482, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 114681534696127482, guid: 49acb30541d88034dbc4270feedf0334,
-        type: 2}
-      propertyPath: m_FontData.m_MinSize
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 49acb30541d88034dbc4270feedf0334, type: 2}
@@ -840,6 +798,16 @@ Prefab:
       propertyPath: m_FontData.m_FontSize
       value: 26
       objectReference: {fileID: 0}
+    - target: {fileID: 114021787479466604, guid: e11f9a5c60e76c548b46ad42b85414e3,
+        type: 2}
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
+    - target: {fileID: 114691452533833488, guid: e11f9a5c60e76c548b46ad42b85414e3,
+        type: 2}
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e11f9a5c60e76c548b46ad42b85414e3, type: 2}
   m_IsPrefabParent: 0
@@ -1217,9 +1185,30 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114628196987768386, guid: 09eee636c6fc6164eb94de96bcc771d9,
+        type: 2}
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
+    - target: {fileID: 114667255585106590, guid: 09eee636c6fc6164eb94de96bcc771d9,
+        type: 2}
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
+    - target: {fileID: 114197463240306036, guid: 09eee636c6fc6164eb94de96bcc771d9,
+        type: 2}
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09eee636c6fc6164eb94de96bcc771d9, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1764218165 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1764218164}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1893647618 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1129310885340308, guid: 0662b4985c86a434fa0416aa5543fc14,
@@ -1236,6 +1225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51b41ae5b433934398fc5f3dae1040c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: 1
 --- !u!114 &2046727964 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114136194709374432, guid: 0662b4985c86a434fa0416aa5543fc14,

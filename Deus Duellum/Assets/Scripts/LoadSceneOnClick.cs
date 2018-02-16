@@ -5,8 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneOnClick : MonoBehaviour {
 
-    public void LoadByIndex(int sceneIndex) {
+    public int player = 1;
+
+    public void LoadByIndex(int sceneIndex)
+    {
         //do a cool scene transition
+
         SceneManager.LoadScene(sceneIndex);
     }
 }

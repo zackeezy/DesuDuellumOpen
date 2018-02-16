@@ -2,23 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Breakthrough;
 
 public class BoardManager : MonoBehaviour {
 
 	public static BoardManager Instance{ set; get;}
 
-    public Token selectedToken;
-    public int selectionX = -1;
-	public int selectionY = -1;
+    public Camera blackCam;
 
-	private List<GameObject> activeToken;
+    public Image player1img;
+    public Image player2img;
+    public Sprite AthenaImg;
+    public Sprite RaImg;
+    public Sprite ThorImg;
 
-	public bool isWhiteTurn = true;
+    public Text turnText;
+	public GameObject gameOverPanel;
+    public bool isWhiteTurn = true;
     public PlayerType whitePlayer;
     public PlayerType blackPlayer;
     public PlayerType gameMode;
 
+    public Token selectedToken;
+    public int selectionX = -1;
+	public int selectionY = -1;
+
+    private List<GameObject> activeToken;
     private bool whiteWon = false;
 	private bool blackWon = false;
     private bool tokenCaptured = false;
@@ -28,11 +38,11 @@ public class BoardManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		Instance = this;
+        blackCam.enabled = false;
+        Camera.main.enabled = true;
+
         _move = new Move();
-        //set gameMode, whiteplayer, and blackplayer variables based on input from character select screen
-        gameMode = PlayerType.Local;
-        whitePlayer = PlayerType.Local;
-        blackPlayer = PlayerType.Local;
+        setPrefs();
 	}
 
 	// Update is called once per frame
@@ -199,6 +209,7 @@ public class BoardManager : MonoBehaviour {
         isWhiteTurn = !isWhiteTurn;
         if (isWhiteTurn)
         {
+            turnText.text = "White Player's Turn";
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
@@ -212,6 +223,7 @@ public class BoardManager : MonoBehaviour {
         }
         else if(!isWhiteTurn)
         {
+            turnText.text = "Black Player's Turn";
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
@@ -227,7 +239,139 @@ public class BoardManager : MonoBehaviour {
 
     private void GameWon()
     {
-        //show that the game was won and who won, ask about a rematch?
+        //ask the game core if the game has been won
+        //show that the game was won and who won
+        //gameOverPanel.SetActive(true);
+    }
+
+    private void setPrefs()
+    {
+        //set gameMode, whiteplayer, and blackplayer variables based on input from character select screen
+        int player1character = PlayerPrefs.GetInt("Player1Character", 0);
+        int player2character = 1;
+        //set the player portraits
+        setCharacterImage(1, player1character);
+        int gameIndex = SceneManager.GetActiveScene().buildIndex;
+        if (gameIndex == 4)
+        {
+            gameMode = PlayerType.Local;
+            //set the player2 character
+            player2character = PlayerPrefs.GetInt("Player2Character", 1);
+        }
+        else if (gameIndex == 5)
+        {
+            gameMode = PlayerType.Network;
+            //ask for the character they are playing as
+            //player2character =;
+        }
+        else if (gameIndex == 6)
+        {
+            gameMode = PlayerType.AI;
+            //pick a random character for the AI
+            int aiCharacter = Random.Range(0, 2);
+            while (aiCharacter == player1character)
+            {
+                //so ai and player will not be same character
+                aiCharacter = Random.Range(0, 2);
+            }
+            player2character = aiCharacter;
+            int difficulty = PlayerPrefs.GetInt("difficulty", 0);
+            if (difficulty == 0)
+            {
+                //tell the game core to use the easy AI
+                Debug.Log("easy AI selected");
+            }
+            else if (difficulty == 1)
+            {
+                //tell the game core to use the harder AI
+                Debug.Log("hard AI selected");
+            }
+        }
+        setCharacterImage(2, player2character);
+
+        int player1white = PlayerPrefs.GetInt("player1", 0);
+        if (player1white == 0)
+        {
+            //player1 is white
+            whitePlayer = PlayerType.Local;
+            blackPlayer = gameMode;
+        }
+        else if(player1white != 0 && gameMode != PlayerType.Local)
+        {
+            //player1 is black
+            blackPlayer = PlayerType.Local;
+            whitePlayer = gameMode;
+            blackCam.enabled = true;
+            Camera.main.enabled = false;
+        }
+        //testfirst();
+    }
+
+    private void setCharacterImage(int player, int character)
+    {
+        if (player == 1)
+        {
+            if (character == 0)
+            {
+                //Debug.Log("player " + player + " is Athena");
+                player1img.sprite = AthenaImg;
+            }
+            else if (character == 1)
+            {
+                //Debug.Log("player " + player + " is Ra");
+                player1img.sprite = RaImg;
+            }
+            else if (character == 2)
+            {
+                //Debug.Log("player " + player + " is Thor");
+                player1img.sprite = ThorImg;
+            }
+        }
+        else if (player == 2)
+        {
+            if (character == 0)
+            {
+                player2img.sprite = AthenaImg;
+            }
+            else if (character == 1)
+            {
+                player2img.sprite = RaImg;
+            }
+            else if (character == 2)
+            {
+                player2img.sprite = ThorImg;
+            }
+        }
+    }
+
+    private void testfirst()
+    {
+        if (gameMode == PlayerType.Local)
+        {
+            Debug.Log("Local Game, player 1 goes first");
+        }
+        else if (gameMode == PlayerType.Network)
+        {
+            if (whitePlayer == PlayerType.Local)
+            {
+                Debug.Log("white is local, black is network");
+            }
+            else
+            {
+                Debug.Log("white is network, black is local");
+            }
+        }
+        else if (gameMode == PlayerType.AI)
+        {
+            if (whitePlayer == PlayerType.Local)
+            {
+                Debug.Log("white is local, black is ai");
+            }
+            else
+            {
+                Debug.Log("white is ai, black is local");
+            }
+        }
     }
 }
 

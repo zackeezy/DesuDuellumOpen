@@ -485,7 +485,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -195}
+  m_AnchoredPosition: {x: 0, y: -179}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153103019
@@ -584,6 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51b41ae5b433934398fc5f3dae1040c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: 1
 --- !u!1001 &1519861277
 Prefab:
   m_ObjectHideFlags: 0
@@ -958,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51b41ae5b433934398fc5f3dae1040c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: 1
 --- !u!1001 &1764218164
 Prefab:
   m_ObjectHideFlags: 0
@@ -997,40 +999,35 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
+    - target: {fileID: 114197463240306036, guid: 09eee636c6fc6164eb94de96bcc771d9,
         type: 2}
-      propertyPath: m_FontData.m_Font
+      propertyPath: characterSelectText
       value: 
-      objectReference: {fileID: 12800000, guid: 55906a9892c3160428809f64085f1300,
-        type: 3}
-    - target: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
+      objectReference: {fileID: 1764218165}
+    - target: {fileID: 114628196987768386, guid: 09eee636c6fc6164eb94de96bcc771d9,
         type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
+    - target: {fileID: 114667255585106590, guid: 09eee636c6fc6164eb94de96bcc771d9,
         type: 2}
-      propertyPath: m_FontData.m_MinSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
+      propertyPath: characterSelectText
+      value: 
+      objectReference: {fileID: 1764218165}
+    - target: {fileID: 114197463240306036, guid: 09eee636c6fc6164eb94de96bcc771d9,
         type: 2}
-      propertyPath: m_Text
-      value: Player 1 Select a Character
-      objectReference: {fileID: 0}
-    - target: {fileID: 224728512196456956, guid: 09eee636c6fc6164eb94de96bcc771d9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: -12.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 224728512196456956, guid: 09eee636c6fc6164eb94de96bcc771d9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 41.2
+      propertyPath: player
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09eee636c6fc6164eb94de96bcc771d9, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1764218165 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1764218164}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &2136206647
 Prefab:
   m_ObjectHideFlags: 0

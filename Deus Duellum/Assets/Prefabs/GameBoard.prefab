@@ -12231,7 +12231,17 @@ MonoBehaviour:
   selectedToken: {fileID: 0}
   selectionX: -1
   selectionY: -1
+  player1img: {fileID: 0}
+  player2img: {fileID: 0}
+  turnText: {fileID: 0}
+  gameOverPanel: {fileID: 0}
   isWhiteTurn: 1
+  whitePlayer: 0
+  blackPlayer: 0
+  gameMode: 0
+  AthenaImg: {fileID: 21300000, guid: 3ca7c35555539f3488cfd3aa937335ef, type: 3}
+  RaImg: {fileID: 21300000, guid: ccb2937e8fc3d434da16ef9648f3b9d1, type: 3}
+  ThorImg: {fileID: 21300000, guid: 2678d0c736e19384eb7c83a16a911e30, type: 3}
 --- !u!114 &114931160277036110
 MonoBehaviour:
   m_ObjectHideFlags: 1
