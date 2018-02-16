@@ -180,8 +180,8 @@ public class BoardManager : MonoBehaviour {
 
 		//send the token's position to the log
 		if(tokenCaptured){
-            //capture the piece
-
+            //destroy the captured gameobject
+            
             //add an x to the the log
         }
 
