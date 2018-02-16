@@ -19,6 +19,8 @@ public class Server : MonoBehaviour {
     public GameObject clientObj;
     public GameObject player;
 
+    public GameObject networkControl;
+
 	// Use this for initialization
 	void Start () {
         NetworkTransport.Init();
@@ -46,7 +48,6 @@ public class Server : MonoBehaviour {
             case NetworkEventType.ConnectEvent:
                 //TODO: add code for starting game
                 clientObj = Instantiate(player, transform.position, transform.rotation);
-                clientObj.GetComponent<Player>().server = this;
                 connectionIdClient = recvConnectionId;
                 Debug.Log("ConnectEvent Triggered.");
                 break;
@@ -64,7 +65,7 @@ public class Server : MonoBehaviour {
                         //TODO: add code for emote
                         break;
                     case "MESSAGE":
-
+                        networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
                         break;
                 }
                 break;
@@ -81,7 +82,7 @@ public class Server : MonoBehaviour {
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort, "127.0.0.1");
         Debug.Log("Socket open. Host ID is: " + hostId);
-        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", 8888, 0, out error);
+        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", socketPort, 0, out error);
     }
 
     public void Move(string x, string y, GameObject obj)
@@ -93,9 +94,7 @@ public class Server : MonoBehaviour {
 
     public void SendNetworkMessage(string message)
     {
-
         byte[] buffer = Encoding.Unicode.GetBytes(message);
-
         NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 }

@@ -19,6 +19,7 @@ public class Client : MonoBehaviour {
     int connectionIdServer;
 
     public GameObject player;
+    public GameObject networkControl;
 
     // Use this for initialization
     void Start()
@@ -65,7 +66,7 @@ public class Client : MonoBehaviour {
                         //TODO: add code for emote
                         break;
                     case "MESSAGE":
-
+                        networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
                         break;
                 }
                 break;

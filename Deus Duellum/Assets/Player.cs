@@ -5,9 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     Rigidbody rb;
-    public Client client;
-    public Server server;
-    public bool isClient;
+   
     
     int playerId;
     string playerName;
@@ -27,10 +25,7 @@ public class Player : MonoBehaviour {
         if(xMov != 0 || yMov != 0)
         {
             string msg = "MOVE|" + xMov.ToString() + "|" + yMov.ToString();
-            if (isClient)
-                client.SendNetworkMessage(msg);
-            else
-                server.SendNetworkMessage(msg);
+            
         }
     }
 }
