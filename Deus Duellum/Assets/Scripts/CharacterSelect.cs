@@ -38,25 +38,26 @@ public class CharacterSelect : MonoBehaviour {
         if (player == 2)
         {
             //let player2 pick a character for local game
-            if (character == player1character)
-            {
-                characterSelectText.text = "Player 2 Select ANOTHER character";
-            }
-            else
-            {
+            //if (character == player1character)
+            //{
+            //    characterSelectText.text = "Player 2 Select ANOTHER character";
+            //}
+            //else
+            //{
                 characterSelectText.text = "Press Play";
                 PlayerPrefs.SetInt("Player2Character", character);
                 charactersSelected = true;
-            }
+            //}
         }
         else
         {
             player1character = character;
             PlayerPrefs.SetInt("Player1Character", character);
+            setFirst(true);
             //let player2 pick a character for a local game
             if (gameIndex == 1)
             {
-                characterSelectText.text = "Player 2 Select another character";
+                characterSelectText.text = "Player 2 Select a character";
                 //show a cancel button? to go back to player1?
                 player = 2;
             }

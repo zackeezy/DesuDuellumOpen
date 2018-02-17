@@ -191,7 +191,7 @@ public class BoardManager : MonoBehaviour {
 		//send the token's position to the log
 		if(tokenCaptured){
             //destroy the captured gameobject
-            
+            //Destroy();
             //add an x to the the log
         }
 
@@ -305,6 +305,10 @@ public class BoardManager : MonoBehaviour {
             Camera.main.enabled = false;
         }
         //testfirst();
+
+        //set the tokens
+        TokenSetter tokenScript = GetComponent<TokenSetter>();
+        tokenScript.SetTokens(player1white, player1character, player2character);
     }
 
     private void setCharacterImage(int player, int character)
