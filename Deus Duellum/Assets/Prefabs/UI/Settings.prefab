@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 222210012458036836}
   - component: {fileID: 114771309096965110}
   - component: {fileID: 114395367830872452}
-  - component: {fileID: 114521715203133574}
+  - component: {fileID: 114951123792755476}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -1140,12 +1140,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114521715203133574}
-        m_MethodName: LoadByIndex
-        m_Mode: 3
+      - m_Target: {fileID: 114951123792755476}
+        m_MethodName: toggleOpen
+        m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1279,17 +1279,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Music
---- !u!114 &114521715203133574
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1129310885340308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c51b41ae5b433934398fc5f3dae1040c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114569315854764184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1797,6 +1786,17 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
+--- !u!114 &114951123792755476
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1129310885340308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48681e683b846040932460c1a50d93b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222011681856797092
 CanvasRenderer:
   m_ObjectHideFlags: 1

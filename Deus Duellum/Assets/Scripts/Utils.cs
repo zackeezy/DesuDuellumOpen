@@ -8,3 +8,10 @@ public enum PlayerType
     Network = 1,
     AI = 2
 }
+
+public enum Character
+{
+    Athena = 0,
+    Ra = 1,
+    Thor = 2
+}

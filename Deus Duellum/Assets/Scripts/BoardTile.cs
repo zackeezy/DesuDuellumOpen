@@ -19,6 +19,7 @@ public class BoardTile : MonoBehaviour {
             //they clicked on a tile!
             BoardManager.Instance.TileClicked(xCoordinate, yCoordinate, transform.position.x, transform.position.z);
         }
+        //Debug.Log(transform.position.x + ", " + transform.position.z);
     }
 
     // Update is called once per frame

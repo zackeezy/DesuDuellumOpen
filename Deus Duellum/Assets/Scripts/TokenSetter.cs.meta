@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: ac9dd6feff428cb46bc5a3f07b308188
+timeCreated: 1518909975
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - AthenaPrefabLight: {fileID: 1872768265419476, guid: d4197ae6c29d1554ca1dfa062bc1a32d,
+      type: 2}
+  - AthenaPrefabDark: {fileID: 1237942033873888, guid: 3d6b57d73cbfcbc4eaa2ac2d7cef837c,
+      type: 2}
+  - RaPrefabLight: {fileID: 1883436939313484, guid: 214c22304e7d0064e90f9b00fccc006c,
+      type: 2}
+  - RaPrefabDark: {fileID: 1526907337215932, guid: 4379026a521c765488d62b9403e7577a,
+      type: 2}
+  - ThorPrefabLight: {fileID: 1468237993704372, guid: a6ad9abced6cd0742ac22d90ccaa5543,
+      type: 2}
+  - ThorPrefabDark: {fileID: 1622629134087398, guid: ac552b55ee2ffa147be060ebe49968c5,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
