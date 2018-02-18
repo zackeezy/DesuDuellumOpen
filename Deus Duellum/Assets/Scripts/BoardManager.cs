@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Breakthrough;
 
+//THIS COMMENT IS TO MAKE A CHANGE FOR JME
+
 public class BoardManager : MonoBehaviour {
 
 	public static BoardManager Instance{ set; get;}
