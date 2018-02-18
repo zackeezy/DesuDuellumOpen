@@ -11,6 +11,7 @@ Analyzer::Analyzer()
 PlayerColor Analyzer::AiColor = PlayerColor::White;
 BitBoard Analyzer::_bestMove;
 
+
 Analyzer::~Analyzer()
 {
 }
@@ -98,7 +99,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
     return children;
 }
 
-int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer) 
+int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer, int & bestScore) 
 {
     if (remainingDepth == 0 || IsGameOver(node)) 
     {
@@ -113,12 +114,15 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
         
         for (BitBoard child : children) 
         {
-            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false);
+            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false, bestScore);
 
-            if (value < childScore && remainingDepth == MAX_DEPTH - 1)
+            if (remainingDepth == MAX_DEPTH)
             {
-                _bestMove = child;
-
+                if (childScore > bestScore)
+                {
+                    _bestMove = child;
+                    bestScore = childScore;
+                }
             }
             value = max(value, childScore);
             alpha = max(alpha, value);
@@ -135,11 +139,15 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
 
         for (BitBoard child : children) 
         {
-            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true);
+            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true, bestScore);
             
-            if (value > childScore && remainingDepth == MAX_DEPTH - 1) 
+            if (remainingDepth == MAX_DEPTH) 
             {
-                _bestMove = child;
+                if (childScore > bestScore)
+                {
+                    _bestMove = child;
+                    bestScore = childScore;
+                }
             }
             value = min(value, childScore);
             beta = min(beta, value);
@@ -612,6 +620,7 @@ int Analyzer::GenerateProtectionScore(BitBoard board, int index, PlayerColor col
 BitBoard Analyzer::GetMove(BitBoard board, PlayerColor color) 
 {
     AiColor = color;
-    AlphaBetaLoop(board, MAX_DEPTH, INT_MIN, INT_MAX, true);
+    int bestScore = INT_MIN;
+    AlphaBetaLoop(board, MAX_DEPTH, INT_MIN, INT_MAX, true, bestScore);
     return _bestMove;
 }

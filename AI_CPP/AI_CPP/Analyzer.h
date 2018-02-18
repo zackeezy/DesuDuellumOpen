@@ -13,7 +13,7 @@ using std::min;
 static class Analyzer
 {
 private:
-    static const int MAX_DEPTH = 5;
+    static const int MAX_DEPTH = 7;
     static BitBoard _bestMove;
 
     static const int WIN = INT_MIN;
@@ -32,14 +32,13 @@ private:
     static const int HOME_ROW_MOVED = 5000;
 
     static vector<BitBoard> GetChildren(BitBoard board, PlayerColor color);
-    static int AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer);
+    static int AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer, int & bestScore);
     static bool IsGameOver(BitBoard bitBoard);
     static int Evaluate(BitBoard board);
     static int GenerateBlockingPatternScore(BitBoard board, int index, PlayerColor color);
     static int GenerateMobilityScore(BitBoard board, int index, PlayerColor color);
     static int GenerateColumnHolePenalty(BitBoard board, PlayerColor color);
     static int GenerateHomeRowProtectionPenalty(BitBoard board, PlayerColor color);
-    static int GenerateAlmostWinScore(BitBoard board, int index);
     static int GenerateDangerScore(BitBoard board, int index, PlayerColor color);
     static int GenerateAttackedPenalty(BitBoard board, int index, PlayerColor color);
     static int GenerateProtectionScore(BitBoard board, int index, PlayerColor color);
