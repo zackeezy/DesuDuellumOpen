@@ -7,12 +7,16 @@ using UnityEngine.Networking;
 
 public class Server : MonoBehaviour {
 
+    bool connected = false;
+
     int connectionId;
     int maxConnections = 2;
     int reliableChannelId;
     int hostId;
     int socketPort = 8888;
     byte error;
+
+    string clientIP;
 
     int hostIdClient;
     int connectionIdClient;
@@ -52,6 +56,7 @@ public class Server : MonoBehaviour {
                 hostIdClient = recvHostId;
                 clientObj.GetComponent<Player>().networkControl = networkControl;
                 Debug.Log("ConnectEvent Triggered.");
+                connected = true;
                 break;
             case NetworkEventType.DataEvent:
                 string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
@@ -74,6 +79,16 @@ public class Server : MonoBehaviour {
             case NetworkEventType.DisconnectEvent:
 
                 break;
+            case NetworkEventType.BroadcastEvent:
+                string broadcastMsg = "";
+                byte[] buffer = new byte[1024];
+                int recvsize;
+                byte error;
+
+                NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
+                broadcastMsg = Encoding.Default.GetString(buffer);
+
+                break;
         }
 	}
 
@@ -82,9 +97,9 @@ public class Server : MonoBehaviour {
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, "127.0.0.1");
+        hostId = NetworkTransport.AddHost(topology, socketPort, clientIP);
         Debug.Log("Socket open. Host ID is: " + hostId);
-        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", socketPort, 0, out error);
+        connectionId = NetworkTransport.Connect(hostId, NetworkTransport., socketPort, 0, out error);
     }
 
     public void Move(string x, string y, GameObject obj)

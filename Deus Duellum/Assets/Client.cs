@@ -4,14 +4,18 @@ using System.Text;
 using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Client : MonoBehaviour {
+
+    bool connected = false;
 
     int connectionId;
     int maxConnections = 10;
     int reliableChannelId;
     int hostId;
     int socketPort = 7778;
+    int serverSocketPort = 8888;
     byte error;
     string recvIP;
 
@@ -20,6 +24,7 @@ public class Client : MonoBehaviour {
 
     public GameObject player;
     public GameObject networkControl;
+    public InputField name;
 
     // Use this for initialization
     void Start()
@@ -30,6 +35,9 @@ public class Client : MonoBehaviour {
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort, null);
         Debug.Log("Socket open. Host ID is: " + hostId);
+        if (name.text != "") {
+            //NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 1, 2, 3, "");
+        }
     }
 
     // Update is called once per frame
@@ -49,6 +57,7 @@ public class Client : MonoBehaviour {
             case NetworkEventType.ConnectEvent:
                 connectionIdServer = recvConnectionId;
                 hostIdServer = recvHostId;
+                connected = true;
                 break;
             case NetworkEventType.DisconnectEvent:
                 break;
@@ -58,6 +67,9 @@ public class Client : MonoBehaviour {
                 string[] splitData = msg.Split('|');
                 switch (splitData[0])
                 {
+                    case "CONNECT":
+                        //Something
+                        break;
                     case "MOVE":
                         //TODO: add code for move
                         Move(splitData[1], splitData[2], player);
@@ -78,9 +90,9 @@ public class Client : MonoBehaviour {
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, "127.0.0.1");
+        hostId = NetworkTransport.AddHost(topology, socketPort, recvIP);
         Debug.Log("Socket open. Host ID is: " + hostId);
-        connectionId = NetworkTransport.Connect(hostId, "127.0.0.1", 8888, 0, out error);
+        connectionId = NetworkTransport.Connect(hostId, recvIP, serverSocketPort, 0, out error);
     }
 
     public void Disconnect()
@@ -99,5 +111,10 @@ public class Client : MonoBehaviour {
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
         NetworkTransport.Send(hostIdServer, connectionIdServer, reliableChannelId, buffer, message.Length * sizeof(char), out error);
+    }
+
+    public void SetRecvIP(string recvIP)
+    {
+        this.recvIP = recvIP;
     }
 }
