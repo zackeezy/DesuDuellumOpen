@@ -172,21 +172,36 @@ public class BoardManager : MonoBehaviour {
     public bool AttemptMove(int x, int y, float xPos, float zPos)
     {
         bool isAllowed = false;
-
-        if (x < selectedToken.currentX)
+        if (isWhiteTurn && y == selectedToken.currentY + 1)
         {
-            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            if (x == selectedToken.currentX - 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            }
+            else if (x == selectedToken.currentX)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            }
+            else if (x == selectedToken.currentX + 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
+            }
         }
-        else if (x == selectedToken.currentX)
+        if (isBlackTurn && y == selectedToken.currentY - 1)
         {
-            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            if (x == selectedToken.currentX - 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            }
+            else if (x == selectedToken.currentX)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            }
+            else if (x == selectedToken.currentX + 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
+            }
         }
-        else if (x > selectedToken.currentX)
-        {
-            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
-        }
-
-
         if (isAllowed)
         {
             //tell the game core about the move
