@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     Rigidbody rb;
-   
+    public GameObject networkControl;
     
     int playerId;
     string playerName;
@@ -22,10 +22,10 @@ public class Player : MonoBehaviour {
         float yMov = Input.GetAxis("Vertical");
         transform.Translate(xMov, 0, yMov);
 
-        if(xMov != 0 || yMov != 0)
+        if ((xMov != 0 || yMov != 0) && GUI.GetNameOfFocusedControl() != "InputField")
         {
             string msg = "MOVE|" + xMov.ToString() + "|" + yMov.ToString();
-            
+            networkControl.GetComponent<NetworkControl>().Send(msg);
         }
     }
 }
