@@ -2000,6 +2000,43 @@ Prefab:
       propertyPath: altNotations
       value: 
       objectReference: {fileID: 1755065550}
+    - target: {fileID: 1695355044085372, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4943327411883820, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23188194245750898, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f0d22662a715af8469b40468f7f45e09, type: 2}
+    - target: {fileID: 4147754779702810, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
   m_IsPrefabParent: 0
