@@ -11,6 +11,8 @@ public class TokenSetter : MonoBehaviour {
     public GameObject ThorPrefabLight;
     public GameObject ThorPrefabDark;
 
+    //hey git i made a change
+
     public void SetTokens(int player1First, int player1Character, int player2Character)
     {
         GameObject[] blackPieces = GameObject.FindGameObjectsWithTag("BlackPieces");
