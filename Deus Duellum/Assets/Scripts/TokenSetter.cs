@@ -29,6 +29,8 @@ public class TokenSetter : MonoBehaviour {
                     AthenaLight.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     AthenaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+                    
+                    //add to the game core
 
                     Destroy(oldPiece);
                 }
@@ -42,6 +44,8 @@ public class TokenSetter : MonoBehaviour {
                     RaLight.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     RaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+                    
+                    //add to the game core
 
                     Destroy(oldPiece);
                 }
@@ -55,6 +59,8 @@ public class TokenSetter : MonoBehaviour {
                     ThorLight.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     ThorLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+
+                    //add to the game core
 
                     Destroy(oldPiece);
                 }
@@ -71,6 +77,8 @@ public class TokenSetter : MonoBehaviour {
                     AthenaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
 
+                    //add to the game core
+
                     Destroy(oldPiece);
                 }
             }
@@ -84,6 +92,8 @@ public class TokenSetter : MonoBehaviour {
                     RaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
 
+                    //add to the game core
+
                     Destroy(oldPiece);
                 }
             }
@@ -96,6 +106,8 @@ public class TokenSetter : MonoBehaviour {
                     ThorDark.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     ThorDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+
+                    //add to the game core
 
                     Destroy(oldPiece);
                 }
@@ -115,6 +127,8 @@ public class TokenSetter : MonoBehaviour {
                     AthenaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
 
+                    //add to the game core
+
                     Destroy(oldPiece);
                 }
             }
@@ -128,6 +142,8 @@ public class TokenSetter : MonoBehaviour {
                     RaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
 
+                    //add to the game core
+
                     Destroy(oldPiece);
                 }
             }
@@ -140,6 +156,8 @@ public class TokenSetter : MonoBehaviour {
                     ThorDark.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     ThorDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+
+                    //add to the game core
 
                     Destroy(oldPiece);
                 }
@@ -156,6 +174,8 @@ public class TokenSetter : MonoBehaviour {
                     AthenaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
 
+                    //add to the game core
+
                     Destroy(oldPiece);
                 }
             }
@@ -169,6 +189,8 @@ public class TokenSetter : MonoBehaviour {
                     RaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
 
+                    //add to the game core
+
                     Destroy(oldPiece);
                 }
             }
@@ -181,6 +203,8 @@ public class TokenSetter : MonoBehaviour {
                     ThorLight.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     ThorLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+
+                    //add to the game core
 
                     Destroy(oldPiece);
                 }

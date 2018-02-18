@@ -189,9 +189,27 @@ public class BoardManager : MonoBehaviour {
         selectedToken.SetBoardPosition (x, y);
 
 		//send the token's position to the log
+        
 		if(tokenCaptured){
             //destroy the captured gameobject
-            //Destroy();
+            GameObject[] otherPieces=null;
+            if (isWhiteTurn)
+            {
+                otherPieces = GameObject.FindGameObjectsWithTag("BlackPieces");
+            }
+            else
+            {
+                otherPieces = GameObject.FindGameObjectsWithTag("WhitePieces");
+            }
+            foreach (GameObject othertoken in otherPieces)
+            {
+                Token other = othertoken.GetComponent<Token>();
+                if (other && other.currentX == x && other.currentY == y)
+                {
+                    Destroy(other.gameObject);
+                }
+            }
+
             //add an x to the the log
         }
 
@@ -214,6 +232,7 @@ public class BoardManager : MonoBehaviour {
             {
                 gameMode = PlayerType.AI;
                 //ask for an AI move from the game core
+
             }
             if (whitePlayer == PlayerType.Network)
             {
