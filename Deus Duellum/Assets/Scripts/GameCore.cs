@@ -24,6 +24,11 @@ namespace Assets.Scripts
         {
             get { return !IsWhiteTurn; }
         }
+        public bool whiteWon;
+        public bool blackWon
+        {
+            get { return !whiteWon; }
+        }
 
         public GameObject[,] Board;
 
@@ -139,7 +144,7 @@ namespace Assets.Scripts
         {
             throw new NotImplementedException("We Dont Have Networking Yet!!!!!!1!?;)");
         }
-
+        
         public bool IsMoveAllowed(int x, int y, Direction direction)
         {
             bool isAllowed = false;
@@ -195,7 +200,22 @@ namespace Assets.Scripts
 
             return isAllowed;
         }
-
+        
+        //check if white or black won 
+        public bool HasWon(int y)
+        {
+            //if it is white's turn and y is equal to 7 than white has won
+            if(IsWhiteTurn && y == 7)
+            {
+                whiteWon = true;
+            }
+            //if it is black's turn and y is equal to 0 than black has won
+            else if (IsBlackTurn && y == 0)
+            {
+                whiteWon = !whiteWon;
+            }
+            return whiteWon;
+        }
         /// <summary>
         /// 
         /// </summary>
