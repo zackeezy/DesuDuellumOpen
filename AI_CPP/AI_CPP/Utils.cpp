@@ -38,12 +38,3 @@ AlphaBetaNode::AlphaBetaNode(BitBoard parent)
     Parent = parent;
 }
 
-PlayerColor FlipColor(PlayerColor color)
-{
-    if (color == PlayerColor::Black)
-    {
-        return PlayerColor::White;
-    }
-
-    return PlayerColor::Black;
-}

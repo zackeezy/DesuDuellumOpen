@@ -2,17 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Breakthrough;
 using System.Runtime.InteropServices;
 using System;
+using Assets.Scripts;
 
 public class BoardManager : MonoBehaviour {
-
-    [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
-    //public static extern IntPtr GetMove(int[] whiteCoordinates, int whiteCount, int[] blackCoordinates, int blackCount, int color);
-    public static extern int GetMove();
-
+    
     public static BoardManager Instance{ set; get;}
+
+    public float[] xPosition = new float[8]
+    {
+        -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
+    };
+
+    public float[] zPosition = new float[8]
+    {
+        -7.65f, -6.4f, -5.15f, -3.9f, -2.65f, -1.4f, -0.1500001f, 1.1f 
+    };
 
     public Token selectedToken;
     public int selectionX = -1;
@@ -29,16 +35,16 @@ public class BoardManager : MonoBehaviour {
 	private bool blackWon = false;
     private bool tokenCaptured = false;
 
-    private Move _move;
+    private GameCore _core;
 
     // Use this for initialization
     void Start () {
 		Instance = this;
-        _move = new Move();
         //set gameMode, whiteplayer, and blackplayer variables based on input from character select screen
         gameMode = PlayerType.Local;
         whitePlayer = PlayerType.Local;
         blackPlayer = PlayerType.Local;
+        _core = new GameCore(whitePlayer, blackPlayer, );
 	}
 
 	// Update is called once per frame
@@ -49,10 +55,10 @@ public class BoardManager : MonoBehaviour {
 
     public void TokenClicked(int x, int y, Token selected)
     {
-        IntPtr timmy = new IntPtr();
-        int[] a = { 2 };
-        Debug.Log(GetMove());
-        //Debug.Log(timmy.ToInt32());
+        GameObject obj = activeToken[0];
+        Token thisToken = obj.GetComponent<Token>();
+        thisToken.x
+
         if (whiteWon || blackWon || gameMode != PlayerType.Local)
         {
             return;
@@ -226,6 +232,42 @@ public class BoardManager : MonoBehaviour {
             {
                 gameMode = PlayerType.AI;
                 //ask for an AI move from the game core
+                List<int> whiteCoordinates = new List<int>();
+                List<int> blackCoordinates = new List<int>();
+
+                for (int row = 0; row < 8; row++)
+                {
+                    for(int col = 0; col < 8; col++)
+                    {
+                        if (GameCoreToken.tokens[row, col] == GameCoreToken.WHITE_SYMBOL)
+                        {
+                            whiteCoordinates.Add(row);
+                            whiteCoordinates.Add(col);
+                        }
+                        else if (GameCoreToken.tokens[row, col] == GameCoreToken.BLACK_SYMBOL)
+                        {
+                            blackCoordinates.Add(row);
+                            blackCoordinates.Add(col);
+                        }
+                    }
+                }
+                int fromX = 0, fromY = 0, toX = 0, toY = 0;
+                GetMove(whiteCoordinates.ToArray(), whiteCoordinates.Count, blackCoordinates.ToArray(), blackCoordinates.Count,
+                    ref fromX, ref fromY, ref toX, ref toY, 1);
+
+                _move.blackFromX = fromX;
+                _move.blackFromY = fromY;
+                _move.blackToX = toX;
+                _move.blackToY = toY;
+
+                _move.RearrangeTokens();
+
+                selectedToken = 
+                Vector3 newPosition = new Vector3();
+                newPosition.x = xPosition[toX];
+                newPosition.y = selectedToken.gameObject.transform.position.y;
+                newPosition.z = zPosition[toY];
+
             }
             if (blackPlayer == PlayerType.Network)
             {

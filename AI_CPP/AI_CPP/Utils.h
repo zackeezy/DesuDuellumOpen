@@ -26,11 +26,19 @@ private:
 public:
     BitBoard Child;
     BitBoard Parent;
-    int value;
+    int Value;
     AlphaBetaNode();
     AlphaBetaNode(BitBoard parent);
     ~AlphaBetaNode();
 };
 
-static PlayerColor FlipColor(PlayerColor color);
+static PlayerColor FlipColor(PlayerColor color)
+{
+    if (color == PlayerColor::Black)
+    {
+        return PlayerColor::White;
+    }
+
+    return PlayerColor::Black;
+}
 
