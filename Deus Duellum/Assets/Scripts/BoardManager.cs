@@ -197,9 +197,10 @@ public class BoardManager : MonoBehaviour {
 
 		//send the token's position to the log
         
+        //destroy the captured token
 		if(tokenCaptured){
             //destroy the captured gameobject
-            GameObject[] otherPieces=null;
+            GameObject[] otherPieces = null;
             if (isWhiteTurn)
             {
                 otherPieces = GameObject.FindGameObjectsWithTag("BlackPieces");
@@ -211,7 +212,7 @@ public class BoardManager : MonoBehaviour {
             foreach (GameObject othertoken in otherPieces)
             {
                 Token other = othertoken.GetComponent<Token>();
-                if (other && other.currentX == x && other.currentY == y)
+                if (other.currentX == x && other.currentY == y)
                 {
                     Destroy(other.gameObject);
                 }
