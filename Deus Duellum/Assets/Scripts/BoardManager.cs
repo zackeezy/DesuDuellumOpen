@@ -10,6 +10,8 @@ public class BoardManager : MonoBehaviour {
 	public static BoardManager Instance{ set; get;}
 
     public Camera blackCam;
+    public GameObject Notations;
+    public GameObject altNotations;
 
     public Image player1img;
     public Image player2img;
@@ -32,6 +34,8 @@ public class BoardManager : MonoBehaviour {
     private bool whiteWon = false;
 	private bool blackWon = false;
     private bool tokenCaptured = false;
+    private GameObject notationsToggleUI;
+    private Toggle notationsToggle;
 
     private Move _move;
 
@@ -40,6 +44,9 @@ public class BoardManager : MonoBehaviour {
 		Instance = this;
         blackCam.enabled = false;
         Camera.main.enabled = true;
+
+        notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
+        notationsToggle = notationsToggleUI.GetComponent<Toggle>();
 
         _move = new Move();
         setPrefs();
@@ -232,12 +239,15 @@ public class BoardManager : MonoBehaviour {
             {
                 gameMode = PlayerType.AI;
                 //ask for an AI move from the game core
+                //use the AI's move received from core to show a move was made
 
             }
             if (whitePlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
                 //ask for an network move from the game core
+                //use the net's move received from core to show a move was made
+
             }
         }
         else if(!isWhiteTurn)
@@ -247,11 +257,15 @@ public class BoardManager : MonoBehaviour {
             {
                 gameMode = PlayerType.AI;
                 //ask for an AI move from the game core
+                //use the AI's move received from core to show a move was made
+
             }
             if (blackPlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
                 //ask for an network move from the game core
+                //use the net's move received from core to show a move was made
+
             }
         }
     }
@@ -314,6 +328,7 @@ public class BoardManager : MonoBehaviour {
             //player1 is white
             whitePlayer = PlayerType.Local;
             blackPlayer = gameMode;
+            SetNotations(true);
         }
         else if(player1white != 0 && gameMode != PlayerType.Local)
         {
@@ -322,6 +337,7 @@ public class BoardManager : MonoBehaviour {
             whitePlayer = gameMode;
             blackCam.enabled = true;
             Camera.main.enabled = false;
+            SetNotations(false);
         }
         //testfirst();
 
@@ -365,6 +381,33 @@ public class BoardManager : MonoBehaviour {
                 player2img.sprite = ThorImg;
             }
         }
+    }
+
+    //choose which notations to use
+    private void SetNotations(bool first)
+    {
+        if (first)
+        {
+            notationsToggle.onValueChanged.AddListener(toggleNotations);
+        }
+        else
+        {
+            notationsToggle.onValueChanged.AddListener(toggleAltNotations);
+        }
+    }
+
+    //listener to toggle normal notations
+    public void toggleNotations(bool on)
+    {
+        ToggleOpen openScript = notationsToggle.GetComponent<ToggleOpen>();
+        openScript.toggleOpen(Notations);
+    }
+
+    //listener to toggle alternative notations
+    public void toggleAltNotations(bool on)
+    {
+        ToggleOpen openScript = notationsToggle.GetComponent<ToggleOpen>();
+        openScript.toggleOpen(altNotations);
     }
 
     private void testfirst()

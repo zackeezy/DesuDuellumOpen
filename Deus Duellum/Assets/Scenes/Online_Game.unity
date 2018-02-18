@@ -708,7 +708,11 @@ Prefab:
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1662709226}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054616221698948, guid: 089f422d79e979e45aa65a2447cf1e18, type: 2}
+      propertyPath: m_TagString
+      value: NotationsToggle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 089f422d79e979e45aa65a2447cf1e18, type: 2}
   m_IsPrefabParent: 0
@@ -994,9 +998,19 @@ Prefab:
       propertyPath: blackCam
       value: 
       objectReference: {fileID: 39265620}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: altNotations
+      value: 
+      objectReference: {fileID: 505557814}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &505557814 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1711812387567168, guid: a75c3327317d4bf4c930d20322c3016d,
+    type: 2}
+  m_PrefabInternal: {fileID: 505557813}
 --- !u!1001 &560861630
 Prefab:
   m_ObjectHideFlags: 0
@@ -1745,11 +1759,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224570191541329142, guid: 089f422d79e979e45aa65a2447cf1e18,
     type: 2}
   m_PrefabInternal: {fileID: 299663752}
---- !u!1 &1662709226 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1211722425697502, guid: a75c3327317d4bf4c930d20322c3016d,
-    type: 2}
-  m_PrefabInternal: {fileID: 505557813}
 --- !u!1 &1769491346 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1469837864640284, guid: ab86b33c05d6db34996c64b6823250ef,
