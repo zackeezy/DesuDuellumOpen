@@ -250,7 +250,7 @@ public class BoardManager : MonoBehaviour {
 
                 _core.GetMove(ref x, ref y, ref direction);
 
-                if (_core.IsMoveAllowed(x,y,direction))
+                if (_core.IsMoveAllowed(x, y, direction))
                 {
                     GameObject movingPiece = _core.Board[x, y];
                     _core.MakeMove(x, y, direction);
@@ -261,12 +261,24 @@ public class BoardManager : MonoBehaviour {
                 }
                 gameMode = PlayerType.Local;
             }
-            if (whitePlayer == PlayerType.Network)
+            else if (whitePlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
                 //ask for an network move from the game core
                 //use the net's move received from core to show a move was made
 
+            }
+            else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //enable white's emote button
+                GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote.interactable = true;
+
+                //disable black's emote button 
+                GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote2.interactable = false;
             }
         }
         else if(isBlackTurn)
@@ -291,12 +303,24 @@ public class BoardManager : MonoBehaviour {
                 gameMode = PlayerType.Local;
 
             }
-            if (blackPlayer == PlayerType.Network)
+            else if (blackPlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
                 //ask for an network move from the game core
                 //use the net's move received from core to show a move was made
 
+            }
+            else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //enable blacks's emote button
+                GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote.interactable = false;
+
+                //ensable black's emote button 
+                GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote2.interactable = true;
             }
         }
     }
