@@ -11,8 +11,6 @@ public class TokenSetter : MonoBehaviour {
     public GameObject ThorPrefabLight;
     public GameObject ThorPrefabDark;
 
-    //hey git i made a change
-
     public void SetTokens(int player1First, int player1Character, int player2Character)
     {
         GameObject[] blackPieces = GameObject.FindGameObjectsWithTag("BlackPieces");
@@ -134,6 +132,7 @@ public class TokenSetter : MonoBehaviour {
                     AthenaDark.GetComponent<Token>().currentX = oldPiece.GetComponent<Token>().currentX;
                     AthenaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
+                    AthenaDark.transform.Rotate(0, 180, 0);
                     AthenaDark.gameObject.tag = "BlackPieces";
 
                     //add to the game core
@@ -151,6 +150,7 @@ public class TokenSetter : MonoBehaviour {
                     RaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     RaDark.gameObject.tag = "BlackPieces";
+                    RaDark.transform.Rotate(0, 180, 0);
 
                     //add to the game core
 
@@ -167,6 +167,7 @@ public class TokenSetter : MonoBehaviour {
                     ThorDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     ThorDark.gameObject.tag = "BlackPieces";
+                    ThorDark.transform.Rotate(0, 180, 0);
 
                     //add to the game core
 
@@ -185,6 +186,7 @@ public class TokenSetter : MonoBehaviour {
                     AthenaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     AthenaLight.gameObject.tag = "WhitePieces";
+                    AthenaLight.transform.Rotate(0, 180, 0);
 
                     //add to the game core
 
@@ -201,6 +203,7 @@ public class TokenSetter : MonoBehaviour {
                     RaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     RaLight.gameObject.tag = "WhitePieces";
+                    RaLight.transform.Rotate(0, 180, 0);
 
                     //add to the game core
 
@@ -217,6 +220,7 @@ public class TokenSetter : MonoBehaviour {
                     ThorLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     ThorLight.gameObject.tag = "WhitePieces";
+                    ThorLight.transform.Rotate(0, 180, 0);
 
                     //add to the game core
 
