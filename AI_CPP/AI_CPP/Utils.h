@@ -1,13 +1,14 @@
 #pragma once
-static enum PlayerColor 
+enum PlayerColor
 {
     White = 0,
     Black = 1
 };
 
+
 class BitBoard
 {
-private: 
+private:
 
 public:
     unsigned long long whitePieces;
@@ -18,18 +19,26 @@ public:
     ~BitBoard();
 };
 
-class AlphaBetaNode 
+class AlphaBetaNode
 {
 private:
 
-public: 
+public:
     BitBoard Child;
     BitBoard Parent;
-    int value;
+    int Value;
     AlphaBetaNode();
     AlphaBetaNode(BitBoard parent);
     ~AlphaBetaNode();
 };
 
-static PlayerColor FlipColor(PlayerColor color);
+static PlayerColor FlipColor(PlayerColor color)
+{
+    if (color == PlayerColor::Black)
+    {
+        return PlayerColor::White;
+    }
+
+    return PlayerColor::Black;
+}
 

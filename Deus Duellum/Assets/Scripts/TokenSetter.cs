@@ -11,10 +11,19 @@ public class TokenSetter : MonoBehaviour {
     public GameObject ThorPrefabLight;
     public GameObject ThorPrefabDark;
 
+<<<<<<< HEAD
+=======
+    private BoardManager manager;
+
+    //hey git i made a change
+
+>>>>>>> origin/c++
     public void SetTokens(int player1First, int player1Character, int player2Character)
     {
         GameObject[] blackPieces = GameObject.FindGameObjectsWithTag("BlackPieces");
         GameObject[] whitePieces = GameObject.FindGameObjectsWithTag("WhitePieces");
+
+        manager = GetComponent<BoardManager>();
 
         //set players' tokens to light or dark for their chosen character
         if (player1First == 0)
@@ -30,7 +39,7 @@ public class TokenSetter : MonoBehaviour {
                     AthenaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     AthenaLight.gameObject.tag = "WhitePieces";
-                    
+                    manager.boardTokens.Add(AthenaLight);
                     //add to the game core
 
                     Destroy(oldPiece);
@@ -46,6 +55,7 @@ public class TokenSetter : MonoBehaviour {
                     RaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     RaLight.gameObject.tag = "WhitePieces";
+                    manager.boardTokens.Add(RaLight);
 
                     //add to the game core
 
@@ -62,6 +72,7 @@ public class TokenSetter : MonoBehaviour {
                     ThorLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     ThorLight.gameObject.tag = "WhitePieces";
+                    manager.boardTokens.Add(ThorLight);
 
                     //add to the game core
 
@@ -80,6 +91,7 @@ public class TokenSetter : MonoBehaviour {
                     AthenaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     AthenaDark.gameObject.tag = "BlackPieces";
+                    manager.boardTokens.Add(AthenaDark);
 
                     //add to the game core
 
@@ -96,6 +108,7 @@ public class TokenSetter : MonoBehaviour {
                     RaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     RaDark.gameObject.tag = "BlackPieces";
+                    manager.boardTokens.Add(RaDark);
 
                     //add to the game core
 
@@ -112,6 +125,7 @@ public class TokenSetter : MonoBehaviour {
                     ThorDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     ThorDark.gameObject.tag = "BlackPieces";
+                    manager.boardTokens.Add(ThorDark);
 
                     //add to the game core
 
@@ -134,6 +148,7 @@ public class TokenSetter : MonoBehaviour {
                     AthenaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     AthenaDark.transform.Rotate(0, 180, 0);
                     AthenaDark.gameObject.tag = "BlackPieces";
+                    manager.boardTokens.Add(AthenaDark);
 
                     //add to the game core
 
@@ -150,7 +165,11 @@ public class TokenSetter : MonoBehaviour {
                     RaDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     RaDark.gameObject.tag = "BlackPieces";
+<<<<<<< HEAD
                     RaDark.transform.Rotate(0, 180, 0);
+=======
+                    manager.boardTokens.Add(RaDark);
+>>>>>>> origin/c++
 
                     //add to the game core
 
@@ -167,7 +186,11 @@ public class TokenSetter : MonoBehaviour {
                     ThorDark.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorDark.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     ThorDark.gameObject.tag = "BlackPieces";
+<<<<<<< HEAD
                     ThorDark.transform.Rotate(0, 180, 0);
+=======
+                    manager.boardTokens.Add(ThorDark);
+>>>>>>> origin/c++
 
                     //add to the game core
 
@@ -186,7 +209,11 @@ public class TokenSetter : MonoBehaviour {
                     AthenaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     AthenaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     AthenaLight.gameObject.tag = "WhitePieces";
+<<<<<<< HEAD
                     AthenaLight.transform.Rotate(0, 180, 0);
+=======
+                    manager.boardTokens.Add(AthenaLight);
+>>>>>>> origin/c++
 
                     //add to the game core
 
@@ -203,7 +230,11 @@ public class TokenSetter : MonoBehaviour {
                     RaLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     RaLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     RaLight.gameObject.tag = "WhitePieces";
+<<<<<<< HEAD
                     RaLight.transform.Rotate(0, 180, 0);
+=======
+                    manager.boardTokens.Add(RaLight);
+>>>>>>> origin/c++
 
                     //add to the game core
 
@@ -220,7 +251,11 @@ public class TokenSetter : MonoBehaviour {
                     ThorLight.GetComponent<Token>().currentY = oldPiece.GetComponent<Token>().currentY;
                     ThorLight.GetComponent<Token>().isWhite = oldPiece.GetComponent<Token>().isWhite;
                     ThorLight.gameObject.tag = "WhitePieces";
+<<<<<<< HEAD
                     ThorLight.transform.Rotate(0, 180, 0);
+=======
+                    manager.boardTokens.Add(ThorLight);
+>>>>>>> origin/c++
 
                     //add to the game core
 

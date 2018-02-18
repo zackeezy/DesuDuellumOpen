@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Breakthrough;
+
 
 public class Token : MonoBehaviour
 {
@@ -9,6 +9,10 @@ public class Token : MonoBehaviour
     public int currentX;
     public int currentY;
     public bool isWhite;
+    public bool isBlack
+    {
+        get { return !isWhite; }
+    }
 
     private void OnMouseOver()
     {

@@ -1,11 +1,21 @@
 #pragma once
 #include "Utils.h"
+#include <vector>
 #include <climits>
+#include <algorithm>
+#include "Grid.h"
+
+using std::vector;
+using std::max;
+using std::min;
+
+
 static class Analyzer
 {
 private:
     static const int MAX_DEPTH = 5;
-    
+    static BitBoard _bestMove;
+
     static const int WIN = INT_MIN;
     static const int LOSS = INT_MAX;
     static const int VERTICAL_CONNECTION = 100;
@@ -21,8 +31,8 @@ private:
     static const int MOBILITY_PENALTY = 625;
     static const int HOME_ROW_MOVED = 5000;
 
-    static BitBoard * GetChildren(BitBoard board, PlayerColor color, int & childCount);
-    static AlphaBetaNode AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer);
+    static vector<BitBoard> GetChildren(BitBoard board, PlayerColor color);
+    static int AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer);
     static bool IsGameOver(BitBoard bitBoard);
     static int Evaluate(BitBoard board);
     static int GenerateBlockingPatternScore(BitBoard board, int index, PlayerColor color);
@@ -35,10 +45,12 @@ private:
     static int GenerateProtectionScore(BitBoard board, int index, PlayerColor color);
 
 public:
+
+
     Analyzer();
     ~Analyzer();
     static PlayerColor AiColor;
 
-    static int * GetMove(int whiteCoordinates[], int whiteCount, int blackCoordinates[], int blackCount);
+    static BitBoard GetMove(BitBoard board, PlayerColor color);
 };
 

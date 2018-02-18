@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Breakthrough;
+using Assets.Scripts;
 
 public class BoardManager : MonoBehaviour {
 
@@ -22,6 +22,10 @@ public class BoardManager : MonoBehaviour {
     public Text turnText;
 	public GameObject gameOverPanel;
     public bool isWhiteTurn = true;
+    public bool isBlackTurn
+    {
+        get { return !isWhiteTurn; }
+    }
     public PlayerType whitePlayer;
     public PlayerType blackPlayer;
     public PlayerType gameMode;
@@ -30,14 +34,24 @@ public class BoardManager : MonoBehaviour {
     public int selectionX = -1;
 	public int selectionY = -1;
 
-    private List<GameObject> activeToken;
+    public List<GameObject> boardTokens;
     private bool whiteWon = false;
 	private bool blackWon = false;
-    private bool tokenCaptured = false;
+    private GameObject _capturedPiece;
     private GameObject notationsToggleUI;
     private Toggle notationsToggle;
 
-    private Move _move;
+    private GameCore _core;
+
+    private float[] tilePositionX =
+    {
+        -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
+    };
+
+    private float[] tilePositionZ =
+    {
+        -7.65f, -6.4f, -5.15f, -3.9f, -2.65f, -1.4f, -0.1500001f, 1.1f, 
+    };
 
     // Use this for initialization
     void Start () {
@@ -48,8 +62,9 @@ public class BoardManager : MonoBehaviour {
         notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
 
-        _move = new Move();
         setPrefs();
+        _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
+        _capturedPiece = null;
 	}
 
 	// Update is called once per frame
@@ -64,6 +79,7 @@ public class BoardManager : MonoBehaviour {
         {
             return;
         }
+
         //if the game is not over and same team
         if (!whiteWon && !blackWon && selected.isWhite == isWhiteTurn)
         {
@@ -73,62 +89,30 @@ public class BoardManager : MonoBehaviour {
             selectionY = y;
             selectedToken = selected;
 
-            if (selectedToken.isWhite)
+            //Check East
+            if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
             {
-                _move.whiteFromX = selectionX;
-                _move.whiteFromY = selectionY;
-
-                //Check Left
-                _move.whiteToX = _move.whiteFromX - 1;
-                _move.whiteToY = _move.whiteFromY + 1;
-                bool isAllowed = _move.allowMove();
-                //Highlight
-
-                //Check Right
-                _move.whiteToX = _move.whiteFromX + 1;
-                _move.whiteToY = _move.whiteFromY + 1;
-                isAllowed = _move.allowMove();
-                //Highlight
-
-                //Check Forward
-                _move.whiteToX = _move.whiteFromX;
-                _move.whiteToY = _move.whiteFromY + 1;
-                isAllowed = _move.allowMove();
                 //Highlight
             }
-            else if(!selectedToken.isWhite)
+
+            //Check Forward
+            if (_core.IsMoveAllowed(selectionX, selectionY, Direction.Forward))
             {
-                _move.blackFromX = selectionX;
-                _move.blackFromY = selectionY;
-
-                //Check Left
-                _move.blackToX = _move.blackFromX + 1;
-                _move.blackToY = _move.blackFromY - 1;
-                bool isAllowed = _move.allowMove();
                 //Highlight
+            }
 
-                //Check Right
-                _move.blackToX = _move.blackFromX + 1;
-                _move.blackToY = _move.blackFromY + 1;
-                isAllowed = _move.allowMove();
-                //Highlight
-
-                //Check Forward
-                _move.blackToX = _move.blackFromX;
-                _move.blackToY = _move.blackFromY - 1;
-                isAllowed = _move.allowMove();
+            //Check West
+            if (_core.IsMoveAllowed(selectionX, selectionY, Direction.West))
+            {
                 //Highlight
             }
         }
-        //if game is not over and different team
-        else if(!whiteWon && !blackWon && selected.isWhite != isWhiteTurn)
+        else
         {
-            if (selectedToken != null && selectedToken.isWhite == isWhiteTurn)
+            if(!whiteWon && !blackWon && selected.isWhite != isWhiteTurn)
             {
-                if(AttemptMove(x, y, selected.transform.position.x, selected.transform.position.z))
-                {
-                    tokenCaptured = true;
-                }
+                //they are trying to capture a piece
+                TileClicked(x, y, selected.transform.position.x, selected.transform.position.z);
             }
         }
     }
@@ -142,7 +126,7 @@ public class BoardManager : MonoBehaviour {
         //if a token is selected
         if (selectedToken != null)
         {
-            Debug.Log("moving to: " + x + ", " + y);
+            //Debug.Log("moving to: " + x + ", " + y);
             //if that spot is a valid move
             AttemptMove(x, y, xPos, zPos);
         }
@@ -151,31 +135,36 @@ public class BoardManager : MonoBehaviour {
     public bool AttemptMove(int x, int y, float xPos, float zPos)
     {
         bool isAllowed = false;
-        if (isWhiteTurn)
+
+        if (x < selectedToken.currentX)
         {
-            _move.whiteFromX = selectedToken.currentX;
-            _move.whiteFromY = selectedToken.currentY;
-            _move.whiteToX = x;
-            _move.whiteToY = y;
-            isAllowed = _move.allowMove();
+            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
         }
-        else if (!isWhiteTurn)
+        else if (x == selectedToken.currentX)
         {
-            _move.blackFromX = selectedToken.currentX;
-            _move.blackFromY = selectedToken.currentY;
-            _move.blackToX = x;
-            _move.blackToY = y;
-            isAllowed = _move.allowMove();
+            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
         }
+        else if (x > selectedToken.currentX)
+        {
+            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
+        }
+
 
         if (isAllowed)
         {
-            if (GameCoreToken.tokens[x, y] != ' ')
-            {
-                tokenCaptured = true;
-            }
             //tell the game core about the move
-            _move.RearrangeTokens();
+            if (x < selectedToken.currentX)
+            {
+                _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            }
+            else if (x == selectedToken.currentX)
+            {
+                _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            }
+            else if (x > selectedToken.currentX)
+            {
+                _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.East);
+            }
 
             //actually move the token object visually
             MoveToken(x, y, xPos, zPos);
@@ -194,34 +183,17 @@ public class BoardManager : MonoBehaviour {
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
 
         selectedToken.SetBoardPosition (x, y);
-
-		//send the token's position to the log
         
         //destroy the captured token
-		if(tokenCaptured){
-            //destroy the captured gameobject
-            GameObject[] otherPieces = null;
-            if (isWhiteTurn)
-            {
-                otherPieces = GameObject.FindGameObjectsWithTag("BlackPieces");
-            }
-            else
-            {
-                otherPieces = GameObject.FindGameObjectsWithTag("WhitePieces");
-            }
-            foreach (GameObject othertoken in otherPieces)
-            {
-                Token other = othertoken.GetComponent<Token>();
-                if (other.currentX == x && other.currentY == y)
-                {
-                    Destroy(other.gameObject);
-                }
-            }
+		if(_capturedPiece != null)
+        {
+            
+            Destroy(_capturedPiece);
+            _capturedPiece = null;
 
             //add an x to the the log
         }
 
-        //ask the game core if the game is over 
         GameWon();
 
         //toggle the turn
@@ -239,9 +211,21 @@ public class BoardManager : MonoBehaviour {
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                //ask for an AI move from the game core
-                //use the AI's move received from core to show a move was made
+                int x = 0, y = 0;
+                Direction direction = Direction.East;
 
+                _core.GetMove(ref x, ref y, ref direction);
+
+                if (_core.IsMoveAllowed(x,y,direction))
+                {
+                    GameObject movingPiece = _core.Board[x, y];
+                    _core.MakeMove(x, y, direction);
+                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
+                    selectedToken = movingPiece.GetComponent<Token>();
+
+                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
+                }
+                gameMode = PlayerType.Local;
             }
             if (whitePlayer == PlayerType.Network)
             {
@@ -251,14 +235,26 @@ public class BoardManager : MonoBehaviour {
 
             }
         }
-        else if(!isWhiteTurn)
+        else if(isBlackTurn)
         {
             turnText.text = "Black Player's Turn";
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                //ask for an AI move from the game core
-                //use the AI's move received from core to show a move was made
+                int x = 0, y = 0;
+                Direction direction = Direction.East;
+
+                _core.GetMove(ref x, ref y, ref direction);
+
+                if (_core.IsMoveAllowed(x, y, direction))
+                {
+                    GameObject movingPiece = _core.Board[x, y];
+                    _core.MakeMove(x, y, direction);
+                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
+                    selectedToken = movingPiece.GetComponent<Token>();
+                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
+                }
+                gameMode = PlayerType.Local;
 
             }
             if (blackPlayer == PlayerType.Network)
@@ -340,6 +336,7 @@ public class BoardManager : MonoBehaviour {
             Camera.main.enabled = false;
             SetNotations(false);
         }
+        gameMode = whitePlayer;
         //testfirst();
 
         //set the tokens

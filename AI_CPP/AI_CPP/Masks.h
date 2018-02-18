@@ -10,27 +10,22 @@ public:
     static class WhiteMasks
     {
     private:
-        static unsigned long long * GenerateMobilityTriangleList();
-        static unsigned long long GenerateMobilityTriangle(int index);
 
     public:
         static unsigned long long Forward[64];
         static unsigned long long EastAttack[64];
         static unsigned long long WestAttack[64];
-        static unsigned long long * MobilityTriangleList;
+        
     };
 
     static class BlackMasks
     {
     private:
-        static unsigned long long * GenerateMobilityTriangleList();
-        static unsigned long long GenerateMobilityTriangle(int index);
 
     public:
         static unsigned long long Forward[64];
         static unsigned long long EastAttack[64];
         static unsigned long long WestAttack[64];
-        static unsigned long long * MobilityTriangleList;
     };
 
     static class OrientationMasks
