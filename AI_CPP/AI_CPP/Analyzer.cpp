@@ -115,7 +115,7 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
         {
             int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false);
 
-            if (value <= childScore && remainingDepth == MAX_DEPTH)
+            if (value < childScore && remainingDepth == MAX_DEPTH - 1)
             {
                 _bestMove = child;
 
@@ -123,7 +123,7 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
             value = max(value, childScore);
             alpha = max(alpha, value);
 
-            if (beta < alpha) break;
+            if (beta <= alpha) break;
         }
 
         return value;
@@ -137,14 +137,14 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
         {
             int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true);
             
-            if (value >= childScore && remainingDepth == MAX_DEPTH) 
+            if (value > childScore && remainingDepth == MAX_DEPTH - 1) 
             {
                 _bestMove = child;
             }
             value = min(value, childScore);
             beta = min(beta, value);
 
-            if (beta < alpha) break;
+            if (beta <= alpha) break;
         }
         return value;
     }

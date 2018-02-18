@@ -19,7 +19,7 @@ namespace Assets.Scripts
         public readonly PlayerType WhitePlayer;
         public readonly PlayerType BlackPlayer;
 
-        public readonly bool IsWhiteTurn;
+        public bool IsWhiteTurn;
         public bool IsBlackTurn
         {
             get { return !IsWhiteTurn; }
@@ -40,6 +40,31 @@ namespace Assets.Scripts
             }
 
             IsWhiteTurn = true;
+        }
+
+        public void MoveCoordinates(ref int x, ref int y, Direction direction, bool white)
+        {
+            if (white)
+            {
+                y += 1; 
+            }
+            else
+            {
+                y -= 1;
+            }
+               
+            if (direction == Direction.East)
+            {
+                x += 1;
+            }
+            else if (direction == Direction.West)
+            {
+                x -= 1;
+            }
+            else if (direction == Direction.Forward)
+            {
+                //Do Nothing
+            }
         }
 
         public void GetMove(ref int x, ref int y, ref Direction direction)
@@ -78,22 +103,17 @@ namespace Assets.Scripts
 
         private void GetAiMove(ref int x, ref int y, ref Direction direction)
         {
-            List<int> whiteCoords = new List<int>();
-            List<int> blackCoords = new List<int>();
-
             foreach (GameObject space in Board)
             {
                 if (space != null)
                 {
                     if (space.GetComponent<Token>().isWhite)
                     {
-                        whiteCoords.Add(space.GetComponent<Token>().currentX);
-                        whiteCoords.Add(space.GetComponent<Token>().currentY);
+                        FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 0);
                     }
                     else if (space.GetComponent<Token>().isBlack)
                     {
-                        blackCoords.Add(space.GetComponent<Token>().currentX);
-                        blackCoords.Add(space.GetComponent<Token>().currentY);
+                        FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 1);
                     }
                 }
             }
@@ -102,8 +122,7 @@ namespace Assets.Scripts
 
             color = IsWhiteTurn ? 0 : 1;
 
-            AccessAiForAMove(whiteCoords.ToArray(), whiteCoords.Count, blackCoords.ToArray(), blackCoords.Count,
-               ref fromX, ref fromY, ref dir, color);
+            GenerateMove(ref fromX, ref fromY, ref dir, color);
             x = fromX;
             y = fromY;
 
@@ -111,10 +130,10 @@ namespace Assets.Scripts
         }
 
         [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
-        public static extern int AccessAiForAMove(int[] whiteCoordinates, int whiteCount,
-        int[] blackCoordinates, int blackCount,
-        ref int fromX, ref int fromY, ref int direction,
-        int color);
+        public static extern void GenerateMove(ref int fromX, ref int fromY, ref int direction, int color);
+
+        [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+        public static extern void FillOrigin(int x, int y, int color);
 
         private void GetNetworkMove(ref int x, ref int y, ref Direction direction)
         {
@@ -129,19 +148,19 @@ namespace Assets.Scripts
             {
                 if (direction == Direction.Forward)
                 {
-                    if (Board[x, y + 1] == null)
+                    if (y != 7 && Board[x, y + 1] == null)
                     {
                         isAllowed = true;
                     }
                 }
-                else if (direction == Direction.East)
+                else if (x != 7 && y != 7 && direction == Direction.East)
                 {
                     if (Board[x + 1, y + 1] == null || Board[x + 1, y + 1].GetComponent<Token>().isBlack)
                     {
                         isAllowed = true;
                     }
                 }
-                else if (direction == Direction.West)
+                else if (x != 0 && y != 7 && direction == Direction.West)
                 {
                     if (Board[x - 1, y + 1] == null || Board[x - 1, y + 1].GetComponent<Token>().isBlack)
                     {
@@ -151,21 +170,21 @@ namespace Assets.Scripts
             }
             else if(IsBlackTurn && Board[x, y] != null && Board[x, y].GetComponent<Token>().isBlack)
             {
-                if (direction == Direction.Forward)
+                if (y != 0 && direction == Direction.Forward)
                 {
                     if (Board[x, y - 1] == null)
                     {
                         isAllowed = true;
                     }
                 }
-                else if (direction == Direction.East)
+                else if (y != 0 && x != 7 && direction == Direction.East)
                 {
                     if (Board[x + 1,y - 1] == null || Board[x + 1, y - 1].GetComponent<Token>().isWhite)
                     {
                         isAllowed = true;
                     }
                 }
-                else if (direction == Direction.West)
+                else if (y != 0 && x != 0 && direction == Direction.West)
                 {
                     if (Board[x - 1, y - 1] == null || Board[x - 1, y - 1].GetComponent<Token>().isWhite)
                     {
@@ -213,6 +232,8 @@ namespace Assets.Scripts
                     }
                     Board[x - 1, y + 1] = temp;
                 }
+
+                IsWhiteTurn = !IsWhiteTurn;
             }
             else if (IsBlackTurn && IsMoveAllowed(x, y, direction))
             {
@@ -242,6 +263,8 @@ namespace Assets.Scripts
                     }
                     Board[x - 1, y - 1] = temp;
                 }
+
+                IsWhiteTurn = !IsWhiteTurn;
             }
             else
             {
