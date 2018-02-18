@@ -83,29 +83,32 @@ public class CharacterSelect : MonoBehaviour {
     {
         turnSelected = true;
         Button btn;
-        if (first)
+        if (gameIndex != 1)
         {
-            //player1 is white
-            PlayerPrefs.SetInt("player1", 0);
-            btn = this.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Button>();
-        }
-        else
-        {
-            //player1 is black
-            PlayerPrefs.SetInt("player1", 1);
-            btn = this.transform.GetChild(1).GetChild(2).gameObject.GetComponent<Button>();
-        }
+            if (first)
+            {
+                //player1 is white
+                PlayerPrefs.SetInt("player1", 0);
+                btn = this.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Button>();
+            }
+            else
+            {
+                //player1 is black
+                PlayerPrefs.SetInt("player1", 1);
+                btn = this.transform.GetChild(1).GetChild(2).gameObject.GetComponent<Button>();
+            }
 
-        //add visual effect to show it was picked
-        if (turnHighlight != null)
-        {
-            turnHighlight.SetActive(false);
-            turnHighlight = null;
+            //add visual effect to show it was picked
+            if (turnHighlight != null)
+            {
+                turnHighlight.SetActive(false);
+                turnHighlight = null;
+            }
+            GameObject highlight;
+            highlight = btn.transform.GetChild(1).gameObject;
+            highlight.SetActive(true);
+            turnHighlight = highlight;
         }
-        GameObject highlight;
-        highlight = btn.transform.GetChild(1).gameObject;
-        highlight.SetActive(true);
-        turnHighlight = highlight;
     }
 
     public void setDifficulty(bool easy)

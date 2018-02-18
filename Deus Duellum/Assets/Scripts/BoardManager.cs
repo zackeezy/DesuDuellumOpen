@@ -246,13 +246,12 @@ public class BoardManager : MonoBehaviour {
             //add an x to the the log
         }
 
-        GameWon();
-
         //toggle the turn
         ChangeTurn();
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
-	}
+        GameWon(y);
+    }
 
     private void ChangeTurn()
     {
@@ -343,11 +342,57 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    private void GameWon()
+    private void GameWon(int y)
     {
         //ask the game core if the game has been won
-        //show that the game was won and who won
-        //gameOverPanel.SetActive(true);
+        _core.HasWon(y);
+
+        //change the winnertext
+        GameObject winTextobj = gameOverPanel.transform.GetChild(0).gameObject;
+        Text winText = winTextobj.GetComponent<Text>();
+
+        if (_core.whiteWon)
+        {
+            if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //player1 win
+                winText.text = "Player One Wins";
+            }
+            else if (whitePlayer == PlayerType.Local)
+            {
+                //you win
+                winText.text = "You Won!";
+            }
+            else
+            {
+                //you lost
+                winText.text = "You Lost!";
+            }
+            //show that the game was won and who won
+            gameOverPanel.SetActive(true);
+        }
+        else if (_core.blackWon)
+        {
+            if (blackPlayer == PlayerType.Local && whitePlayer == PlayerType.Local)
+            {
+                //player2 win
+                winText.text = "Player Two Wins";
+            }
+            else if (blackPlayer == PlayerType.Local)
+            {
+                //you win
+                winText.text = "You Won!";
+            }
+            else
+            {
+                //you lost
+                winText.text = "You Lost!";
+            }
+            //show that the game was won and who won
+            gameOverPanel.SetActive(true);
+        }
+
+
     }
 
     private void setPrefs()
