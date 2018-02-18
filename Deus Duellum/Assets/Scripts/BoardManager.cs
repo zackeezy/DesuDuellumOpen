@@ -202,9 +202,6 @@ public class BoardManager : MonoBehaviour {
                 isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
             }
         }
-       
-
-
         if (isAllowed)
         {
             //tell the game core about the move

@@ -113,7 +113,6 @@ public class CharacterSelect : MonoBehaviour {
         difficultySelected = true;
         Button btn;
 
-
         if (easy)
         {
             //easy
