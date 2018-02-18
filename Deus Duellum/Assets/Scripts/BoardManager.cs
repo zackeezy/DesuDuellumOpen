@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts;
+using System.Threading;
 
 public class BoardManager : MonoBehaviour {
 
@@ -12,6 +13,11 @@ public class BoardManager : MonoBehaviour {
     public Camera blackCam;
     public GameObject Notations;
     public GameObject altNotations;
+
+    private int _awaitMoveX;
+    private int _awaitMoveY;
+    private Direction _awaitMoveDirection;
+    private bool _foreignMoveCompleted;
 
     public Image player1img;
     public Image player2img;
@@ -65,13 +71,27 @@ public class BoardManager : MonoBehaviour {
         setPrefs();
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
+        _foreignMoveCompleted = false;
 	}
 
 	// Update is called once per frame
 	void Update ()
     {
-        
-	}
+        if (_foreignMoveCompleted)
+        {
+            if (_core.IsMoveAllowed(_awaitMoveX, _awaitMoveY, _awaitMoveDirection))
+            {
+                GameObject movingPiece = _core.Board[_awaitMoveX, _awaitMoveY];
+                _core.MakeMove(_awaitMoveX, _awaitMoveY, _awaitMoveDirection);
+                _core.MoveCoordinates(ref _awaitMoveX, ref _awaitMoveY, _awaitMoveDirection, isWhiteTurn);
+                selectedToken = movingPiece.GetComponent<Token>();
+
+                MoveToken(_awaitMoveX, _awaitMoveY, tilePositionX[_awaitMoveX], tilePositionZ[_awaitMoveY]);
+            }
+            _foreignMoveCompleted = false;
+            gameMode = PlayerType.Local;
+        }
+    }
 
     public void TokenClicked(int x, int y, Token selected)
     {
@@ -202,6 +222,19 @@ public class BoardManager : MonoBehaviour {
 		selectedToken = null;
 	}
 
+    private void GetMove()
+    {
+        int x = 0, y = 0;
+        Direction direction = Direction.East;
+
+        _core.GetMove(ref x, ref y, ref direction);
+
+        _awaitMoveX = x;
+        _awaitMoveY = y;
+        _awaitMoveDirection = direction;
+        _foreignMoveCompleted = true;
+    }
+
     private void ChangeTurn()
     {
         isWhiteTurn = !isWhiteTurn;
@@ -211,23 +244,12 @@ public class BoardManager : MonoBehaviour {
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                int x = 0, y = 0;
-                Direction direction = Direction.East;
-
-                _core.GetMove(ref x, ref y, ref direction);
-
-                if (_core.IsMoveAllowed(x,y,direction))
-                {
-                    GameObject movingPiece = _core.Board[x, y];
-                    _core.MakeMove(x, y, direction);
-                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
-                    selectedToken = movingPiece.GetComponent<Token>();
-
-                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
-                }
-                gameMode = PlayerType.Local;
+                _core.PrepForForeignMove();
+                ThreadStart aiRef = new ThreadStart(GetMove);
+                Thread aiThread = new Thread(aiRef);
+                aiThread.Start();
             }
-            if (whitePlayer == PlayerType.Network)
+            else if (whitePlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
                 //ask for an network move from the game core
@@ -241,21 +263,10 @@ public class BoardManager : MonoBehaviour {
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                int x = 0, y = 0;
-                Direction direction = Direction.East;
-
-                _core.GetMove(ref x, ref y, ref direction);
-
-                if (_core.IsMoveAllowed(x, y, direction))
-                {
-                    GameObject movingPiece = _core.Board[x, y];
-                    _core.MakeMove(x, y, direction);
-                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
-                    selectedToken = movingPiece.GetComponent<Token>();
-                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
-                }
-                gameMode = PlayerType.Local;
-
+                _core.PrepForForeignMove();
+                ThreadStart aiRef = new ThreadStart(GetMove);
+                Thread aiThread = new Thread(aiRef);
+                aiThread.Start();
             }
             if (blackPlayer == PlayerType.Network)
             {
