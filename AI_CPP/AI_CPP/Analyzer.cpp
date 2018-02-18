@@ -306,7 +306,7 @@ int Analyzer::Evaluate(BitBoard board)
     }
     else
     {
-        totalScore = blackScore = whiteScore;
+        totalScore = blackScore - whiteScore;
     }
 
     return totalScore;
@@ -356,7 +356,7 @@ int Analyzer::GenerateMobilityScore(BitBoard board, int index, PlayerColor color
     * as well as the entire mobility triangle of the piece::  The less enemy pieces
     * in the triangle, the better the score::
     */
-    int score = BASE_MOBILITY;
+    int score = 0;
 
     if (color == PlayerColor::White)
     {
@@ -485,38 +485,38 @@ int Analyzer::GenerateHomeRowProtectionPenalty(BitBoard board, PlayerColor color
 
     if (color == PlayerColor::White)
     {
-        if ((board.whitePieces & Grid::A2) == 0)
+        if ((board.whitePieces & Grid::B1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.whitePieces & Grid::A3) == 0)
+        if ((board.whitePieces & Grid::C1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.whitePieces & Grid::A6) == 0)
+        if ((board.whitePieces & Grid::F1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.whitePieces & Grid::A7) == 0)
+        if ((board.whitePieces & Grid::G1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
     }
     else if (color == PlayerColor::Black)
     {
-        if ((board.blackPieces & Grid::H2) == 0)
+        if ((board.blackPieces & Grid::B8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.blackPieces & Grid::H3) == 0)
+        if ((board.blackPieces & Grid::C8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.blackPieces & Grid::H6) == 0)
+        if ((board.blackPieces & Grid::F8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.blackPieces & Grid::H7) == 0)
+        if ((board.blackPieces & Grid::G8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }

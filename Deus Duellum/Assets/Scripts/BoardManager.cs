@@ -82,7 +82,7 @@ public class BoardManager : MonoBehaviour {
             if (_core.IsMoveAllowed(_awaitMoveX, _awaitMoveY, _awaitMoveDirection))
             {
                 GameObject movingPiece = _core.Board[_awaitMoveX, _awaitMoveY];
-                _core.MakeMove(_awaitMoveX, _awaitMoveY, _awaitMoveDirection);
+                _capturedPiece = _core.MakeMove(_awaitMoveX, _awaitMoveY, _awaitMoveDirection);
                 _core.MoveCoordinates(ref _awaitMoveX, ref _awaitMoveY, _awaitMoveDirection, isWhiteTurn);
                 selectedToken = movingPiece.GetComponent<Token>();
 
