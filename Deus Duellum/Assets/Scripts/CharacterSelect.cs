@@ -11,6 +11,10 @@ public class CharacterSelect : MonoBehaviour {
     public Text characterSelectText;
     public Button playButton;
 
+    private List<GameObject> CharacterHighlights;
+    private GameObject difficultyHighlight;
+    private GameObject turnHighlight;
+
     private bool charactersSelected = false;
     private bool difficultySelected = false;
     private bool turnSelected = false;
@@ -20,6 +24,9 @@ public class CharacterSelect : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         gameIndex = SceneManager.GetActiveScene().buildIndex;
+        CharacterHighlights = new List<GameObject>();
+        difficultyHighlight = null;
+        turnHighlight = null;
     }
 
     // Update is called once per frame
@@ -46,14 +53,18 @@ public class CharacterSelect : MonoBehaviour {
             //{
                 characterSelectText.text = "Press Play";
                 PlayerPrefs.SetInt("Player2Character", character);
+                setCharacterHighlight(character, false);
                 charactersSelected = true;
+                setFirst(true);
             //}
         }
         else
         {
             player1character = character;
             PlayerPrefs.SetInt("Player1Character", character);
-            setFirst(true);
+
+            setCharacterHighlight(character, true);
+
             //let player2 pick a character for a local game
             if (gameIndex == 1)
             {
@@ -71,37 +82,64 @@ public class CharacterSelect : MonoBehaviour {
     public void setFirst(bool first)
     {
         turnSelected = true;
-
-        //add visual effect to show it was picked
-
-        if (first)
+        Button btn;
+        if (gameIndex != 1)
         {
-            //player1 is white
-            PlayerPrefs.SetInt("player1", 0);
-        }
-        else
-        {
-            //player1 is black
-            PlayerPrefs.SetInt("player1", 1);
+            if (first)
+            {
+                //player1 is white
+                PlayerPrefs.SetInt("player1", 0);
+                btn = this.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Button>();
+            }
+            else
+            {
+                //player1 is black
+                PlayerPrefs.SetInt("player1", 1);
+                btn = this.transform.GetChild(1).GetChild(2).gameObject.GetComponent<Button>();
+            }
+
+            //add visual effect to show it was picked
+            if (turnHighlight != null)
+            {
+                turnHighlight.SetActive(false);
+                turnHighlight = null;
+            }
+            GameObject highlight;
+            highlight = btn.transform.GetChild(1).gameObject;
+            highlight.SetActive(true);
+            turnHighlight = highlight;
         }
     }
 
     public void setDifficulty(bool easy)
     {
         difficultySelected = true;
-
-        //add visual effect to show it was picked
+        Button btn;
 
         if (easy)
         {
             //easy
             PlayerPrefs.SetInt("difficulty", 0);
+            btn = this.transform.GetChild(2).GetChild(1).gameObject.GetComponent<Button>();
         }
         else
         {
             //hard
             PlayerPrefs.SetInt("difficulty", 1);
+            btn = this.transform.GetChild(2).GetChild(2).gameObject.GetComponent<Button>();
         }
+
+        //add visual effect to show it was picked
+        if (difficultyHighlight != null)
+        {
+            difficultyHighlight.SetActive(false);
+            difficultyHighlight = null;
+        }
+        GameObject highlight;
+        highlight = btn.transform.GetChild(1).gameObject;
+        highlight.SetActive(true);
+        difficultyHighlight = highlight;
+
     }
 
     public void CheckSettings()
@@ -123,5 +161,29 @@ public class CharacterSelect : MonoBehaviour {
         }
 
         playButton.interactable = canPlay;
+    }
+
+    public void setCharacterHighlight(int character, bool player1)
+    {
+        Button btn = this.transform.GetChild(0).GetChild(character + 1).gameObject.GetComponent<Button>();
+        GameObject highlight;
+        if (player1)
+        {
+            foreach(GameObject h in CharacterHighlights)
+            {
+                h.SetActive(false);
+            }
+            highlight = btn.transform.GetChild(0).gameObject;
+            //Image btnImg = highlight.GetComponent<Image>();
+            //btnImg.sprite = highlight1;
+        }
+        else
+        {
+            highlight = btn.transform.GetChild(1).gameObject;
+            //Image btnImg = highlight.GetComponent<Image>();
+            //btnImg.sprite = highlight2;
+        }
+        highlight.SetActive(true);
+        CharacterHighlights.Add(highlight);
     }
 }

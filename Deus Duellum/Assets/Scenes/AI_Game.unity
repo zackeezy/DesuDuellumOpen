@@ -1743,6 +1743,12 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114635302301733716, guid: 61748437b26850549b7361cdda50f7b6,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 90d6ba25bb2f99b48af1e3d4c56b3ca2,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 61748437b26850549b7361cdda50f7b6, type: 2}
   m_IsPrefabParent: 0
@@ -1987,27 +1993,9 @@ Prefab:
       propertyPath: gameOverPanel
       value: 
       objectReference: {fileID: 2010857938}
-    - target: {fileID: 1126749865304884, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1711812387567168, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: altNotations
-      value: 
-      objectReference: {fileID: 1755065550}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1755065550 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1711812387567168, guid: a75c3327317d4bf4c930d20322c3016d,
-    type: 2}
-  m_PrefabInternal: {fileID: 1755065548}
 --- !u!4 &1784626754 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000010887688070, guid: 177f7874044f99648b7048a4fbb89f54,

@@ -26,7 +26,8 @@ namespace Assets.Scripts
         {
             get { return !IsWhiteTurn; }
         }
-
+        public bool whiteWon = false;
+        public bool blackWon = false;
         public GameObject[,] Board;
 
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
@@ -320,6 +321,22 @@ namespace Assets.Scripts
             }
 
             return capturedPiece;
+        }
+
+        //check if white or black won 
+        public bool HasWon(int y)
+        {
+            //if it is white's turn and y is equal to 7 than white has won
+            if (IsBlackTurn && y == 7)
+            {
+                whiteWon = true;
+            }
+            //if it is black's turn and y is equal to 0 than black has won
+            else if (IsWhiteTurn && y == 0)
+            {
+                blackWon = !whiteWon;
+            }
+            return whiteWon;
         }
     }
 }

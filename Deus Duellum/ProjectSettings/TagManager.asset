@@ -8,6 +8,9 @@ TagManager:
   - WhitePieces
   - BlackPieces
   - NotationsToggle
+  - Tiles
+  - Player1
+  - Player2
   layers:
   - Default
   - TransparentFX

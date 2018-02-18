@@ -40,7 +40,10 @@ public class BoardManager : MonoBehaviour {
     public int selectionX = -1;
 	public int selectionY = -1;
 
+    public bool muted = false;
+
     public List<GameObject> boardTokens;
+
     private bool whiteWon = false;
 	private bool blackWon = false;
     private GameObject _capturedPiece;
@@ -103,28 +106,62 @@ public class BoardManager : MonoBehaviour {
         //if the game is not over and same team
         if (!whiteWon && !blackWon && selected.isWhite == isWhiteTurn)
         {
+            if (selectedToken != null)
+            {
+                BoardHighlights.Instance.HideHighlights();
+                //TODO: if already a selected token, make it not float
+
+            }
+
             //Debug.Log("selected: " + x + ", " + y);
             //select that token
             selectionX = x;
             selectionY = y;
             selectedToken = selected;
 
+            //TODO: make the token float a little
+
             //Check East
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
             {
                 //Highlight
+                if (isWhiteTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x + 1, y + 1);
+                }
+                else if(isBlackTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x + 1, y - 1);
+                }
             }
 
             //Check Forward
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.Forward))
             {
                 //Highlight
+                if (isWhiteTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x, y + 1);
+                }
+                else if (isBlackTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x, y - 1);
+                }
+
             }
 
             //Check West
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.West))
             {
                 //Highlight
+                if (isWhiteTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x - 1, y + 1);
+                }
+                else if (isBlackTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x - 1, y - 1);
+                }
             }
         }
         else
@@ -155,21 +192,36 @@ public class BoardManager : MonoBehaviour {
     public bool AttemptMove(int x, int y, float xPos, float zPos)
     {
         bool isAllowed = false;
-
-        if (x < selectedToken.currentX)
+        if (isWhiteTurn && y == selectedToken.currentY + 1)
         {
-            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            if (x == selectedToken.currentX - 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            }
+            else if (x == selectedToken.currentX)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            }
+            else if (x == selectedToken.currentX + 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
+            }
         }
-        else if (x == selectedToken.currentX)
+        if (isBlackTurn && y == selectedToken.currentY - 1)
         {
-            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            if (x == selectedToken.currentX - 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.West);
+            }
+            else if (x == selectedToken.currentX)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+            }
+            else if (x == selectedToken.currentX + 1)
+            {
+                isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
+            }
         }
-        else if (x > selectedToken.currentX)
-        {
-            isAllowed = _core.IsMoveAllowed(selectedToken.currentX, selectedToken.currentY, Direction.East);
-        }
-
-
         if (isAllowed)
         {
             //tell the game core about the move
@@ -214,13 +266,12 @@ public class BoardManager : MonoBehaviour {
             //add an x to the the log
         }
 
-        GameWon();
-
         //toggle the turn
         ChangeTurn();
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
-	}
+        GameWon(y);
+    }
 
     private void GetMove()
     {
@@ -248,6 +299,7 @@ public class BoardManager : MonoBehaviour {
                 ThreadStart aiRef = new ThreadStart(GetMove);
                 Thread aiThread = new Thread(aiRef);
                 aiThread.Start();
+
             }
             else if (whitePlayer == PlayerType.Network)
             {
@@ -255,6 +307,18 @@ public class BoardManager : MonoBehaviour {
                 //ask for an network move from the game core
                 //use the net's move received from core to show a move was made
 
+            }
+            else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //enable white's emote button
+                GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote.interactable = true;
+
+                //disable black's emote button 
+                GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote2.interactable = false;
             }
         }
         else if(isBlackTurn)
@@ -268,21 +332,79 @@ public class BoardManager : MonoBehaviour {
                 Thread aiThread = new Thread(aiRef);
                 aiThread.Start();
             }
-            if (blackPlayer == PlayerType.Network)
+            else if (blackPlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
                 //ask for an network move from the game core
                 //use the net's move received from core to show a move was made
 
             }
+            else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //disable white's emote button
+                GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote.interactable = false;
+
+                //enable blacks's emote button 
+                GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                emote2.interactable = true;
+            }
         }
     }
 
-    private void GameWon()
+    private void GameWon(int y)
     {
         //ask the game core if the game has been won
-        //show that the game was won and who won
-        //gameOverPanel.SetActive(true);
+        _core.HasWon(y);
+
+        //change the winnertext
+        GameObject winTextobj = gameOverPanel.transform.GetChild(0).gameObject;
+        Text winText = winTextobj.GetComponent<Text>();
+
+        if (_core.whiteWon)
+        {
+            if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //player1 win
+                winText.text = "Player One Wins";
+            }
+            else if (whitePlayer == PlayerType.Local)
+            {
+                //you win
+                winText.text = "You Won!";
+            }
+            else
+            {
+                //you lost
+                winText.text = "You Lost!";
+            }
+            //show that the game was won and who won
+            gameOverPanel.SetActive(true);
+        }
+        else if (_core.blackWon)
+        {
+            if (blackPlayer == PlayerType.Local && whitePlayer == PlayerType.Local)
+            {
+                //player2 win
+                winText.text = "Player Two Wins";
+            }
+            else if (blackPlayer == PlayerType.Local)
+            {
+                //you win
+                winText.text = "You Won!";
+            }
+            else
+            {
+                //you lost
+                winText.text = "You Lost!";
+            }
+            //show that the game was won and who won
+            gameOverPanel.SetActive(true);
+        }
+
+
     }
 
     private void setPrefs()
