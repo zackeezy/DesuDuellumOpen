@@ -1987,64 +1987,9 @@ Prefab:
       propertyPath: gameOverPanel
       value: 
       objectReference: {fileID: 2010857938}
-    - target: {fileID: 1126749865304884, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1711812387567168, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: altNotations
-      value: 
-      objectReference: {fileID: 1755065550}
-    - target: {fileID: 1695355044085372, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212349829273735086, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4943327411883820, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 23188194245750898, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: f0d22662a715af8469b40468f7f45e09, type: 2}
-    - target: {fileID: 4147754779702810, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1755065550 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1711812387567168, guid: a75c3327317d4bf4c930d20322c3016d,
-    type: 2}
-  m_PrefabInternal: {fileID: 1755065548}
 --- !u!4 &1784626754 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000010887688070, guid: 177f7874044f99648b7048a4fbb89f54,

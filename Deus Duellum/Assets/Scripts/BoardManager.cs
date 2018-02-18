@@ -83,28 +83,62 @@ public class BoardManager : MonoBehaviour {
         //if the game is not over and same team
         if (!whiteWon && !blackWon && selected.isWhite == isWhiteTurn)
         {
+            if (selectedToken != null)
+            {
+                BoardHighlights.Instance.HideHighlights();
+                //TODO: if already a selected token, make it not float
+
+            }
+
             //Debug.Log("selected: " + x + ", " + y);
             //select that token
             selectionX = x;
             selectionY = y;
             selectedToken = selected;
 
+            //TODO: make the token float a little
+
             //Check East
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
             {
                 //Highlight
+                if (isWhiteTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x + 1, y + 1);
+                }
+                else if(isBlackTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x + 1, y - 1);
+                }
             }
 
             //Check Forward
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.Forward))
             {
                 //Highlight
+                if (isWhiteTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x, y + 1);
+                }
+                else if (isBlackTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x, y - 1);
+                }
+
             }
 
             //Check West
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.West))
             {
                 //Highlight
+                if (isWhiteTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x - 1, y + 1);
+                }
+                else if (isBlackTurn)
+                {
+                    BoardHighlights.Instance.HighlightTile(x - 1, y - 1);
+                }
             }
         }
         else

@@ -8,6 +8,7 @@ TagManager:
   - WhitePieces
   - BlackPieces
   - NotationsToggle
+  - Tiles
   layers:
   - Default
   - TransparentFX
