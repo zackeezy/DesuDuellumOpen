@@ -34,7 +34,10 @@ public class BoardManager : MonoBehaviour {
     public int selectionX = -1;
 	public int selectionY = -1;
 
+    public bool muted = false;
+
     public List<GameObject> boardTokens;
+
     private bool whiteWon = false;
 	private bool blackWon = false;
     private GameObject _capturedPiece;
@@ -312,12 +315,12 @@ public class BoardManager : MonoBehaviour {
             }
             else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
             {
-                //enable blacks's emote button
+                //disable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
                 Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
                 emote.interactable = false;
 
-                //ensable black's emote button 
+                //enable blacks's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
                 Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = true;
