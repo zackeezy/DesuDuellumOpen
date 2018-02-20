@@ -446,6 +446,8 @@ public class BoardManager : MonoBehaviour {
             //player1 is white
             whitePlayer = PlayerType.Local;
             blackPlayer = gameMode;
+            //blackCam.enabled = false;
+            //Camera.main.enabled = true;
             SetNotations(true);
         }
         else if(player1white != 0 && gameMode != PlayerType.Local)

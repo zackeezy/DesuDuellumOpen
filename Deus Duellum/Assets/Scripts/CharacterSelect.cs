@@ -109,6 +109,11 @@ public class CharacterSelect : MonoBehaviour {
             highlight.SetActive(true);
             turnHighlight = highlight;
         }
+        else
+        {
+            //player1 is white, no buttons to highlight
+            PlayerPrefs.SetInt("player1", 0);
+        }
     }
 
     public void setDifficulty(bool easy)

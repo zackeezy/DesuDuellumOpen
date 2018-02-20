@@ -23,6 +23,8 @@ public class TokenSetter : MonoBehaviour {
         //set players' tokens to light or dark for their chosen character
         if (player1First == 0)
         {
+            Debug.Log("player1 is white");
+
             //player 1 is light
             if (player1Character == 0)
             {
