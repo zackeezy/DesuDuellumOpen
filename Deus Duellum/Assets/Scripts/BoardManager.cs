@@ -254,6 +254,10 @@ public class BoardManager : MonoBehaviour {
 
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
 
+        MoveLog log = GetComponent<MoveLog>();
+
+        string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
+
         selectedToken.SetBoardPosition (x, y);
         
         //destroy the captured token
@@ -264,8 +268,15 @@ public class BoardManager : MonoBehaviour {
             _capturedPiece = null;
 
             //add an x to the the log
+            moveforLog += "x";
         }
 
+        moveforLog += log.CoordsToNotations(x, y);
+        //send the move to the log
+        log.ShowNotations(moveforLog, isWhiteTurn);
+
+        //Debug.Log(moveforLog);
+    
         //toggle the turn
         ChangeTurn();
 		BoardHighlights.Instance.HideHighlights ();
@@ -362,6 +373,8 @@ public class BoardManager : MonoBehaviour {
         //change the winnertext
         GameObject winTextobj = gameOverPanel.transform.GetChild(0).gameObject;
         Text winText = winTextobj.GetComponent<Text>();
+        MoveLog log = GetComponent<MoveLog>();
+
 
         if (_core.whiteWon)
         {
@@ -380,6 +393,9 @@ public class BoardManager : MonoBehaviour {
                 //you lost
                 winText.text = "You Lost!";
             }
+
+            log.ShowWin(true);
+            
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
         }
@@ -400,6 +416,9 @@ public class BoardManager : MonoBehaviour {
                 //you lost
                 winText.text = "You Lost!";
             }
+
+            log.ShowWin(false);
+
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
         }
