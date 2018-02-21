@@ -5,6 +5,8 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Linq;
+using System.Net.Sockets;
 
 public class Client : MonoBehaviour {
 
@@ -24,7 +26,7 @@ public class Client : MonoBehaviour {
 
     public GameObject player;
     public GameObject networkControl;
-    public InputField name;
+    public InputField Name;
 
     // Use this for initialization
     void Start()
@@ -35,9 +37,6 @@ public class Client : MonoBehaviour {
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort, null);
         Debug.Log("Socket open. Host ID is: " + hostId);
-        if (name.text != "") {
-            //NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 1, 2, 3, "");
-        }
     }
 
     // Update is called once per frame
@@ -116,5 +115,17 @@ public class Client : MonoBehaviour {
     public void SetRecvIP(string recvIP)
     {
         this.recvIP = recvIP;
+    }
+
+    public void Broadcast()
+    {
+        if (Name.text != "")
+        {
+            NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 1, 2, 3, Encoding.ASCII.GetBytes(Name.text + '|' + NetworkControl.LocalIPAddress().ToString()), Name.text.Length + 1 + NetworkControl.LocalIPAddress().ToString().Length, 2000, out error);
+        }
+        else
+        {
+            NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 1, 2, 3, Encoding.ASCII.GetBytes("Default" + '|' + NetworkControl.LocalIPAddress().ToString()), "Default".Length + 1 + NetworkControl.LocalIPAddress().ToString().Length, 2000, out error);
+        }
     }
 }

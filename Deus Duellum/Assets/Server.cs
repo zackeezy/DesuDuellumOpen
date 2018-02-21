@@ -88,6 +88,8 @@ public class Server : MonoBehaviour {
                 NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
                 broadcastMsg = Encoding.Default.GetString(buffer);
 
+                string ip = broadcastMsg.Split('|')[1];
+
                 break;
         }
 	}
@@ -99,7 +101,6 @@ public class Server : MonoBehaviour {
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort, clientIP);
         Debug.Log("Socket open. Host ID is: " + hostId);
-        connectionId = NetworkTransport.Connect(hostId, NetworkTransport., socketPort, 0, out error);
     }
 
     public void Move(string x, string y, GameObject obj)
