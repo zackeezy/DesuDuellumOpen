@@ -52,6 +52,8 @@ public class BoardManager : MonoBehaviour {
 
     private GameCore _core;
 
+    private MoveLog log;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -71,11 +73,13 @@ public class BoardManager : MonoBehaviour {
         notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
 
+        log = GetComponent<MoveLog>();
+
         setPrefs();
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
         _foreignMoveCompleted = false;
-	}
+    }
 
 	// Update is called once per frame
 	void Update ()
@@ -254,8 +258,6 @@ public class BoardManager : MonoBehaviour {
 
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
 
-        MoveLog log = GetComponent<MoveLog>();
-
         string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
 
         selectedToken.SetBoardPosition (x, y);
@@ -373,8 +375,6 @@ public class BoardManager : MonoBehaviour {
         //change the winnertext
         GameObject winTextobj = gameOverPanel.transform.GetChild(0).gameObject;
         Text winText = winTextobj.GetComponent<Text>();
-        MoveLog log = GetComponent<MoveLog>();
-
 
         if (_core.whiteWon)
         {
@@ -494,6 +494,9 @@ public class BoardManager : MonoBehaviour {
         //set the tokens
         TokenSetter tokenScript = GetComponent<TokenSetter>();
         tokenScript.SetTokens(player1white, player1character, player2character);
+
+        //set the log's characters
+        log.SetCharacters(player1character, player2character);
     }
 
     private void setCharacterImage(int player, int character)

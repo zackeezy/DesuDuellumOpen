@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class MoveLog : MonoBehaviour {
 
     public Text whiteLog;
@@ -128,6 +127,47 @@ public class MoveLog : MonoBehaviour {
         else
         {
             logButtonText.text = "Expand Log";
+        }
+    }
+
+    //changes white and black to reflect character selection
+    public void SetCharacters(int white, int black)
+    {
+        Text bigWhiteText = bigLog.transform.GetChild(0).GetComponent<Text>();
+        Text bigBlackText = bigLog.transform.GetChild(1).GetComponent<Text>();
+        Text smallWhiteText = smallLog.transform.GetChild(0).GetComponent<Text>();
+        Text smallBlackText = smallLog.transform.GetChild(1).GetComponent<Text>();
+
+        if (white == 0)
+        {
+            bigWhiteText.text = "Athena";
+            smallWhiteText.text = "Athena";
+        }
+        else if (white == 1)
+        {
+            bigWhiteText.text = "Ra";
+            smallWhiteText.text = "Ra";
+        }
+        else if (white == 2)
+        {
+            bigWhiteText.text = "Thor";
+            smallWhiteText.text = "Thor";
+        }
+
+        if (black == 0)
+        {
+            bigBlackText.text = "Athena";
+            smallBlackText.text = "Athena";
+        }
+        else if (black == 1)
+        {
+            bigBlackText.text = "Ra";
+            smallBlackText.text = "Ra";
+        }
+        else if (black == 2)
+        {
+            bigBlackText.text = "Thor";
+            smallBlackText.text = "Thor";
         }
     }
 }
