@@ -465,6 +465,14 @@ public class BoardManager : MonoBehaviour {
         //set the tokens
         TokenSetter tokenScript = GetComponent<TokenSetter>();
         tokenScript.SetTokens(player1white, player1character, player2character);
+
+        //set the character for the emotes
+        GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+        EmoteController player1emotes = player1.GetComponent<EmoteController>();
+        player1emotes.SetCharacter(player1character);
+        GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+        EmoteController player2emotes = player2.GetComponent<EmoteController>();
+        player2emotes.SetCharacter(player2character);
     }
 
     private void setCharacterImage(int player, int character)
