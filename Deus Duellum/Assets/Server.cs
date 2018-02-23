@@ -25,8 +25,21 @@ public class Server : MonoBehaviour {
 
     public GameObject networkControl;
 
-	// Use this for initialization
-	void Start () {
+    public string ClientIP
+    {
+        get
+        {
+            return clientIP;
+        }
+
+        set
+        {
+            clientIP = value;
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
         NetworkTransport.Init();
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
@@ -44,8 +57,9 @@ public class Server : MonoBehaviour {
         int bufferSize = 1024;
         int datasize;
 
-        NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId, out recvConnectionId, out recvChannelId, 
-            recvBuffer, bufferSize, out datasize, out error);
+        NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId, 
+            out recvConnectionId, out recvChannelId, recvBuffer, bufferSize, 
+            out datasize, out error);
 
         switch (recvNetworkEvent)
         {
@@ -90,6 +104,11 @@ public class Server : MonoBehaviour {
 
                 string ip = broadcastMsg.Split('|')[1];
 
+                string response = "CONNECT|" + ip + "|Server";
+
+                NetworkTransport.Send(recvHostId, recvConnectionId, reliableChannelId, 
+                    Encoding.ASCII.GetBytes(response), response.Length * sizeof(char), out error);
+
                 break;
         }
 	}
@@ -99,7 +118,7 @@ public class Server : MonoBehaviour {
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, clientIP);
+        hostId = NetworkTransport.AddHost(topology, socketPort, ClientIP);
         Debug.Log("Socket open. Host ID is: " + hostId);
     }
 
@@ -113,6 +132,7 @@ public class Server : MonoBehaviour {
     public void SendNetworkMessage(string message)
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
-        NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, buffer, message.Length * sizeof(char), out error);
+        NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, 
+            buffer, message.Length * sizeof(char), out error);
     }
 }

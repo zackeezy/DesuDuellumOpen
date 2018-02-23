@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class ConnectButton : MonoBehaviour {
 
-    public ScrollRect serverList;
-    public Text selectServerText;
-    public Button serverSelectButton;
+    public GameObject scrollViewControl;
     public NetworkControl networkControl;
 
 	// Use this for initialization
@@ -22,7 +20,10 @@ public class ConnectButton : MonoBehaviour {
 
     public void ConnectWithServer()
     {
+        scrollViewControl.GetComponent<ScrollViewScript>().Connected();
 
+        networkControl.client.GetComponent<Client>().ServerSelected(
+            int.Parse(scrollViewControl.GetComponent<ScrollViewScript>().serverNumber.text));
 
         networkControl.client.GetComponent<Client>().Connect();
     }
