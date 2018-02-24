@@ -14,10 +14,16 @@ public class MoveLog : MonoBehaviour {
     public GameObject bigLog;
     public GameObject smallLog;
 
+    public Scrollbar vertical;
+
     public Text logButtonText;
 
     private string recentWhite;
     private string recentBlack;
+    private int count = 0;
+
+    //private List<string> whiteMoves;
+    //private List<string> blackMoves;
 
 	// Use this for initialization
 	void Start () {
