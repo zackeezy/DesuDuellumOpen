@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerInfo {
     string ip;
     string name;
+    int connectionId;
+    int hostId;
 
     public string IP
     {
@@ -31,5 +33,29 @@ public class PlayerInfo {
         }
     }
 
+    public int ConnectionId
+    {
+        get
+        {
+            return connectionId;
+        }
 
+        set
+        {
+            connectionId = value;
+        }
+    }
+
+    public int HostId
+    {
+        get
+        {
+            return hostId;
+        }
+
+        set
+        {
+            hostId = value;
+        }
+    }
 }

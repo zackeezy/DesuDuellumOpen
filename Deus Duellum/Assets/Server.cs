@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Server : MonoBehaviour {
+public class Server : /*MonoBehaviour*/ NetworkDiscovery
+{
 
     bool connected = false;
 
@@ -15,6 +17,8 @@ public class Server : MonoBehaviour {
     int hostId;
     int socketPort = 8888;
     byte error;
+    int clientPort;
+    string myIP;
 
     string clientIP;
 
@@ -40,13 +44,19 @@ public class Server : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        clientObj = null;
         NetworkTransport.Init();
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, null);
+        hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
-	}
+        myIP = NetworkControl.LocalIPAddress().ToString();
+
+        UdpClient udpClient = new UdpClient(8888);
+        udpClient.Send(Encoding.ASCII.GetBytes(":p"), 2, IPAddress.Broadcast.ToString(), 8888);
+        udpClient.Close();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -91,35 +101,36 @@ public class Server : MonoBehaviour {
                 }
                 break;
             case NetworkEventType.DisconnectEvent:
+                clientObj = null;
 
                 break;
-            case NetworkEventType.BroadcastEvent:
-                string broadcastMsg = "";
-                byte[] buffer = new byte[1024];
-                int recvsize;
-                byte error;
+                //case NetworkEventType.BroadcastEvent:
+                //    Debug.Log("BroadcastEvent Triggered");
+                //    string broadcastMsg = "";
+                //    byte[] buffer = new byte[1024];
+                //    int recvsize;
+                //    byte error;
 
-                NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
-                broadcastMsg = Encoding.Default.GetString(buffer);
+                //    NetworkTransport.GetBroadcastConnectionInfo(hostId, out clientIP, out clientPort, out error);
 
-                string ip = broadcastMsg.Split('|')[1];
+                //    NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
 
-                string response = "CONNECT|" + ip + "|Server";
+                //    broadcastMsg = Encoding.Default.GetString(buffer);
 
-                NetworkTransport.Send(recvHostId, recvConnectionId, reliableChannelId, 
-                    Encoding.ASCII.GetBytes(response), response.Length * sizeof(char), out error);
+                //    Connect();
 
-                break;
+                //    string response = "CONNECT|" + myIP + "|" + connectionId + "|" + hostId + "|Server";
+
+                //    NetworkTransport.Send(hostId, connectionId, reliableChannelId, Encoding.ASCII.GetBytes(response),
+                //        response.Length * sizeof(char), out error);
+
+                //    break;
         }
 	}
 
     public void Connect()
     {
-        ConnectionConfig config = new ConnectionConfig();
-        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
-        HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, ClientIP);
-        Debug.Log("Socket open. Host ID is: " + hostId);
+        connectionId = NetworkTransport.Connect(hostId, ClientIP, clientPort, 0, out error);
     }
 
     public void Move(string x, string y, GameObject obj)
@@ -134,5 +145,37 @@ public class Server : MonoBehaviour {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
         NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, 
             buffer, message.Length * sizeof(char), out error);
+    }
+
+    public override void OnReceivedBroadcast(string fromAddress, string data)
+    {
+        Debug.Log("BroadcastEvent Triggered");
+        string broadcastMsg = "";
+        byte[] buffer = new byte[1024];
+        int recvsize;
+        byte error;
+
+        NetworkTransport.GetBroadcastConnectionInfo(hostId, out clientIP, out clientPort, out error);
+
+        NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
+
+        broadcastMsg = Encoding.Default.GetString(buffer);
+
+        clientIP = broadcastMsg.Split('|')[1];
+
+        clientPort = int.Parse(broadcastMsg.Split('|')[2]);
+
+        connectionIdClient = int.Parse(broadcastMsg.Split('|')[3]);
+
+        hostIdClient = int.Parse(broadcastMsg.Split('|')[4]);
+
+        Connect();
+
+        string response = "CONNECT|" + myIP + "|" + connectionId + "|" + hostId + "|Server";
+
+        NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, Encoding.ASCII.GetBytes(response),
+            response.Length * sizeof(char), out error);
+
+        base.OnReceivedBroadcast(fromAddress, data);
     }
 }

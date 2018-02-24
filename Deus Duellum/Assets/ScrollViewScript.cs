@@ -11,6 +11,11 @@ public class ScrollViewScript : MonoBehaviour {
     public InputField serverNumber;
     public NetworkControl networkControl;
 
+    private void Start()
+    {
+        this.name = "ScrollView";
+    }
+
     public void PopulateServers()
     {
         string serverListText = "";
@@ -30,5 +35,6 @@ public class ScrollViewScript : MonoBehaviour {
         scrollView.enabled = false;
         connectButton.enabled = false;
         selectServerText.enabled = false;
+        serverNumber.enabled = false;
     }
 }

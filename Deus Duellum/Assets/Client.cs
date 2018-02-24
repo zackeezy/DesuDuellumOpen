@@ -45,12 +45,18 @@ public class Client : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        servers = new List<PlayerInfo>();
         NetworkTransport.Init();
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, null);
+        hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
+
+
+        UdpClient udpClient = new UdpClient(7778);
+        udpClient.Send(Encoding.ASCII.GetBytes(":p"), 2, IPAddress.Broadcast.ToString(), 7778);
+        udpClient.Close();
     }
 
     // Update is called once per frame
@@ -68,11 +74,15 @@ public class Client : MonoBehaviour {
         switch (recvNetworkEvent)
         {
             case NetworkEventType.ConnectEvent:
-                connectionIdServer = recvConnectionId;
-                hostIdServer = recvHostId;
-                connected = true;
+                if (!connected)
+                {
+                    connectionIdServer = recvConnectionId;
+                    hostIdServer = recvHostId;
+                    connected = true;
+                }
                 break;
             case NetworkEventType.DisconnectEvent:
+                connected = false;
                 break;
             case NetworkEventType.DataEvent:
                 string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
@@ -84,9 +94,17 @@ public class Client : MonoBehaviour {
                         PlayerInfo pi = new PlayerInfo()
                         {
                             IP = splitData[1],
-                            Name = splitData[2]
+                            ConnectionId = int.Parse(splitData[2]),
+                            HostId = int.Parse(splitData[3]),
+                            Name = splitData[4]
                         };
-                        servers.Add(pi);
+                        if (!servers.Contains(pi))
+                        {
+                            servers.Add(pi);
+                            Debug.Log(pi.Name + " at " + pi.IP + " was received");
+                        }
+                        //Show list of Servers
+                        GameObject.Find("ScrollView").GetComponent<ScrollViewScript>().PopulateServers();
                         break;
                     case "MOVE":
                         //TODO: add code for move
@@ -96,6 +114,7 @@ public class Client : MonoBehaviour {
                         //TODO: add code for emote
                         break;
                     case "MESSAGE":
+                        //Won't be used in final version 
                         networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
                         break;
                 }
@@ -105,11 +124,6 @@ public class Client : MonoBehaviour {
 
     public void Connect()
     {
-        ConnectionConfig config = new ConnectionConfig();
-        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
-        HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort, RecvIP);
-        Debug.Log("Socket open. Host ID is: " + hostId);
         connectionId = NetworkTransport.Connect(hostId, RecvIP, serverSocketPort, 0, out error);
     }
 
@@ -128,19 +142,26 @@ public class Client : MonoBehaviour {
     public void SendNetworkMessage(string message)
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
-        NetworkTransport.Send(hostIdServer, connectionIdServer, reliableChannelId, 
-            buffer, message.Length * sizeof(char), out error);
+        NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 
     public void Broadcast()
     {
-        NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 1, 2, 3, 
-            Encoding.ASCII.GetBytes(Name.text == "" ? "Default" : Name.text + '|' + NetworkControl.LocalIPAddress().ToString()), 
-            Name.text.Length + 1 + NetworkControl.LocalIPAddress().ToString().Length, 2000, out error);
+        byte[] send = Encoding.ASCII.GetBytes(Name.text == "" ? "Default" : Name.text + '|' + 
+            NetworkControl.LocalIPAddress().ToString() + "|" + socketPort);
+        NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 2222, 1, 1, send, send.Length, 2000, out error);
     }
 
     public void ServerSelected(int index)
     {
         recvIP = servers[index].IP;
+
+        servers.FindAll((server) => server.IP != servers[index].IP || server.Name != servers[index].Name)
+            .ForEach((server) =>
+        {
+            NetworkTransport.Disconnect(server.HostId, server.ConnectionId, out error);
+        });
+
+        NetworkTransport.StopBroadcastDiscovery();
     }
 }
