@@ -279,8 +279,7 @@ public class BoardManager : MonoBehaviour {
         
         //destroy the captured token
 		if(_capturedPiece != null)
-        {
-            
+        {           
             Destroy(_capturedPiece);
             _capturedPiece = null;
 
