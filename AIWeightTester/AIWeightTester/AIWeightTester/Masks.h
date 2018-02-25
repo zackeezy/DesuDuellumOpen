@@ -7,6 +7,9 @@ private:
     Masks();
     ~Masks();
 public:
+
+    static void InitializeMobilityTriangles();
+
     static class WhiteMasks
     {
     private:
@@ -15,7 +18,7 @@ public:
         static unsigned long long Forward[64];
         static unsigned long long EastAttack[64];
         static unsigned long long WestAttack[64];
-        
+        static unsigned long long MobilityTriangle[64];
     };
 
     static class BlackMasks
@@ -26,6 +29,9 @@ public:
         static unsigned long long Forward[64];
         static unsigned long long EastAttack[64];
         static unsigned long long WestAttack[64];
+        static unsigned long long MobilityTriangle[64];
+        static void GenerateBlackMobilityTriangle(unsigned long long temp[]);
+        static unsigned long long GenerateBlackMobilityTriangleRecursion(int index);
     };
 
     static class OrientationMasks

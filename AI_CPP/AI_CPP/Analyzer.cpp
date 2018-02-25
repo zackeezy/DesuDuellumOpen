@@ -2,20 +2,89 @@
 #include "Analyzer.h"
 #include "BitsMagic.h" 
 #include "Masks.h"
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <random>
+using namespace std;
+void PrintBoard(BitBoard board, int score, PlayerColor color)
+{
+    system("cls");
 
+    vector<vector<char>> _board;
+
+    for (int i = 0; i < 8; i++)
+    {
+        vector<char> temp;
+        for (int j = 0; j < 8; j++)
+        {
+            temp.push_back(' ');
+        }
+        _board.push_back(temp);
+    }
+
+    unsigned long long iterator = 1;
+    for (int row = 7; row >= 0; row--)
+    {
+        for (int column = 7; column >= 0; column--)
+        {
+            if ((board.whitePieces & iterator) != 0)
+            {
+                _board[row][column] = 'W';
+            }
+            else if ((board.blackPieces & iterator) != 0)
+            {
+                _board[row][column] = 'B';
+            }
+            else
+            {
+                _board[row][column] = ' ';
+            }
+            iterator <<= 1;
+        }
+    }
+
+    for (int row = 7; row >= 0; row--)
+    {
+        for (int column = 0; column <= 7; column++)
+        {
+            cout << _board[row][column];
+            if (column != 7)
+            {
+                cout << "|";
+            }
+        }
+        cout << endl;
+        if (row != 0)
+        {
+            cout << "---------------" << endl;
+        }
+    }
+
+    if (color == PlayerColor::White)
+    {
+        cout << "White's Move";
+    }
+    else {
+        cout << "Black's Move";
+    }
+
+    cout << endl;
+
+    cout << "Score: " << score;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+}
 
 Analyzer::Analyzer()
 {
 }
 
 PlayerColor Analyzer::AiColor = PlayerColor::White;
-BitBoard Analyzer::_bestMove;
-
 
 Analyzer::~Analyzer()
 {
 }
-
 
 vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
 {
@@ -36,6 +105,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
                 if (forward != 0 && (forward & board.CombinedBoard()) == 0)
                 {
                     BitBoard child;
+                    child.currentTurn = FlipColor(color);
                     child.whitePieces = board.whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator];
                     child.whitePieces = child.whitePieces | forward;
                     child.blackPieces = board.blackPieces;
@@ -45,6 +115,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
                 if (east != 0 && (east & board.whitePieces) == 0)
                 {
                     BitBoard child;
+                    child.currentTurn = FlipColor(color);
                     child.whitePieces = board.whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator];
                     child.whitePieces = child.whitePieces | east;
                     child.blackPieces = board.blackPieces & ~east;
@@ -54,6 +125,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
                 if (west != 0 && (west & board.whitePieces) == 0)
                 {
                     BitBoard child;
+                    child.currentTurn = FlipColor(color);
                     child.whitePieces = board.whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator];
                     child.whitePieces = child.whitePieces | west;
                     child.blackPieces = board.blackPieces & ~west;
@@ -69,6 +141,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
                 if (forward != 0 && (forward & board.CombinedBoard()) == 0)
                 {
                     BitBoard child;
+                    child.currentTurn = FlipColor(color);
                     child.blackPieces = board.blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator];
                     child.blackPieces = child.blackPieces | forward;
                     child.whitePieces = board.whitePieces;
@@ -78,6 +151,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
                 if (east != 0 && (east & board.blackPieces) == 0)
                 {
                     BitBoard child;
+                    child.currentTurn = FlipColor(color);
                     child.blackPieces = board.blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator];
                     child.blackPieces = child.blackPieces | east;
                     child.whitePieces = board.whitePieces & ~east;
@@ -87,6 +161,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
                 if (west != 0 && (west & board.blackPieces) == 0)
                 {
                     BitBoard child;
+                    child.currentTurn = FlipColor(color);
                     child.blackPieces = board.blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator];
                     child.blackPieces = child.blackPieces | west;
                     child.whitePieces = board.whitePieces & ~west;
@@ -99,14 +174,15 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
     return children;
 }
 
-int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer, int & bestScore) 
+int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer, BitBoard & bestMove, int & bestScore) 
 {
     if (remainingDepth == 0 || IsGameOver(node)) 
     {
-        return Evaluate(node);
+        return Evaluate(node, remainingDepth);
     }
 
     vector<BitBoard> children = GetChildren(node, maximizingPlayer ? AiColor : FlipColor(AiColor));
+    vector<int> scores;
 
     if (maximizingPlayer) 
     {
@@ -114,46 +190,63 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
         
         for (BitBoard child : children) 
         {
-            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false, bestScore);
+            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false, bestMove ,bestScore);
 
             if (remainingDepth == MAX_DEPTH)
             {
-                if (childScore > bestScore)
-                {
-                    _bestMove = child;
-                    bestScore = childScore;
-                }
+                //PrintBoard(child, childScore, AiColor);
+                scores.push_back(childScore);
             }
+
             value = max(value, childScore);
             alpha = max(alpha, value);
 
             if (beta <= alpha) break;
         }
 
-        return value;
-    }
-    else if(!maximizingPlayer)
-    {
-        int value = INT_MAX;
-        
 
-        for (BitBoard child : children) 
+        if (remainingDepth == MAX_DEPTH) 
         {
-            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true, bestScore);
-            
-            if (remainingDepth == MAX_DEPTH) 
+            int bestScore = INT_MIN;
+            for (int i = 0; i < scores.size(); i++) 
             {
-                if (childScore > bestScore)
+                if (scores[i] >= INT_MIN)
                 {
-                    _bestMove = child;
-                    bestScore = childScore;
+                    bestScore = scores[i];
                 }
             }
+            vector<BitBoard> bestMoves;
+            for (int i = 0; i < scores.size(); i++)
+            {
+                if (scores[i] == bestScore)
+                {
+                    bestMoves.push_back(children[i]);
+                }
+            }
+
+            std::random_device rd;
+            std::mt19937 mt(rd());
+            std::uniform_int_distribution<int> dist(0, bestMoves.size() - 1);
+
+            bestMove = bestMoves[dist(mt)];
+        }
+        return value;
+    }
+    else if (!maximizingPlayer)
+    {
+        int value = INT_MAX;
+
+
+        for (BitBoard child : children)
+        {
+            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true, bestMove, bestScore);
+
             value = min(value, childScore);
             beta = min(beta, value);
 
             if (beta <= alpha) break;
         }
+        
         return value;
     }
 }
@@ -191,7 +284,7 @@ bool Analyzer::IsGameOver(BitBoard bitBoard)
     return false;
 }
 
-int Analyzer::Evaluate(BitBoard board) 
+int Analyzer::Evaluate(BitBoard board, int remainingDepth) 
 {
     int totalScore = 0;
 
@@ -200,104 +293,63 @@ int Analyzer::Evaluate(BitBoard board)
     {
         if ((Grid::Row1 & board.blackPieces) != 0)
         {
-            return AiColor == PlayerColor::Black ? WIN : LOSS;
+            return AiColor == PlayerColor::Black ? AUTO_WIN * remainingDepth : LOSS;
         }
         else if ((Grid::Row8 & board.whitePieces) != 0)
         {
-            return AiColor == PlayerColor::White ? WIN : LOSS;
+            return AiColor == PlayerColor::White ? AUTO_WIN * remainingDepth : LOSS;
+        }
+        else if (board.blackPieces == 0) 
+        {
+            return AiColor == PlayerColor::White ? AUTO_WIN * remainingDepth : LOSS;
+        }
+        else if (board.whitePieces == 0)
+        {
+            return AiColor == PlayerColor::Black ? AUTO_WIN * remainingDepth : LOSS;
         }
     }
 
-    //Accumulate Score for each White Piece.
+     //Accumulate Score for each White Piece.
     int whiteScore = 0;
     unsigned long long whitePieces = board.whitePieces;
     int iterator = BitsMagic::BitScanForwardWithReset(whitePieces);
+    int whiteCount = 0;
     while (iterator >= 0)
     {
+        whiteCount++;
         whiteScore += GenerateBlockingPatternScore(board, iterator, PlayerColor::White);
-
-        int pieceProtectionScore = GenerateProtectionScore(board, iterator, PlayerColor::White);
-        whiteScore += pieceProtectionScore;
-        int pieceAttackedPenalty = GenerateAttackedPenalty(board, iterator, PlayerColor::White);
-
-        if (pieceAttackedPenalty > 0)
-        {
-            whiteScore -= pieceAttackedPenalty;
-            if (pieceProtectionScore == 0)
-            {
-                whiteScore -= pieceAttackedPenalty;
-            }
-        }
-        else
-        {
-            if (pieceProtectionScore != 0)
-            {
-                if (Masks::OrientationMasks::CurrentRow[iterator] == 6)
-                {
-                    whiteScore += DANGER_LOW;
-                }
-                else if (Masks::OrientationMasks::CurrentRow[iterator] == 7)
-                {
-                    whiteScore += DANGER_HIGH;
-                }
-            }
-        }
-
+        whiteScore += GenerateCombatScore(board, iterator, PlayerColor::White);
         whiteScore += GenerateDangerScore(board, iterator, PlayerColor::White);
-
         whiteScore += GenerateMobilityScore(board, iterator, PlayerColor::White);
-
+        //whiteScore += GenerateTriangleScores(board, iterator, PlayerColor::White);
         iterator = BitsMagic::BitScanForwardWithReset(whitePieces);
     }
 
-    whiteScore -= GenerateColumnHolePenalty(board, PlayerColor::White);
-    whiteScore -= GenerateHomeRowProtectionPenalty(board, PlayerColor::White);
+    whiteScore += GenerateColumnHoleScore(board, PlayerColor::White);
+    whiteScore += GenerateHomeRowScore(board, PlayerColor::White);
+    whiteScore += whiteCount * PIECE_TOTAL_SCALAR;
 
 
     //Acculmulate score for all black pieces.
     int blackScore = 0;
-    unsigned long long blackPieces = board.whitePieces;
+    unsigned long long blackPieces = board.blackPieces;
     iterator = BitsMagic::BitScanForwardWithReset(blackPieces);
+    int blackCount = 0;
     while (iterator >= 0)
     {
+        blackCount++;
         blackScore += GenerateBlockingPatternScore(board, iterator, PlayerColor::Black);
-
-        int pieceProtectionScore = GenerateProtectionScore(board, iterator, PlayerColor::Black);
-        blackScore += pieceProtectionScore;
-        int pieceAttackedPenalty = GenerateAttackedPenalty(board, iterator, PlayerColor::Black);
-
-        if (pieceAttackedPenalty > 0)
-        {
-            blackScore -= pieceAttackedPenalty;
-            if (pieceProtectionScore == 0)
-            {
-                blackScore -= pieceAttackedPenalty;
-            }
-        }
-        else
-        {
-            if (pieceProtectionScore != 0)
-            {
-                if (Masks::OrientationMasks::CurrentRow[iterator] == 3)
-                {
-                    blackScore += DANGER_LOW;
-                }
-                else if (Masks::OrientationMasks::CurrentRow[iterator] == 2)
-                {
-                    blackScore += DANGER_HIGH;
-                }
-            }
-        }
-
+        blackScore += GenerateCombatScore(board, iterator, PlayerColor::Black);
         blackScore += GenerateDangerScore(board, iterator, PlayerColor::Black);
         blackScore += GenerateMobilityScore(board, iterator, PlayerColor::Black);
+        //blackScore += GenerateTriangleScores(board, iterator, PlayerColor::Black);
 
         iterator = BitsMagic::BitScanForwardWithReset(blackPieces);
     }
 
-    blackScore -= GenerateColumnHolePenalty(board, PlayerColor::Black);
-    blackScore -= GenerateHomeRowProtectionPenalty(board, PlayerColor::Black);
-
+    blackScore += GenerateColumnHoleScore(board, PlayerColor::Black);
+    blackScore += GenerateHomeRowScore(board, PlayerColor::Black);
+    blackScore += blackCount * PIECE_TOTAL_SCALAR;
 
     //Finalize Score
     if (AiColor == PlayerColor::White)
@@ -308,6 +360,8 @@ int Analyzer::Evaluate(BitBoard board)
     {
         totalScore = blackScore - whiteScore;
     }
+
+    
 
     return totalScore;
 }
@@ -392,7 +446,7 @@ int Analyzer::GenerateMobilityScore(BitBoard board, int index, PlayerColor color
     return score;
 }
 
-int Analyzer::GenerateColumnHolePenalty(BitBoard board, PlayerColor color)
+int Analyzer::GenerateColumnHoleScore(BitBoard board, PlayerColor color)
 {
     /*
     * Generates a penalty for not having sufficient coverage of all columns.
@@ -476,7 +530,7 @@ int Analyzer::GenerateColumnHolePenalty(BitBoard board, PlayerColor color)
     return penalty;
 }
 
-int Analyzer::GenerateHomeRowProtectionPenalty(BitBoard board, PlayerColor color)
+int Analyzer::GenerateHomeRowScore(BitBoard board, PlayerColor color)
 {
     /*
     * If the back four have moved, create a large penalty.
@@ -534,84 +588,11 @@ int Analyzer::GenerateDangerScore(BitBoard board, int index, PlayerColor color)
 
     if (color == PlayerColor::White)
     {
-        score = Masks::OrientationMasks::CurrentRow[index] * FLAT_DANGER;
+        score = Masks::OrientationMasks::CurrentRow[index] * DANGER_SCALAR;
     }
     else if (color == PlayerColor::Black)
     {
-        score = (9 - Masks::OrientationMasks::CurrentRow[index])* FLAT_DANGER;
-    }
-
-    return score;
-}
-
-int Analyzer::GenerateAttackedPenalty(BitBoard board, int index, PlayerColor color)
-{
-    /*
-    * Generates a penalty based on number of pieces attacking this piece, doubled
-    * if the piece is unprotected.
-    */
-    int penalty = 0;
-
-    if (color == PlayerColor::White)
-    {
-        if ((board.blackPieces & Masks::WhiteMasks::EastAttack[index]) != 0)
-        {
-            penalty += ATTACKED;
-        }
-
-        if ((board.blackPieces & Masks::WhiteMasks::WestAttack[index]) != 0)
-        {
-            penalty += ATTACKED;
-        }
-    }
-    else if (color == PlayerColor::Black)
-    {
-        if ((board.whitePieces & Masks::BlackMasks::EastAttack[index]) != 0)
-        {
-            penalty += ATTACKED;
-        }
-
-        if ((board.whitePieces & Masks::BlackMasks::WestAttack[index]) != 0)
-        {
-            penalty += ATTACKED;
-        }
-    }
-
-    return penalty;
-}
-
-int Analyzer::GenerateProtectionScore(BitBoard board, int index, PlayerColor color)
-{
-    /*
-    * Generates a score for having pieces protectecting the piece in question.
-    * We use the opposite color's attack patterns to quickly check if we are
-    * protected.
-    */
-    int score = 0;
-
-    if (color == PlayerColor::White)
-    {
-        if ((board.whitePieces & Masks::BlackMasks::EastAttack[index]) != 0)
-        {
-            score += PROTECTED;
-        }
-
-        if ((board.whitePieces & Masks::BlackMasks::WestAttack[index]) != 0)
-        {
-            score += PROTECTED;
-        }
-    }
-    else if (color == PlayerColor::Black)
-    {
-        if ((board.blackPieces & Masks::WhiteMasks::EastAttack[index]) != 0)
-        {
-            score += PROTECTED;
-        }
-
-        if ((board.blackPieces & Masks::WhiteMasks::WestAttack[index]) != 0)
-        {
-            score += PROTECTED;
-        }
+        score = (9 - Masks::OrientationMasks::CurrentRow[index])* DANGER_SCALAR;
     }
 
     return score;
@@ -619,8 +600,224 @@ int Analyzer::GenerateProtectionScore(BitBoard board, int index, PlayerColor col
 
 BitBoard Analyzer::GetMove(BitBoard board, PlayerColor color) 
 {
-    AiColor = color;
+    Analyzer::AiColor = color;
     int bestScore = INT_MIN;
-    AlphaBetaLoop(board, MAX_DEPTH, INT_MIN, INT_MAX, true, bestScore);
-    return _bestMove;
+    BitBoard bestMove;
+    bestMove.currentTurn = color;
+    AlphaBetaLoop(board, MAX_DEPTH, INT_MIN, INT_MAX, true, bestMove, bestScore);
+    return bestMove;
+}
+
+int Analyzer::GenerateCombatScore(BitBoard board, int index, PlayerColor color) 
+{
+    int score = 0;
+    int attackCount = 0;
+    int protectCount = 0;
+    /*int lowA = 0;
+    int lowB = 0;
+    int high = 0;*/
+
+    if (color == PlayerColor::White)
+    {
+        /*lowA = 5;
+        lowB = 6;
+        high = 7;*/
+        if ((board.whitePieces & Masks::BlackMasks::EastAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.whitePieces & Masks::BlackMasks::WestAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.blackPieces & Masks::WhiteMasks::EastAttack[index]) != 0) 
+        {
+            attackCount++;
+        }
+        
+        if ((board.blackPieces & Masks::WhiteMasks::WestAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+    }
+    else if (color == PlayerColor::Black)
+    {
+   /*     lowA = 4;
+        lowB = 3;
+        high = 2;*/
+        if ((board.blackPieces & Masks::WhiteMasks::EastAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.blackPieces & Masks::WhiteMasks::WestAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.whitePieces & Masks::BlackMasks::EastAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+
+        if ((board.whitePieces & Masks::BlackMasks::WestAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+    }
+
+    if (attackCount == 0) 
+    {
+        /*if (Masks::OrientationMasks::CurrentRow[index] == lowA || Masks::OrientationMasks::CurrentRow[index] == lowB)
+        {
+            score += DANGER_LOW;
+        }
+        else if (Masks::OrientationMasks::CurrentRow[index] == high)
+        {
+            score += DANGER_HIGH;
+        }*/
+    }
+
+    for (int i = 0; i < protectCount; i++)
+    {
+        score += PROTECT_SCORE;
+    }
+
+    if (attackCount > protectCount)
+    {
+        score += UNPROTECTED_ATTACK;
+    }
+    else if (protectCount >= attackCount) 
+    {
+        for (int i = 0; i < attackCount; i++)
+        {
+            score += ATTACK_SCORE;
+        }
+    }
+    else if (attackCount > protectCount) 
+    {
+        for (int i = protectCount; i < attackCount; i++)
+        {
+            score -= ATTACK_SCORE;
+        }
+    }
+
+    return score;
+}
+
+int Analyzer::GenerateTriangleScores(BitBoard board, int index, PlayerColor color) 
+{   
+    int score = 0;
+
+    if (color == PlayerColor::White) 
+    {
+        unsigned long long enemyPiecesInTriangle = Masks::WhiteMasks::MobilityTriangle[index] & board.blackPieces;
+        int enemyCount = 0;
+        int iterator = BitsMagic::BitScanForwardWithReset(enemyPiecesInTriangle);
+        while (iterator >= 0)
+        {
+            enemyCount++;
+            iterator = BitsMagic::BitScanForwardWithReset(enemyPiecesInTriangle);
+        }
+
+        //if enemy side
+        //few pieces in triangle.
+        //if our side
+        //Many enemies in triangle.
+        if (Masks::OrientationMasks::CurrentRow[index] >= 6) 
+        {
+            score -= (enemyCount * TRIANGLE_SCALAR);
+        }
+        else
+        {
+            score += (enemyCount * TRIANGLE_SCALAR);
+        }
+    }
+    else
+    {
+        unsigned long long enemyPiecesInTriangle = Masks::BlackMasks::MobilityTriangle[index] & board.whitePieces;
+        int enemyCount = 0;
+        int iterator = BitsMagic::BitScanForwardWithReset(enemyPiecesInTriangle);
+        while (iterator >= 0)
+        {
+            enemyCount++;
+            iterator = BitsMagic::BitScanForwardWithReset(enemyPiecesInTriangle);
+        }
+
+        if (Masks::OrientationMasks::CurrentRow[index] <= 3)
+        {
+            score -= (enemyCount * TRIANGLE_SCALAR);
+        }
+        else
+        {
+            score += (enemyCount * TRIANGLE_SCALAR);
+        }
+    }
+
+    return score;
+}
+
+bool Analyzer::IsStupidMove(BitBoard board, int index, PlayerColor color)
+{
+    int attackCount = 0;
+    int protectCount = 0;
+
+    if (color == PlayerColor::White)
+    {
+        /*lowA = 5;
+        lowB = 6;
+        high = 7;*/
+        if ((board.whitePieces & Masks::BlackMasks::EastAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.whitePieces & Masks::BlackMasks::WestAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.blackPieces & Masks::WhiteMasks::EastAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+
+        if ((board.blackPieces & Masks::WhiteMasks::WestAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+    }
+    else if (color == PlayerColor::Black)
+    {
+        /*     lowA = 4;
+        lowB = 3;
+        high = 2;*/
+        if ((board.blackPieces & Masks::WhiteMasks::EastAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.blackPieces & Masks::WhiteMasks::WestAttack[index]) != 0)
+        {
+            protectCount++;
+        }
+
+        if ((board.whitePieces & Masks::BlackMasks::EastAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+
+        if ((board.whitePieces & Masks::BlackMasks::WestAttack[index]) != 0)
+        {
+            attackCount++;
+        }
+    }
+
+    if (attackCount > protectCount) 
+    {
+        return true;
+    }
+    return false;
 }

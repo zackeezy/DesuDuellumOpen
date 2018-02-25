@@ -2,27 +2,20 @@
 #include <vector>
 #include "Weights.h"
 #include "Utils.h"
+#include <time.h>
 using namespace std;
 
 class TestDriver
 {
 private:
-    vector<Weights> _weights;
-    vector<int> _wins;
-
     vector<vector<char>> _board;
-
-    int _generationSize;
-    int _gamesPerSimulation;
-
-    int _playGame(Weights white, Weights black);
 
 public:
     TestDriver();
     ~TestDriver();
 
-    int TempPlayGame(Weights white, Weights black);
-    void PrintBoard(BitBoard board);
+    int _playGame(Weights white, Weights black);
+    void PrintBoard(BitBoard board, clock_t t);
 
     /*void RunTests();
     void SpawnNewGeneration();

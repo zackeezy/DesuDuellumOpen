@@ -75,6 +75,11 @@ public class BoardManager : MonoBehaviour {
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
         _foreignMoveCompleted = false;
+
+        if (whitePlayer != PlayerType.Local)
+        {
+            GetMove();
+        }
 	}
 
 	// Update is called once per frame
@@ -275,6 +280,16 @@ public class BoardManager : MonoBehaviour {
 
     private void GetMove()
     {
+        //Split into AI and Network paths maybe.
+
+        _core.PrepForForeignMove();
+        ThreadStart aiRef = new ThreadStart(GetMoveHelper);
+        Thread aiThread = new Thread(aiRef);
+        aiThread.Start();
+    }
+
+    private void GetMoveHelper()
+    {
         int x = 0, y = 0;
         Direction direction = Direction.East;
 
@@ -295,10 +310,7 @@ public class BoardManager : MonoBehaviour {
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                _core.PrepForForeignMove();
-                ThreadStart aiRef = new ThreadStart(GetMove);
-                Thread aiThread = new Thread(aiRef);
-                aiThread.Start();
+                GetMove();
 
             }
             else if (whitePlayer == PlayerType.Network)
@@ -327,10 +339,7 @@ public class BoardManager : MonoBehaviour {
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                _core.PrepForForeignMove();
-                ThreadStart aiRef = new ThreadStart(GetMove);
-                Thread aiThread = new Thread(aiRef);
-                aiThread.Start();
+                GetMove();
             }
             else if (blackPlayer == PlayerType.Network)
             {

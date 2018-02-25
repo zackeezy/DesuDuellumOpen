@@ -1,4 +1,48 @@
-﻿  TestDriver.cpp
+﻿  stdafx.cpp
+  Weights.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\weights.cpp(17): warning C4244: 'initializing': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
+  Utils.cpp
+  TestDriver.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
-c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.h(51): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.h(76): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\bitsmagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\testdriver.cpp(43): warning C4101: 'f': unreferenced local variable
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\testdriver.cpp(40): warning C4101: 'direction': unreferenced local variable
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\testdriver.cpp(40): warning C4101: 'fromY': unreferenced local variable
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\testdriver.cpp(40): warning C4101: 'fromX': unreferenced local variable
+  Masks.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
+  Grid.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
+  BitsMagic.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\bitsmagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
+  Analyzer.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.h(76): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\bitsmagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.cpp(219): warning C4018: '<': signed/unsigned mismatch
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.cpp(227): warning C4018: '<': signed/unsigned mismatch
+  AIWeightTester.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.h(76): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\bitsmagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
+  Generating Code...
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.cpp(260): warning C4715: 'Analyzer::AlphaBetaLoop': not all control paths return a value
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.cpp(388): warning C4715: 'Analyzer::Evaluate': not all control paths return a value
   AIWeightTester.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AIWeightTester\AIWeightTester\Debug\AIWeightTester.exe

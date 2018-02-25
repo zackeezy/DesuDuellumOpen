@@ -17,6 +17,7 @@ public:
     BitBoard();
     BitBoard(unsigned long long white, unsigned long long black);
     ~BitBoard();
+    PlayerColor currentTurn;
 };
 
 class AlphaBetaNode

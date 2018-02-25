@@ -32,6 +32,8 @@ namespace Assets.Scripts
 
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
         {
+            InitializeAI();
+
             WhitePlayer = white;
             BlackPlayer = black;
 
@@ -133,6 +135,8 @@ namespace Assets.Scripts
 
         public void GetMove(ref int x, ref int y, ref Direction direction)
         {
+            
+
             if (IsWhiteTurn)
             {
                 if (WhitePlayer == PlayerType.AI)
@@ -183,6 +187,9 @@ namespace Assets.Scripts
 
         [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
         public static extern void FillOrigin(int x, int y, int color);
+
+        [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+        public static extern void InitializeAI();
 
         private void GetNetworkMove(ref int x, ref int y, ref Direction direction)
         {

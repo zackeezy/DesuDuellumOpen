@@ -9,9 +9,22 @@ Masks::~Masks()
     
 }
 
+void Masks::InitializeMobilityTriangles() 
+{
+    
+}
+
 //WhiteMasks
-
-
+unsigned long long Masks::WhiteMasks::MobilityTriangle[64] = { 
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0x3, 0x7, 0xe, 0x1c, 0x38, 0x70, 0xe0, 0xc0,
+    0x307, 0x70f, 0xe1f, 0x1c3e, 0x387c, 0x70f8, 0xe0f0, 0xc0e0,
+    0x3070f, 0x70f1f, 0xe1f3f, 0x1c3e7f, 0x387cfe, 0x70f8fc, 0xe0f0f8, 0xc0e0f0,
+    0x3070f1f, 0x70f1f3f, 0xe1f3f7f, 0x1c3e7fff, 0x387cfeff, 0x70f8fcfe, 0xe0f0f8fc, 0xc0e0f0f8,
+    0x3070f1f3f, 0x70f1f3f7f, 0xe1f3f7fff, 0x1c3e7fffff, 0x387cfeffff, 0x70f8fcfeff, 0xe0f0f8fcfe, 0xc0e0f0f8fc,
+    0x3070f1f3f7f, 0x70f1f3f7fff, 0xe1f3f7fffff, 0x1c3e7fffffff, 0x387cfeffffff, 0x70f8fcfeffff, 0xe0f0f8fcfeff, 0xc0e0f0f8fcfe,
+    0x3070f1f3f7fff, 0x70f1f3f7fffff, 0xe1f3f7fffffff, 0x1c3e7fffffffff, 0x387cfeffffffff, 0x70f8fcfeffffff, 0xe0f0f8fcfeffff, 0xc0e0f0f8fcfeff,
+};
 
 unsigned long long Masks::WhiteMasks::Forward[64] =
 {
@@ -53,6 +66,18 @@ unsigned long long Masks::WhiteMasks::WestAttack[64] =
 
 
 //BlackMasks
+unsigned long long Masks::BlackMasks::MobilityTriangle[64] = 
+{ 
+    0xff7f3f1f0f070000, 0xffff7f3f1f0f0700, 0xffffff7f3f1f0e00, 0xffffffff7f3e1c00, 0xfffffffffe7c3800, 0xfffffffefcf87000, 0xfffffefcf8f0e000, 0xfffefcf8f0e0c000,
+    0x7f3f1f0f07030000, 0xff7f3f1f0f070000, 0xffff7f3f1f0e0000, 0xffffff7f3e1c0000, 0xfffffffe7c380000, 0xfffffefcf8700000, 0xfffefcf8f0e00000, 0xfefcf8f0e0c00000,
+    0x3f1f0f0703000000, 0x7f3f1f0f07000000, 0xff7f3f1f0e000000, 0xffff7f3e1c000000, 0xfffffe7c38000000, 0xfffefcf870000000, 0xfefcf8f0e0000000, 0xfcf8f0e0c0000000,
+    0x1f0f070300000000, 0x3f1f0f0700000000, 0x7f3f1f0e00000000, 0xff7f3e1c00000000, 0xfffe7c3800000000, 0xfefcf87000000000, 0xfcf8f0e000000000, 0xf8f0e0c000000000,
+    0xf07030000000000, 0x1f0f070000000000, 0x3f1f0e0000000000, 0x7f3e1c0000000000, 0xfe7c380000000000, 0xfcf8700000000000, 0xf8f0e00000000000, 0xf0e0c00000000000,
+    0x703000000000000, 0xf07000000000000, 0x1f0e000000000000, 0x3e1c000000000000, 0x7c38000000000000, 0xf870000000000000, 0xf0e0000000000000, 0xe0c0000000000000,
+    0x300000000000000, 0x700000000000000, 0xe00000000000000, 0x1c00000000000000, 0x3800000000000000, 0x7000000000000000, 0xe000000000000000, 0xc000000000000000,
+    0, 0, 0, 0, 0, 0, 0, 0, 
+};
+
 
 unsigned long long Masks::BlackMasks::Forward[64] =
 {
@@ -89,9 +114,6 @@ unsigned long long Masks::BlackMasks::WestAttack[64] =
     Grid::G1, Grid::F1, Grid::E1, Grid::D1, Grid::C1, Grid::B1, Grid::A1, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
 };
-
-
-
 
 //OrientationMasks
 

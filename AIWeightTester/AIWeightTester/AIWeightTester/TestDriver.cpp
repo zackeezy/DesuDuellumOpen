@@ -1,12 +1,12 @@
 #include "stdafx.h"
+#include "Weights.h"
 #include "TestDriver.h"
-#include "Utils.h"
-#include "Grid.h"
+#include "Masks.h"
 #include "Analyzer.h"
+#include "BitsMagic.h"
+#include <time.h>
 #include <iostream>
 using namespace std;
-
-
 
 TestDriver::TestDriver()
 {
@@ -30,28 +30,22 @@ int TestDriver::_playGame(Weights whiteWeights, Weights blackWeights)
 {
     BitBoard board;
     board.whitePieces = Grid::Row1 | Grid::Row2;
-    board.blackPieces = Grid::Row7 | Grid::Row8;
+    board.blackPieces = Grid::Row8 | Grid::Row7;
 
     PlayerColor currentTurn = PlayerColor::White;
     int x = 0;
 
     while (!Analyzer::IsGameOver(board)) 
     {
-        //Change weights.
-        if (currentTurn == PlayerColor::White) 
-        {
-            Analyzer::SetWeights(whiteWeights);
-        }
-        else
-        {
-            Analyzer::SetWeights(blackWeights);
-        }
-
+        int fromX, fromY, direction, color = 0;
         //Make Move.
+        clock_t t;
+        int f;
+        t = clock();
         board = Analyzer::GetMove(board, currentTurn);
-
+        t = clock() - t;
         //PrintBoard
-        PrintBoard(board);
+        PrintBoard(board, t);
 
         //Change Turn.
         currentTurn = FlipColor(currentTurn);
@@ -60,12 +54,7 @@ int TestDriver::_playGame(Weights whiteWeights, Weights blackWeights)
     return (currentTurn == PlayerColor::White) ? 1 : 0;
 }
 
-int TestDriver::TempPlayGame(Weights white, Weights black)
-{
-    return _playGame(white, black);
-}
-
-void TestDriver::PrintBoard(BitBoard board) 
+void TestDriver::PrintBoard(BitBoard board, clock_t t) 
 {
     system("cls");
 
@@ -106,4 +95,6 @@ void TestDriver::PrintBoard(BitBoard board)
             cout << "---------------" << endl;
         }
     }
+    cout << "Move took " << ((float)t / CLOCKS_PER_SEC) << endl;
+    system("Pause");
 }

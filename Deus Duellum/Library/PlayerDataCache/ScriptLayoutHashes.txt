@@ -24,7 +24,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 9ca6347af5ceb6b0d1c105af31b6722e UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 1feca1e8a7544231e3f5875e2f2c066d Assembly-CSharp.dll:DentedPixel.LTExamples.TestingUnitTests
 445f780139ebf5524f55eda007c74b5b Assembly-CSharp.dll:.PathBezier2d
-764a1a2597a3f27bf35768f7d45f5069 Assembly-CSharp.dll:.BoardHighlights
+87d692c77fddfcc63de97fabcb29d2f1 Assembly-CSharp.dll:.BoardHighlights
 a889bc7d459ae58d46321207a1eaccf9 Assembly-CSharp.dll:.MusicInfo
 445f780139ebf5524f55eda007c74b5b Assembly-CSharp.dll:.PathSpline2d
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.QuitOnClick
@@ -146,6 +146,7 @@ ee03407f5f75012ad5841537d8f9f344 Assembly-CSharp.dll:.TestingSequencer
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 c6bffb50cb15c3d9d066e6ea095e51e3 Assembly-CSharp.dll:.Testing240
+b3dcdb08d4d2d98de5eef5caf56befef Assembly-CSharp.dll:.CharacterSelect
 320b1dea36882b7d48cabbc3cacb8ac2 Assembly-CSharp.dll:.TestingSceneSwitching
 34f2f83e9672bb68ede8cd3781a47b3d Assembly-CSharp.dll:.PathSplineTrack
 e6e811d0140c79c428745c60c6a7f10f Assembly-CSharp.dll:.Testing243
@@ -173,6 +174,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestingMaxTweens
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AutoFade
 a9940f726586bb5bbf8f87212e097e6d Assembly-CSharp.dll:.VolumeConnector
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
@@ -181,10 +183,12 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f49f4863272689244b774579270d34da Assembly-CSharp.dll:.TestingIssue2
-a41f3478b6961c72be64fa78cab523d4 Assembly-CSharp.dll:.BoardManager
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LoadSceneOnClick
+837bb5a868bb89a49555b8e9f42a5e0e Assembly-CSharp.dll:.BoardManager
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MuteOther
+ce8d7bb316df33b3e0df0b7cdb0fe9b2 Assembly-CSharp.dll:.LoadSceneOnClick
 1ea0c28c827862689dcc0bc0416f80c7 Assembly-CSharp.dll:.PathSplines
 b4bd1a2169092ca325406b98fe5a325d Assembly-CSharp.dll:.TestingRotate
 6109f0847712adbfbd89c82a2c532560 Assembly-CSharp.dll:.GeneralUISpace
+4d7f21a41cd9e628ac1750bc59bd36a2 Assembly-CSharp.dll:.TokenSetter
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GeneralEventsListeners
 48ddff96f17b93c27762041529c640e1 Assembly-CSharp.dll:.OldGUIExamplesCS
