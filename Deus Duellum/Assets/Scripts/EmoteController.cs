@@ -141,7 +141,7 @@ public class EmoteController : MonoBehaviour {
 
     IEnumerator AnimateOtherEmotePanel()
     {
-        //TODO: ANIMATE IT WITH LEANTWEEN INSTEAD
+        // ANIMATE IT WITH LEANTWEEN INSTEAD
         Vector3 oldScale = emotePanel.transform.localScale;
         LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.15f);
         LeanTween.scale(emotePanel, oldScale, 0.15f).setDelay(.15f);

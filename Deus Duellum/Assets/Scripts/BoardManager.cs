@@ -46,6 +46,9 @@ public class BoardManager : MonoBehaviour {
 
     private GameCore _core;
 
+    private float floatTokenYpos = 1.834f;
+    private float flatTokenYpos = 1.084f;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -89,8 +92,15 @@ public class BoardManager : MonoBehaviour {
             if (selectedToken != null)
             {
                 BoardHighlights.Instance.HideHighlights();
-                //TODO: if already a selected token, make it not float
-
+                if(selectedToken.currentX!=selected.currentX)
+                {
+                    //if already a different selected token, make it stop floating
+                    Vector3 flatpos;
+                    flatpos.x = selectedToken.transform.position.x;
+                    flatpos.y = flatTokenYpos;
+                    flatpos.z = selectedToken.transform.position.z;
+                    LeanTween.move(selectedToken.gameObject, flatpos, 0.25f);
+                }
             }
 
             //Debug.Log("selected: " + x + ", " + y);
@@ -99,7 +109,12 @@ public class BoardManager : MonoBehaviour {
             selectionY = y;
             selectedToken = selected;
 
-            //TODO: make the token float a little
+            //make the token start floating a little
+            Vector3 floatpos;
+            floatpos.x = selectedToken.transform.position.x;
+            floatpos.y = floatTokenYpos;
+            floatpos.z = selectedToken.transform.position.z;
+            LeanTween.move(selectedToken.gameObject, floatpos, .25f);
 
             //Check East
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
@@ -229,7 +244,7 @@ public class BoardManager : MonoBehaviour {
         //Tween the position 
         Vector3 newPosition = new Vector3();
         newPosition.x = tileXPos;
-        newPosition.y = selectedToken.gameObject.transform.position.y;
+        newPosition.y = flatTokenYpos;
         newPosition.z = tileZPos;
 
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
