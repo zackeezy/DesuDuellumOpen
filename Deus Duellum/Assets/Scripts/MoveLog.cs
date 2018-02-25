@@ -78,8 +78,10 @@ public class MoveLog : MonoBehaviour {
         if (isWhite)
         {
             notations = whiteLog.text;
-            notations += '\n';
-            notations += notation;
+            //notations += '\n';
+            //notations += notation;
+            notations = notation + '\n' + notations;
+
             whiteLog.text = notations;
             recentWhite = notation;
             smallWhiteLog.text = recentWhite;
@@ -87,8 +89,10 @@ public class MoveLog : MonoBehaviour {
         else
         {
             notations = blackLog.text;
-            notations += '\n';
-            notations += notation;
+            //notations += '\n';
+            //notations += notation;
+            notations = notation + '\n' + notations;
+
             blackLog.text = notations;
             recentBlack = notation;
             smallBlackLog.text = recentBlack;
