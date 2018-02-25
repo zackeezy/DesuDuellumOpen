@@ -92,7 +92,7 @@ public class BoardManager : MonoBehaviour {
             if (selectedToken != null)
             {
                 BoardHighlights.Instance.HideHighlights();
-                if(selectedToken.currentX!=selected.currentX)
+                if(selectedToken.currentX != selected.currentX || selectedToken.currentY != selected.currentY)
                 {
                     //if already a different selected token, make it stop floating
                     Vector3 flatpos;
