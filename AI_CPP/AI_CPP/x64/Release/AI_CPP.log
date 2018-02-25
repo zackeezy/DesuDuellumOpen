@@ -4,18 +4,23 @@ c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(29): warni
 c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(42): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(43): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
-c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Analyzer.h(55): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Analyzer.h(52): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
 AI_CPP.cpp(38): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
 AI_CPP.cpp(42): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
 AI_CPP.cpp(46): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
-AI_CPP.cpp(58): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
-AI_CPP.cpp(62): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
-AI_CPP.cpp(66): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+  Analyzer.cpp
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Analyzer.h(52): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(19): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(29): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(42): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\ai_cpp\ai_cpp\Masks.h(43): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
      Creating library C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AI_CPP\x64\Release\AI_CPP.lib and object C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AI_CPP\x64\Release\AI_CPP.exp
   Generating code
-  1 of 239 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  3 of 239 functions ( 1.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   AI_CPP.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AI_CPP\x64\Release\AI_CPP.dll

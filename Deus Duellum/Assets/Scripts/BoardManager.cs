@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts;
+using System.Threading;
 
 public class BoardManager : MonoBehaviour {
 
@@ -12,6 +13,11 @@ public class BoardManager : MonoBehaviour {
     public Camera blackCam;
     public GameObject Notations;
     public GameObject altNotations;
+
+    private int _awaitMoveX;
+    private int _awaitMoveY;
+    private Direction _awaitMoveDirection;
+    private bool _foreignMoveCompleted;
 
     public Image player1img;
     public Image player2img;
@@ -49,6 +55,8 @@ public class BoardManager : MonoBehaviour {
     private float floatTokenYpos = 1.834f;
     private float flatTokenYpos = 1.084f;
 
+    private MoveLog log;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -68,16 +76,32 @@ public class BoardManager : MonoBehaviour {
         notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
 
+        log = GetComponent<MoveLog>();
+
         setPrefs();
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
-	}
+        _foreignMoveCompleted = false;
+    }
 
 	// Update is called once per frame
 	void Update ()
     {
-        
-	}
+        if (_foreignMoveCompleted)
+        {
+            if (_core.IsMoveAllowed(_awaitMoveX, _awaitMoveY, _awaitMoveDirection))
+            {
+                GameObject movingPiece = _core.Board[_awaitMoveX, _awaitMoveY];
+                _capturedPiece = _core.MakeMove(_awaitMoveX, _awaitMoveY, _awaitMoveDirection);
+                _core.MoveCoordinates(ref _awaitMoveX, ref _awaitMoveY, _awaitMoveDirection, isWhiteTurn);
+                selectedToken = movingPiece.GetComponent<Token>();
+
+                MoveToken(_awaitMoveX, _awaitMoveY, tilePositionX[_awaitMoveX], tilePositionZ[_awaitMoveY]);
+            }
+            _foreignMoveCompleted = false;
+            gameMode = PlayerType.Local;
+        }
+    }
 
     public void TokenClicked(int x, int y, Token selected)
     {
@@ -249,6 +273,8 @@ public class BoardManager : MonoBehaviour {
 
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
 
+        string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
+
         selectedToken.SetBoardPosition (x, y);
         
         //destroy the captured token
@@ -259,13 +285,33 @@ public class BoardManager : MonoBehaviour {
             _capturedPiece = null;
 
             //add an x to the the log
+            moveforLog += "x";
         }
 
+        moveforLog += log.CoordsToNotations(x, y);
+        //send the move to the log
+        log.ShowNotations(moveforLog, isWhiteTurn);
+
+        //Debug.Log(moveforLog);
+    
         //toggle the turn
         ChangeTurn();
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
         GameWon(y);
+    }
+
+    private void GetMove()
+    {
+        int x = 0, y = 0;
+        Direction direction = Direction.East;
+
+        _core.GetMove(ref x, ref y, ref direction);
+
+        _awaitMoveX = x;
+        _awaitMoveY = y;
+        _awaitMoveDirection = direction;
+        _foreignMoveCompleted = true;
     }
 
     private void ChangeTurn()
@@ -277,21 +323,11 @@ public class BoardManager : MonoBehaviour {
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                int x = 0, y = 0;
-                Direction direction = Direction.East;
+                _core.PrepForForeignMove();
+                ThreadStart aiRef = new ThreadStart(GetMove);
+                Thread aiThread = new Thread(aiRef);
+                aiThread.Start();
 
-                _core.GetMove(ref x, ref y, ref direction);
-
-                if (_core.IsMoveAllowed(x, y, direction))
-                {
-                    GameObject movingPiece = _core.Board[x, y];
-                    _core.MakeMove(x, y, direction);
-                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
-                    selectedToken = movingPiece.GetComponent<Token>();
-
-                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
-                }
-                gameMode = PlayerType.Local;
             }
             else if (whitePlayer == PlayerType.Network)
             {
@@ -319,21 +355,10 @@ public class BoardManager : MonoBehaviour {
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                int x = 0, y = 0;
-                Direction direction = Direction.East;
-
-                _core.GetMove(ref x, ref y, ref direction);
-
-                if (_core.IsMoveAllowed(x, y, direction))
-                {
-                    GameObject movingPiece = _core.Board[x, y];
-                    _core.MakeMove(x, y, direction);
-                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
-                    selectedToken = movingPiece.GetComponent<Token>();
-                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
-                }
-                gameMode = PlayerType.Local;
-
+                _core.PrepForForeignMove();
+                ThreadStart aiRef = new ThreadStart(GetMove);
+                Thread aiThread = new Thread(aiRef);
+                aiThread.Start();
             }
             else if (blackPlayer == PlayerType.Network)
             {
@@ -383,6 +408,9 @@ public class BoardManager : MonoBehaviour {
                 //you lost
                 winText.text = "You Lost!";
             }
+
+            log.ShowWin(true);
+            
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
         }
@@ -403,11 +431,12 @@ public class BoardManager : MonoBehaviour {
                 //you lost
                 winText.text = "You Lost!";
             }
+
+            log.ShowWin(false);
+
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
         }
-
-
     }
 
     private void setPrefs()
@@ -488,6 +517,10 @@ public class BoardManager : MonoBehaviour {
         GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
         EmoteController player2emotes = player2.GetComponent<EmoteController>();
         player2emotes.SetCharacter(player2character);
+
+        //set the log's characters
+        log.SetCharacters(player1character, player2character);
+
     }
 
     private void setCharacterImage(int player, int character)
