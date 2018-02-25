@@ -72,8 +72,8 @@ public class EmoteController : MonoBehaviour {
         emotePanel = transform.GetChild(4).gameObject;
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
-        PlayEmote(emote);
-        StartCoroutine(DeactivateLocalEmotePanel());
+        PlayEmoteAudio(emote);
+        StartCoroutine(AnimateLocalEmotePanel());
     }
 
     public void OtherEmote(int emote)
@@ -82,11 +82,11 @@ public class EmoteController : MonoBehaviour {
         emotePanel = transform.GetChild(3).gameObject;
         Text emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
-        PlayEmote(emote);
-        StartCoroutine(DeactivateOtherEmotePanel());
+        PlayEmoteAudio(emote);
+        StartCoroutine(AnimateLocalEmotePanel());
     }
 
-    public void PlayEmote(int emote)
+    public void PlayEmoteAudio(int emote)
     {
         //change the text of emote panel and which voiceline to play
         AudioClip emoteClip = new AudioClip();
@@ -116,28 +116,35 @@ public class EmoteController : MonoBehaviour {
         //emoteSource.clip = emoteClip;
         ////play the clip
         //emoteSource.Play();
-
-        //activate the emote panel        
-        emotePanel.SetActive(true);
     }
 
-    IEnumerator DeactivateLocalEmotePanel()
+    IEnumerator AnimateLocalEmotePanel()
     {
-        //TODO: ANIMATE IT WITH LEANTWEEN INSTEAD
+        //activate the emote panel
+        emotePanel.SetActive(true);
 
         //deactivate emotebutton
         Button emoteButton = transform.GetChild(2).GetComponent<Button>();
         emoteButton.interactable = false;
 
+        //animate the emote button
+        Vector3 oldScale = emotePanel.transform.localScale;
+        LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.1f);
+        LeanTween.scale(emotePanel, oldScale, 0.1f).setDelay(.1f);
+
         yield return new WaitForSeconds(voiceLineLength);
         emotePanel.SetActive(false);
+
         //reactivate emote button
         emoteButton.interactable = true;
     }
 
-    IEnumerator DeactivateOtherEmotePanel()
+    IEnumerator AnimateOtherEmotePanel()
     {
         //TODO: ANIMATE IT WITH LEANTWEEN INSTEAD
+        Vector3 oldScale = emotePanel.transform.localScale;
+        LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.15f);
+        LeanTween.scale(emotePanel, oldScale, 0.15f).setDelay(.15f);
 
         yield return new WaitForSeconds(voiceLineLength);
         emotePanel.SetActive(false);
