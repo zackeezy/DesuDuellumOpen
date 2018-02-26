@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Linq;
 using System.Net.Sockets;
+using System;
 
 public class Client : MonoBehaviour {
 
@@ -29,6 +30,12 @@ public class Client : MonoBehaviour {
     public GameObject networkControl;
     public InputField Name;
 
+    //C# Networking variables
+    bool csharpconnected = false;
+    Socket sendingSocket;
+    IPAddress sendToAddress;
+    IPEndPoint sendingEndPoint;
+
     public string RecvIP
     {
         get
@@ -46,84 +53,92 @@ public class Client : MonoBehaviour {
     void Start()
     {
         servers = new List<PlayerInfo>();
-        NetworkTransport.Init();
-        ConnectionConfig config = new ConnectionConfig();
-        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
-        HostTopology topology = new HostTopology(config, maxConnections);
-        hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
 
-
-        UdpClient udpClient = new UdpClient(7778);
-        udpClient.Send(Encoding.ASCII.GetBytes(":p"), 2, IPAddress.Broadcast.ToString(), 7778);
-        udpClient.Close();
+        sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        sendToAddress = IPAddress.Broadcast;
+        sendingEndPoint = new IPEndPoint(sendToAddress, socketPort);
     }
 
     // Update is called once per frame
-    void Update () {
-        int recvHostId;
-        int recvConnectionId;
-        int recvChannelId;
-        byte[] recvBuffer = new byte[1024];
-        int bufferSize = 1024;
-        int datasize;
+    void Update()
+    {
+        if (csharpconnected) {
+            int recvHostId;
+            int recvConnectionId;
+            int recvChannelId;
+            byte[] recvBuffer = new byte[1024];
+            int bufferSize = 1024;
+            int datasize;
 
-        NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId, 
-            out recvConnectionId, out recvChannelId, recvBuffer, bufferSize, out datasize, out error);
+            NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId,
+                out recvConnectionId, out recvChannelId, recvBuffer, bufferSize, out datasize, out error);
 
-        switch (recvNetworkEvent)
+            switch (recvNetworkEvent)
+            {
+                case NetworkEventType.ConnectEvent:
+                    if (!connected)
+                    {
+                        connectionIdServer = recvConnectionId;
+                        hostIdServer = recvHostId;
+                        connected = true;
+                    }
+                    break;
+                case NetworkEventType.DisconnectEvent:
+                    connected = false;
+                    break;
+                case NetworkEventType.DataEvent:
+                    string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
+                    Debug.Log("Receiving " + msg);
+                    string[] splitData = msg.Split('|');
+                    switch (splitData[0])
+                    {
+                        //case "CONNECT":
+                        //    PlayerInfo pi = new PlayerInfo()
+                        //    {
+                        //        IP = splitData[1],
+                        //        ConnectionId = int.Parse(splitData[2]),
+                        //        HostId = int.Parse(splitData[3]),
+                        //        Name = splitData[4]
+                        //    };
+                        //    if (!servers.Contains(pi))
+                        //    {
+                        //        servers.Add(pi);
+                        //        Debug.Log(pi.Name + " at " + pi.IP + " was received");
+                        //    }
+                        //    Show list of Servers
+                        //    GameObject.Find("ScrollView").GetComponent<ScrollViewScript>().PopulateServers();
+                        //    break;
+                        case "MOVE":
+                            //TODO: add code for move
+                            Move(splitData[1], splitData[2], player);
+                            break;
+                        case "EMOTE":
+                            //TODO: add code for emote
+                            break;
+                        case "MESSAGE":
+                            //Won't be used in final version 
+                            networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
+                            break;
+                    }
+                    break;
+            }
+        }
+        else
         {
-            case NetworkEventType.ConnectEvent:
-                if (!connected)
-                {
-                    connectionIdServer = recvConnectionId;
-                    hostIdServer = recvHostId;
-                    connected = true;
-                }
-                break;
-            case NetworkEventType.DisconnectEvent:
-                connected = false;
-                break;
-            case NetworkEventType.DataEvent:
-                string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
-                Debug.Log("Receiving " + msg);
-                string[] splitData = msg.Split('|');
-                switch (splitData[0])
-                {
-                    case "CONNECT":
-                        PlayerInfo pi = new PlayerInfo()
-                        {
-                            IP = splitData[1],
-                            ConnectionId = int.Parse(splitData[2]),
-                            HostId = int.Parse(splitData[3]),
-                            Name = splitData[4]
-                        };
-                        if (!servers.Contains(pi))
-                        {
-                            servers.Add(pi);
-                            Debug.Log(pi.Name + " at " + pi.IP + " was received");
-                        }
-                        //Show list of Servers
-                        GameObject.Find("ScrollView").GetComponent<ScrollViewScript>().PopulateServers();
-                        break;
-                    case "MOVE":
-                        //TODO: add code for move
-                        Move(splitData[1], splitData[2], player);
-                        break;
-                    case "EMOTE":
-                        //TODO: add code for emote
-                        break;
-                    case "MESSAGE":
-                        //Won't be used in final version 
-                        networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
-                        break;
-                }
-                break;
+            Broadcast();
+
+            
         }
     }
 
     public void Connect()
     {
+        NetworkTransport.Init();
+        ConnectionConfig config = new ConnectionConfig();
+        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
+        HostTopology topology = new HostTopology(config, maxConnections);
+        hostId = NetworkTransport.AddHost(topology, socketPort);
         connectionId = NetworkTransport.Connect(hostId, RecvIP, serverSocketPort, 0, out error);
     }
 
@@ -147,9 +162,18 @@ public class Client : MonoBehaviour {
 
     public void Broadcast()
     {
-        byte[] send = Encoding.ASCII.GetBytes(Name.text == "" ? "Default" : Name.text + '|' + 
-            NetworkControl.LocalIPAddress().ToString() + "|" + socketPort);
-        NetworkTransport.StartBroadcastDiscovery(hostId, socketPort, 2222, 1, 1, send, send.Length, 2000, out error);
+        byte[] sendBuffer = Encoding.ASCII.GetBytes("Client|" + NetworkControl.LocalIPAddress());
+        try
+        {
+            sendingSocket.SendTo(sendBuffer, sendingEndPoint);
+            Debug.Log("Message sent to broadcast address.");
+        }
+        catch (Exception sendException)
+        {
+            Debug.Log("Exception " + sendException.Message);
+            Debug.Log("Message not sent :(");
+        }
+
     }
 
     public void ServerSelected(int index)
