@@ -370,12 +370,12 @@ public class BoardManager : MonoBehaviour {
             {
                 //disable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote = player1.transform.GetChild(3).gameObject.GetComponent<Button>();
                 emote.interactable = false;
 
                 //enable blacks's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote2 = player2.transform.GetChild(3).gameObject.GetComponent<Button>();
                 emote2.interactable = true;
             }
         }

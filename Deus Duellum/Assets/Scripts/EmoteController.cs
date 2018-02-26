@@ -65,11 +65,11 @@ public class EmoteController : MonoBehaviour {
     public void EmoteClicked(int emote)
     {
         //deactivate emote buttons
-        GameObject emoteButtons = transform.GetChild(3).gameObject;
+        GameObject emoteButtons = transform.GetChild(4).gameObject;
         emoteButtons.SetActive(false);
 
         //get the emote panel
-        emotePanel = transform.GetChild(4).gameObject;
+        emotePanel = transform.GetChild(5).gameObject;
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
         PlayEmoteAudio(emote);
@@ -124,7 +124,7 @@ public class EmoteController : MonoBehaviour {
         emotePanel.SetActive(true);
 
         //deactivate emotebutton
-        Button emoteButton = transform.GetChild(2).GetComponent<Button>();
+        Button emoteButton = transform.GetChild(3).GetComponent<Button>();
         emoteButton.interactable = false;
 
         //animate the emote button
