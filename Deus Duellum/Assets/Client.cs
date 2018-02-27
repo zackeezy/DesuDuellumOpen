@@ -201,6 +201,6 @@ public class Client : MonoBehaviour {
 
     private void OnApplicationQuit()
     {
-        receiveThread.Abort();
+        //receiveThread.Abort();
     }
 }
