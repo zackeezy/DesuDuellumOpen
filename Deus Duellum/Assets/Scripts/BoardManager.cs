@@ -57,6 +57,10 @@ public class BoardManager : MonoBehaviour {
 
     private MoveLog log;
 
+    private AudioSource effectSource;
+    public AudioClip captureSound;
+    public AudioClip moveSound;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -82,10 +86,15 @@ public class BoardManager : MonoBehaviour {
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
         _foreignMoveCompleted = false;
+
+        //set the clip the effectSource uses
+        //WILL NOT WORK IF DO NOT START AT MAIN MENU
+        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        //effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
     }
 
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update ()
     {
         if (_foreignMoveCompleted)
         {
@@ -276,15 +285,23 @@ public class BoardManager : MonoBehaviour {
         string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
 
         selectedToken.SetBoardPosition (x, y);
-        
+
         //destroy the captured token
-		if(_capturedPiece != null)
-        {           
+        if (_capturedPiece != null)
+        {
             Destroy(_capturedPiece);
             _capturedPiece = null;
 
             //add an x to the the log
             moveforLog += "x";
+
+            //play the captured sound effect
+            //PlaySoundEffect(true);
+        }
+        else
+        {
+            //play the normal sound effect
+            //PlaySoundEffect(false);
         }
 
         moveforLog += log.CoordsToNotations(x, y);
@@ -339,12 +356,12 @@ public class BoardManager : MonoBehaviour {
             {
                 //enable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote = player1.transform.GetChild(3).gameObject.GetComponent<Button>();
                 emote.interactable = true;
 
                 //disable black's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote2 = player2.transform.GetChild(3).gameObject.GetComponent<Button>();
                 emote2.interactable = false;
             }
         }
@@ -614,6 +631,22 @@ public class BoardManager : MonoBehaviour {
                 Debug.Log("white is ai, black is local");
             }
         }
+    }
+
+    public void PlaySoundEffect(bool captured)
+    {
+        if (captured)
+        {
+            //choose the capture sound effect
+            effectSource.clip = captureSound;
+        }
+        else
+        {
+            //choose the regular sound effect
+            effectSource.clip = moveSound;
+        }
+        //play the clip
+        effectSource.Play();
     }
 }
 

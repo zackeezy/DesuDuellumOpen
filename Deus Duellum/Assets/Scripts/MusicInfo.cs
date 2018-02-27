@@ -10,7 +10,6 @@ public class MusicInfo : MonoBehaviour {
     public AudioSource effectsSource;
     public AudioSource emotesSource;
 
-
     void Awake () {
 		//to keep the same audio throughout, so doesn't restart music/ or reset volume
 		GameObject[] objs = GameObject.FindGameObjectsWithTag("Audio");

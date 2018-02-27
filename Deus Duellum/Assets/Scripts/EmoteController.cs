@@ -21,7 +21,7 @@ public class EmoteController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //temporary...
+        //temp
         voiceLineLength = 2;
     }
 	
@@ -141,7 +141,6 @@ public class EmoteController : MonoBehaviour {
 
     IEnumerator AnimateOtherEmotePanel()
     {
-        // ANIMATE IT WITH LEANTWEEN INSTEAD
         Vector3 oldScale = emotePanel.transform.localScale;
         LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.15f);
         LeanTween.scale(emotePanel, oldScale, 0.15f).setDelay(.15f);
