@@ -33,7 +33,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     //C# networking stuff
     bool csharpconnected = false;
-    UdpClient sendingSocket;
+    Socket sendingSocket;
     IPAddress sendToAddress;
     IPEndPoint sendingEndPoint;
     Thread sendThread;
@@ -57,12 +57,18 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         clientObj = null;
         myIP = NetworkControl.LocalIPAddress().ToString();
 
-        sendingSocket = new UdpClient();
+        sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        IPAddress ip = IPAddress.Parse("224.5.6.7");
         //sendToAddress = IPAddress.Broadcast;
-        sendingEndPoint = new IPEndPoint(IPAddress.Broadcast, clientPort);
+        //sendingEndPoint = new IPEndPoint(IPAddress.Broadcast, clientPort);
+        //Debug.Log(IPAddress.Broadcast.ToString());
+        sendingSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(ip));
+        sendingSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, 2);
+        IPEndPoint ipep = new IPEndPoint(ip, clientPort);
+        sendingSocket.Connect(ipep);
 
-        sendThread = new Thread(Broadcast);
-        sendThread.Start();
+        //sendThread = new Thread(Broadcast);
+        //sendThread.Start();
     }
 	
 	// Update is called once per frame
@@ -167,25 +173,25 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
             buffer, message.Length * sizeof(char), out error);
     }
 
-    public void Broadcast()
-    {
-        byte[] sendBuffer = Encoding.ASCII.GetBytes("Client|" + NetworkControl.LocalIPAddress());
-        while (!csharpconnected)
-        {
-            try
-            {
-                sendingSocket.Send(sendBuffer, sendBuffer.Length, sendingEndPoint);
-                Debug.Log("Message sent to broadcast address.");
-            }
-            catch (Exception sendException)
-            {
-                Debug.Log(sendException.GetType().ToString());
-                Debug.Log("Exception " + sendException.Message);
-                Debug.Log("Message not sent :(");
-            }
-            Thread.Sleep(2000);
-        }
-    }
+    //public void Broadcast()
+    //{
+    //    byte[] sendBuffer = Encoding.ASCII.GetBytes("Client|" + NetworkControl.LocalIPAddress());
+    //    while (!csharpconnected)
+    //    {
+    //        try
+    //        {
+    //            sendingSocket.Send(sendBuffer, sendBuffer.Length, sendingEndPoint);
+    //            Debug.Log("Message sent to broadcast address.");
+    //        }
+    //        catch (Exception sendException)
+    //        {
+    //            Debug.Log(sendException.GetType().ToString());
+    //            Debug.Log("Exception " + sendException.Message);
+    //            Debug.Log("Message not sent :(");
+    //        }
+    //        Thread.Sleep(2000);
+    //    }
+    //}
 
     private void OnApplicationQuit()
     {
