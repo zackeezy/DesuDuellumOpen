@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Net.Sockets;
 using System;
+using System.Threading;
 
 public class Client : MonoBehaviour {
 
@@ -18,7 +19,7 @@ public class Client : MonoBehaviour {
     int reliableChannelId;
     int hostId;
     int socketPort = 7778;
-    int serverSocketPort = 8888;
+    int serverSocketPort = 9999;
     byte error;
     string recvIP;
 
@@ -32,9 +33,12 @@ public class Client : MonoBehaviour {
 
     //C# Networking variables
     bool csharpconnected = false;
-    Socket sendingSocket;
-    IPAddress sendToAddress;
-    IPEndPoint sendingEndPoint;
+    UdpClient listener;
+    IPEndPoint groupEP;
+    string received_data;
+    byte[] receive_byte_array;
+    Thread receiveThread;
+
 
     public string RecvIP
     {
@@ -53,11 +57,11 @@ public class Client : MonoBehaviour {
     void Start()
     {
         servers = new List<PlayerInfo>();
-        Debug.Log("Socket open. Host ID is: " + hostId);
 
-        sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        sendToAddress = IPAddress.Broadcast;
-        sendingEndPoint = new IPEndPoint(sendToAddress, socketPort);
+        listener = new UdpClient(socketPort);
+        groupEP = new IPEndPoint(IPAddress.Any, socketPort);
+        received_data = "";
+        listener.BeginReceive(ReceiveData, new object());
     }
 
     // Update is called once per frame
@@ -126,9 +130,9 @@ public class Client : MonoBehaviour {
         }
         else
         {
-            Broadcast();
-
             
+
+
         }
     }
 
@@ -160,20 +164,26 @@ public class Client : MonoBehaviour {
         NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 
-    public void Broadcast()
+    void ReceiveData(IAsyncResult ar)
     {
-        byte[] sendBuffer = Encoding.ASCII.GetBytes("Client|" + NetworkControl.LocalIPAddress());
-        try
-        {
-            sendingSocket.SendTo(sendBuffer, sendingEndPoint);
-            Debug.Log("Message sent to broadcast address.");
-        }
-        catch (Exception sendException)
-        {
-            Debug.Log("Exception " + sendException.Message);
-            Debug.Log("Message not sent :(");
-        }
-
+            try
+            {
+                receive_byte_array = listener.EndReceive(ar, ref groupEP);
+                if (receive_byte_array.Length > 0)
+                {
+                    Debug.Log("Received a broadcast from " + groupEP.ToString());
+                    received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
+                    Debug.Log("data follows " + received_data);
+                    Debug.Log("IPAddress received: " + groupEP.Address.ToString());
+                    //csharpconnected = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.GetType().ToString());
+                Debug.Log(e.ToString());
+            }
+            Thread.Sleep(2000);
     }
 
     public void ServerSelected(int index)
@@ -187,5 +197,10 @@ public class Client : MonoBehaviour {
         });
 
         NetworkTransport.StopBroadcastDiscovery();
+    }
+
+    private void OnApplicationQuit()
+    {
+        receiveThread.Abort();
     }
 }

@@ -17,9 +17,9 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
     int maxConnections = 2;
     int reliableChannelId;
     int hostId;
-    int socketPort = 8888;
+    int socketPort = 9999;
     byte error;
-    int clientPort;
+    int clientPort = 7778;
     string myIP;
 
     string clientIP;
@@ -33,11 +33,10 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     //C# networking stuff
     bool csharpconnected = false;
-    UdpClient listener;
-    IPEndPoint groupEP;
-    string received_data;
-    byte[] receive_byte_array;
-    Thread receiveThread;
+    UdpClient sendingSocket;
+    IPAddress sendToAddress;
+    IPEndPoint sendingEndPoint;
+    Thread sendThread;
 
 
     public string ClientIP
@@ -58,10 +57,12 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         clientObj = null;
         myIP = NetworkControl.LocalIPAddress().ToString();
 
-        listener = new UdpClient(8888);
-        groupEP = new IPEndPoint(IPAddress.Any, 8888);
-        received_data = "";
-        receiveThread = new Thread(ReceiveData);
+        sendingSocket = new UdpClient();
+        //sendToAddress = IPAddress.Broadcast;
+        sendingEndPoint = new IPEndPoint(IPAddress.Broadcast, clientPort);
+
+        sendThread = new Thread(Broadcast);
+        sendThread.Start();
     }
 	
 	// Update is called once per frame
@@ -137,10 +138,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         }
         else
         {
-            if (!receiveThread.IsAlive)
-            {
-                receiveThread.Start();
-            }
+            
         }
     }
 
@@ -169,54 +167,28 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
             buffer, message.Length * sizeof(char), out error);
     }
 
-    void ReceiveData()
+    public void Broadcast()
     {
-        try
+        byte[] sendBuffer = Encoding.ASCII.GetBytes("Client|" + NetworkControl.LocalIPAddress());
+        while (!csharpconnected)
         {
-            receive_byte_array = listener.Receive(ref groupEP);
-            if (receive_byte_array.Length > 0)
+            try
             {
-                Debug.Log("Received a broadcast from " + groupEP.ToString());
-                received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
-                Debug.Log("data follows " + received_data);
-                Debug.Log("IPAddress received: " + groupEP.Address.ToString());
+                sendingSocket.Send(sendBuffer, sendBuffer.Length, sendingEndPoint);
+                Debug.Log("Message sent to broadcast address.");
             }
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.ToString());
+            catch (Exception sendException)
+            {
+                Debug.Log(sendException.GetType().ToString());
+                Debug.Log("Exception " + sendException.Message);
+                Debug.Log("Message not sent :(");
+            }
+            Thread.Sleep(2000);
         }
     }
 
-    //public override void OnReceivedBroadcast(string fromAddress, string data)
-    //{
-    //    Debug.Log("BroadcastEvent Triggered");
-    //    string broadcastMsg = "";
-    //    byte[] buffer = new byte[1024];
-    //    int recvsize;
-    //    byte error;
-
-    //    NetworkTransport.GetBroadcastConnectionInfo(hostId, out clientIP, out clientPort, out error);
-
-    //    NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
-
-    //    broadcastMsg = Encoding.Default.GetString(buffer);
-
-    //    clientIP = broadcastMsg.Split('|')[1];
-
-    //    clientPort = int.Parse(broadcastMsg.Split('|')[2]);
-
-    //    connectionIdClient = int.Parse(broadcastMsg.Split('|')[3]);
-
-    //    hostIdClient = int.Parse(broadcastMsg.Split('|')[4]);
-
-    //    Connect();
-
-    //    string response = "CONNECT|" + myIP + "|" + connectionId + "|" + hostId + "|Server";
-
-    //    NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, Encoding.ASCII.GetBytes(response),
-    //        response.Length * sizeof(char), out error);
-
-    //    base.OnReceivedBroadcast(fromAddress, data);
-    //}
+    private void OnApplicationQuit()
+    {
+        sendThread.Abort();
+    }
 }
