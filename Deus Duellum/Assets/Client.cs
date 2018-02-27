@@ -39,7 +39,6 @@ public class Client : MonoBehaviour {
     byte[] receive_byte_array;
     Thread receiveThread;
 
-
     public string RecvIP
     {
         get
