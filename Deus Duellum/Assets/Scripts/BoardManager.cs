@@ -407,7 +407,7 @@ public class BoardManager : MonoBehaviour {
         _core.HasWon(y);
 
         //change the winnertext
-        GameObject winTextobj = gameOverPanel.transform.GetChild(0).gameObject;
+        GameObject winTextobj = gameOverPanel.transform.GetChild(2).gameObject;
         Text winText = winTextobj.GetComponent<Text>();
 
         if (_core.whiteWon)
@@ -546,6 +546,8 @@ public class BoardManager : MonoBehaviour {
     {
         Image playerImg = null;
         Image playerBorder = null;
+        float borderWidth = 0f;
+        float borderHeight = 0f;
 
         //TODO: size the borders to actually fit
 
@@ -564,19 +566,26 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Athena");
             playerImg.sprite = AthenaImg;
             playerBorder.sprite = AthenaBorder;
+            borderWidth = 130;
+            borderHeight = 130;
         }
         else if (character == 1)
         {
             //Debug.Log("player " + player + " is Ra");
             playerImg.sprite = RaImg;
             playerBorder.sprite = RaBorder;
+            borderWidth = 135;
+            borderHeight = 135;
         }
         else if (character == 2)
         {
             //Debug.Log("player " + player + " is Thor");
             playerImg.sprite = ThorImg;
             playerBorder.sprite = ThorBorder;
+            borderWidth = 115;
+            borderHeight = 115;
         }
+        playerBorder.rectTransform.sizeDelta = new Vector2(borderWidth, borderHeight);
     }
 
     //choose which notations to use

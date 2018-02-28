@@ -27,8 +27,8 @@ public class ButtonHover : MonoBehaviour {
 
     public void MouseExit()
     {
-        //Debug.Log("exited");
         //mouse exits the space
+        //Debug.Log("exited");
         LeanTween.scale(gameObject, oldScale, .05f);
     }
 }
