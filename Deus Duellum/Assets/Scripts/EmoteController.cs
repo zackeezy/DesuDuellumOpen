@@ -124,7 +124,7 @@ public class EmoteController : MonoBehaviour {
         emotePanel.SetActive(true);
 
         //deactivate emotebutton
-        Button emoteButton = transform.GetChild(3).GetComponent<Button>();
+        Button emoteButton = transform.GetChild(3).GetChild(2).GetComponent<Button>();
         emoteButton.interactable = false;
 
         //animate the emote button

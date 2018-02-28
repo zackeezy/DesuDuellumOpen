@@ -19,11 +19,14 @@ public class BoardManager : MonoBehaviour {
     private Direction _awaitMoveDirection;
     private bool _foreignMoveCompleted;
 
-    public Image player1img;
-    public Image player2img;
+    public GameObject player1img;
+    public GameObject player2img;
     public Sprite AthenaImg;
+    public Sprite AthenaBorder;
     public Sprite RaImg;
+    public Sprite RaBorder;
     public Sprite ThorImg;
+    public Sprite ThorBorder;
 
     public Text turnText;
 	public GameObject gameOverPanel;
@@ -356,12 +359,12 @@ public class BoardManager : MonoBehaviour {
             {
                 //enable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-                Button emote = player1.transform.GetChild(3).gameObject.GetComponent<Button>();
+                Button emote = player1.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote.interactable = true;
 
                 //disable black's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-                Button emote2 = player2.transform.GetChild(3).gameObject.GetComponent<Button>();
+                Button emote2 = player2.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = false;
             }
         }
@@ -387,12 +390,12 @@ public class BoardManager : MonoBehaviour {
             {
                 //disable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-                Button emote = player1.transform.GetChild(3).gameObject.GetComponent<Button>();
+                Button emote = player1.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote.interactable = false;
 
                 //enable blacks's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-                Button emote2 = player2.transform.GetChild(3).gameObject.GetComponent<Button>();
+                Button emote2 = player2.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = true;
             }
         }
@@ -541,38 +544,38 @@ public class BoardManager : MonoBehaviour {
 
     private void setCharacterImage(int player, int character)
     {
+        Image playerImg = null;
+        Image playerBorder = null;
+
+        //TODO: size the borders to actually fit
+
         if (player == 1)
         {
-            if (character == 0)
-            {
-                //Debug.Log("player " + player + " is Athena");
-                player1img.sprite = AthenaImg;
-            }
-            else if (character == 1)
-            {
-                //Debug.Log("player " + player + " is Ra");
-                player1img.sprite = RaImg;
-            }
-            else if (character == 2)
-            {
-                //Debug.Log("player " + player + " is Thor");
-                player1img.sprite = ThorImg;
-            }
+            playerImg = player1img.GetComponent<Image>();
+            playerBorder = player1img.transform.GetChild(0).GetComponent<Image>();
         }
         else if (player == 2)
         {
-            if (character == 0)
-            {
-                player2img.sprite = AthenaImg;
-            }
-            else if (character == 1)
-            {
-                player2img.sprite = RaImg;
-            }
-            else if (character == 2)
-            {
-                player2img.sprite = ThorImg;
-            }
+            playerImg = player2img.GetComponent<Image>();
+            playerBorder = player2img.transform.GetChild(0).GetComponent<Image>();
+        }
+        if (character == 0)
+        {
+            //Debug.Log("player " + player + " is Athena");
+            playerImg.sprite = AthenaImg;
+            playerBorder.sprite = AthenaBorder;
+        }
+        else if (character == 1)
+        {
+            //Debug.Log("player " + player + " is Ra");
+            playerImg.sprite = RaImg;
+            playerBorder.sprite = RaBorder;
+        }
+        else if (character == 2)
+        {
+            //Debug.Log("player " + player + " is Thor");
+            playerImg.sprite = ThorImg;
+            playerBorder.sprite = ThorBorder;
         }
     }
 
