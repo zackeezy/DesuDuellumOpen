@@ -33,11 +33,14 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     //C# networking stuff
     bool csharpconnected = false;
-    Socket sendingSocket;
+    UdpClient sendingSocket;
     IPAddress sendToAddress;
     IPEndPoint sendingEndPoint;
     Thread sendThread;
-
+    bool broadcasting = true;
+    byte[] sendByteArray;
+    int multicastPort = 10101;
+    IPEndPoint ipep;
 
     public string ClientIP
     {
@@ -57,15 +60,15 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         clientObj = null;
         myIP = NetworkControl.LocalIPAddress().ToString();
 
-        sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        sendingSocket = new UdpClient();
         IPAddress ip = IPAddress.Parse("224.5.6.7");
         //sendToAddress = IPAddress.Broadcast;
         //sendingEndPoint = new IPEndPoint(IPAddress.Broadcast, clientPort);
         //Debug.Log(IPAddress.Broadcast.ToString());
-        sendingSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(ip));
-        sendingSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, 2);
-        IPEndPoint ipep = new IPEndPoint(ip, clientPort);
-        sendingSocket.Connect(ipep);
+        sendingSocket.JoinMulticastGroup(ip);
+        ipep = new IPEndPoint(ip, multicastPort);
+
+        sendByteArray = Encoding.ASCII.GetBytes("Server|" + NetworkControl.LocalIPAddress().ToString());
 
         //sendThread = new Thread(Broadcast);
         //sendThread.Start();
@@ -144,7 +147,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         }
         else
         {
-            
+            sendingSocket.Send(sendByteArray, sendByteArray.Length, ipep);
         }
     }
 
@@ -195,6 +198,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     private void OnApplicationQuit()
     {
-        sendThread.Abort();
+        //sendThread.Abort();
+        sendingSocket.Close();
     }
 }

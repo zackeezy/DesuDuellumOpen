@@ -33,11 +33,12 @@ public class Client : MonoBehaviour {
 
     //C# Networking variables
     bool csharpconnected = false;
-    Socket listener;
+    UdpClient listener;
     IPEndPoint groupEP;
     string received_data;
     byte[] receive_byte_array;
     Thread receiveThread;
+    int multicastPort = 10101;
 
     public string RecvIP
     {
@@ -56,14 +57,17 @@ public class Client : MonoBehaviour {
     void Start()
     {
         servers = new List<PlayerInfo>();
-
-        listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        
         IPAddress ip = IPAddress.Parse("224.5.6.7");
-        groupEP = new IPEndPoint(IPAddress.Any, socketPort);
+        //groupEP = new IPEndPoint(IPAddress.Any, socketPort);
         received_data = "";
-        listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, socketPort);
-        listener.Bind(ipep);
+        listener = new UdpClient();
+        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, multicastPort);
+        listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        listener.Client.Bind(ipep);
+        listener.JoinMulticastGroup(ip);
+        receive_byte_array = new byte[1024];
+        receiveThread = new Thread(ReceiveData);
     }
 
     // Update is called once per frame
@@ -132,9 +136,9 @@ public class Client : MonoBehaviour {
         }
         else
         {
-            
-
-
+            if (receiveThread.ThreadState == ThreadState.Unstarted)
+                receiveThread.Start();
+            //listener.Close();
         }
     }
 
@@ -166,27 +170,20 @@ public class Client : MonoBehaviour {
         NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 
-    //void ReceiveData(IAsyncResult ar)
-    //{
-    //        try
-    //        {
-    //            receive_byte_array = listener.EndReceive(ar, ref groupEP);
-    //            if (receive_byte_array.Length > 0)
-    //            {
-    //                Debug.Log("Received a broadcast from " + groupEP.ToString());
-    //                received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
-    //                Debug.Log("data follows " + received_data);
-    //                Debug.Log("IPAddress received: " + groupEP.Address.ToString());
-    //                //csharpconnected = true;
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Debug.Log(e.GetType().ToString());
-    //            Debug.Log(e.ToString());
-    //        }
-    //        Thread.Sleep(2000);
-    //}
+    void ReceiveData(/*IAsyncResult ar*/)
+    {
+        try
+        {
+            Byte[] data = listener.Receive(ref groupEP);
+            string strData = Encoding.ASCII.GetString(data);
+            Debug.Log(strData);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.GetType().ToString());
+            Debug.Log(e.ToString());
+        }
+    }
 
     public void ServerSelected(int index)
     {
@@ -204,5 +201,6 @@ public class Client : MonoBehaviour {
     private void OnApplicationQuit()
     {
         //receiveThread.Abort();
+        listener.Close();
     }
 }
