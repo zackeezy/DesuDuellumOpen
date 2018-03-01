@@ -23,6 +23,7 @@ public class ToggleOpen : MonoBehaviour {
         else
         {
             SelectedPanel = null;
+            //Debug.Log("deselect");
         }
     }
 }
