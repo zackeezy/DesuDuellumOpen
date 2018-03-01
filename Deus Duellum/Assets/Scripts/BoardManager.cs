@@ -55,7 +55,7 @@ public class BoardManager : MonoBehaviour {
 
     private GameCore _core;
 
-    private float floatTokenYpos = 1.834f;
+    private float floatTokenYpos = 1.8f;
     private float flatTokenYpos = 1.084f;
 
     private MoveLog log;
