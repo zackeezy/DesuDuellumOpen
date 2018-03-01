@@ -107,19 +107,19 @@ public class EmoteController : MonoBehaviour {
         {
             //hello
             emoteText.text = HelloEmote;
-            emoteClip = HelloVoices[0];
+            //emoteClip = HelloVoices[0];
         }
         else if (character == 1)
         {
             //wow
             emoteText.text = WowEmote;
-            emoteClip = WowVoices[1];
+            //emoteClip = WowVoices[1];
         }
         else if (character == 2)
         {
             //taunt
             emoteText.text = TauntEmote;
-            emoteClip = TauntVoices[2];
+            //emoteClip = TauntVoices[2];
         }
         //voiceLineLength = emoteClip.length;
 

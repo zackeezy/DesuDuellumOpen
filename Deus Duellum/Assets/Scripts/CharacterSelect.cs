@@ -47,19 +47,11 @@ public class CharacterSelect : MonoBehaviour {
 
         if (player == 2)
         {
-            //let player2 pick a character for local game
-            //if (character == player1character)
-            //{
-            //    characterSelectText.text = "Player 2 Select ANOTHER character";
-            //}
-            //else
-            //{
-                characterSelectText.text = "Press Play";
-                PlayerPrefs.SetInt("Player2Character", character);
-                SetCharacterHighlight(character, false);
-                charactersSelected = true;
-                setFirst(true);
-            //}
+            characterSelectText.text = "Press Play";
+            PlayerPrefs.SetInt("Player2Character", character);
+            SetCharacterHighlight(character, false);
+            charactersSelected = true;
+            setFirst(true);
         }
         else
         {
@@ -79,6 +71,9 @@ public class CharacterSelect : MonoBehaviour {
             {
                 charactersSelected = true;
             }
+
+            Button backButton = transform.GetChild(0).GetChild(4).GetComponent<Button>();
+            backButton.interactable = true;
         }
     }
 
@@ -213,6 +208,9 @@ public class CharacterSelect : MonoBehaviour {
             player2Highlight.SetActive(false);
             player2Highlight = null;
             characterSelectText.text = "Player 2 Select a Character";
+            playButton.interactable = false;
+            player = 2;
+            canPlay = false;
         }
         else if (player1Highlight)
         {
@@ -220,6 +218,9 @@ public class CharacterSelect : MonoBehaviour {
             player1Highlight = null;
             characterSelectText.text = "Player 1 Select a Character";
             player = 1;
+
+            Button backButton = transform.GetChild(0).GetChild(4).GetComponent<Button>();
+            backButton.interactable = false;
         }
         charactersSelected = false;
     }

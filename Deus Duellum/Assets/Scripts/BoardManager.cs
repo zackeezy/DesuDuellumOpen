@@ -71,6 +71,7 @@ public class BoardManager : MonoBehaviour {
     private EmoteController player2emote;
     private int whiteCharacter;
     private int blackCharacter;
+    private bool isPlayer1White;
 
     private float[] tilePositionX =
     {
@@ -357,7 +358,15 @@ public class BoardManager : MonoBehaviour {
         isWhiteTurn = !isWhiteTurn;
         if (isWhiteTurn)
         {
-            turnText.text = "White Player's Turn";
+            if (isPlayer1White)
+            {
+                turnText.text = "Player One's Turn";
+            }
+            else
+            {
+                turnText.text = "Player Two's Turn";
+            }
+
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
@@ -391,7 +400,14 @@ public class BoardManager : MonoBehaviour {
         }
         else if(isBlackTurn)
         {
-            turnText.text = "Black Player's Turn";
+            if (!isPlayer1White)
+            {
+                turnText.text = "Player One's Turn";
+            }
+            else
+            {
+                turnText.text = "Player Two's Turn";
+            }
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
@@ -537,6 +553,7 @@ public class BoardManager : MonoBehaviour {
             SetNotations(true);
             whiteCharacter = player1character;
             blackCharacter = player2character;
+            isPlayer1White = true;
         }
         else if(player1white != 0 && gameMode != PlayerType.Local)
         {
@@ -548,6 +565,7 @@ public class BoardManager : MonoBehaviour {
             SetNotations(false);
             blackCharacter = player1character;
             whiteCharacter = player2character;
+            isPlayer1White = false;
         }
         gameMode = whitePlayer;
         //testfirst();
