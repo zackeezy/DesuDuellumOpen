@@ -63,9 +63,14 @@ public class BoardManager : MonoBehaviour {
     private AudioSource effectSource;
     public AudioClip captureSound;
     public AudioClip moveSound;
+    public AudioClip athenaTurnSound;
+    public AudioClip raTurnSound;
+    public AudioClip thorTurnSound;
 
     private EmoteController player1emote;
     private EmoteController player2emote;
+    private int whiteCharacter;
+    private int blackCharacter;
 
     private float[] tilePositionX =
     {
@@ -313,12 +318,12 @@ public class BoardManager : MonoBehaviour {
             moveforLog += "x";
 
             //play the captured sound effect
-            //PlaySoundEffect(true);
+            //PlayCaptureSoundEffect(true);
         }
         else
         {
             //play the normal sound effect
-            //PlaySoundEffect(false);
+            //PlayCaptureSoundEffect(false);
         }
 
         moveforLog += log.CoordsToNotations(x, y);
@@ -381,6 +386,8 @@ public class BoardManager : MonoBehaviour {
                 Button emote2 = player2.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = false;
             }
+            //play a sound for the character
+            //PlayTurnChangeSoundEffect(whiteCharacter);
         }
         else if(isBlackTurn)
         {
@@ -412,6 +419,8 @@ public class BoardManager : MonoBehaviour {
                 Button emote2 = player2.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = true;
             }
+            //play a sound for the character
+            //PlayTurnChangeSoundEffect(blackCharacter);
         }
     }
 
@@ -490,7 +499,7 @@ public class BoardManager : MonoBehaviour {
         {
             gameMode = PlayerType.Network;
             //ask for the character they are playing as
-            //player2character =;
+            //player2Character =;
         }
         else if (gameIndex == 6)
         {
@@ -526,6 +535,8 @@ public class BoardManager : MonoBehaviour {
             //blackCam.enabled = false;
             //Camera.main.enabled = true;
             SetNotations(true);
+            whiteCharacter = player1character;
+            blackCharacter = player2character;
         }
         else if(player1white != 0 && gameMode != PlayerType.Local)
         {
@@ -535,6 +546,8 @@ public class BoardManager : MonoBehaviour {
             blackCam.enabled = true;
             Camera.main.enabled = false;
             SetNotations(false);
+            blackCharacter = player1character;
+            whiteCharacter = player2character;
         }
         gameMode = whitePlayer;
         //testfirst();
@@ -549,7 +562,6 @@ public class BoardManager : MonoBehaviour {
 
         //set the log's characters
         log.SetCharacters(player1character, player2character);
-
     }
 
     private void setCharacterImage(int player, int character)
@@ -655,7 +667,7 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void PlaySoundEffect(bool captured)
+    public void PlayCaptureSoundEffect(bool captured)
     {
         if (captured)
         {
@@ -666,6 +678,27 @@ public class BoardManager : MonoBehaviour {
         {
             //choose the regular sound effect
             effectSource.clip = moveSound;
+        }
+        //play the clip
+        effectSource.Play();
+    }
+
+    public void PlayTurnChangeSoundEffect(int character)
+    {
+        if (character == 0)
+        {
+            //choose the athena turn change sound effect
+            effectSource.clip = athenaTurnSound;
+        }
+        else if (character == 1)
+        {
+            //choose the ra turn change sound effect
+            effectSource.clip = raTurnSound;
+        }
+        else if (character == 2)
+        {
+            //choose the thor turn change sound effect
+            effectSource.clip = thorTurnSound;
         }
         //play the clip
         effectSource.Play();

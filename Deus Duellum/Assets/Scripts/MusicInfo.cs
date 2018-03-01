@@ -10,6 +10,9 @@ public class MusicInfo : MonoBehaviour {
     public AudioSource effectsSource;
     public AudioSource emotesSource;
 
+    public AudioClip[] musicClips;
+    private int clip = 0;
+
     void Awake () {
 		//to keep the same audio throughout, so doesn't restart music/ or reset volume
 		GameObject[] objs = GameObject.FindGameObjectsWithTag("Audio");
@@ -19,6 +22,11 @@ public class MusicInfo : MonoBehaviour {
 		}
 		DontDestroyOnLoad(this.gameObject);
 	}
+
+    private void Start()
+    {
+
+    }
 
     void Update()
     {
@@ -35,5 +43,17 @@ public class MusicInfo : MonoBehaviour {
         musicSource.volume = PlayerPrefs.GetFloat("music", 1);
         effectsSource.volume = PlayerPrefs.GetFloat("effects", 1);
         emotesSource.volume = PlayerPrefs.GetFloat("emotes", 1);
+
+        //switch to new track if ended
+        if (!musicSource.isPlaying)
+        {
+            clip++;
+            if (clip > musicClips.Length)
+            {
+                clip = 0;
+            }
+            musicSource.clip = musicClips[clip];
+            musicSource.Play();
+        }
     }
 }
