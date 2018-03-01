@@ -16,19 +16,43 @@ public class EmoteController : MonoBehaviour {
     private AudioClip WowVoice;
     private AudioClip TauntVoice;
 
+    private GameObject emoteButtons;
     private GameObject emotePanel;
     private Text emoteText;
+
+    private bool emotesOpen = false;
 
     // Use this for initialization
     void Start () {
         //temp
         voiceLineLength = 2;
+
+        emoteButtons = transform.GetChild(4).gameObject;
+        emotePanel = transform.GetChild(5).gameObject;
+
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
+
+    public void OpenEmoteButtons()
+    {
+        if (emoteButtons.activeSelf)
+        {
+            CloseEmoteButtons();
+        }
+        else
+        {
+            emoteButtons.SetActive(true);
+        }
+    }
+
+    public void CloseEmoteButtons()
+    {
+        emoteButtons.SetActive(false);  
+    }
 
     public void SetCharacter(int character)
     {
@@ -65,11 +89,9 @@ public class EmoteController : MonoBehaviour {
     public void EmoteClicked(int emote)
     {
         //deactivate emote buttons
-        GameObject emoteButtons = transform.GetChild(4).gameObject;
         emoteButtons.SetActive(false);
 
-        //get the emote panel
-        emotePanel = transform.GetChild(5).gameObject;
+        //get the emote text
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
         PlayEmoteAudio(emote);

@@ -64,6 +64,9 @@ public class BoardManager : MonoBehaviour {
     public AudioClip captureSound;
     public AudioClip moveSound;
 
+    private EmoteController player1emote;
+    private EmoteController player2emote;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -84,6 +87,11 @@ public class BoardManager : MonoBehaviour {
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
 
         log = GetComponent<MoveLog>();
+
+        GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+        player1emote = player1.GetComponent<EmoteController>();
+        GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+        player2emote = player2.GetComponent<EmoteController>();
 
         setPrefs();
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
@@ -117,6 +125,9 @@ public class BoardManager : MonoBehaviour {
 
     public void TokenClicked(int x, int y, Token selected)
     {
+        player1emote.CloseEmoteButtons();
+        player2emote.CloseEmoteButtons();
+
         if (whiteWon || blackWon || gameMode != PlayerType.Local)
         {
             return;
@@ -207,6 +218,9 @@ public class BoardManager : MonoBehaviour {
 
     public void TileClicked(int x, int y, float xPos, float zPos)
     {
+        player1emote.CloseEmoteButtons();
+        player2emote.CloseEmoteButtons();
+
         if (whiteWon || blackWon || gameMode != PlayerType.Local)
         {
             return;
@@ -276,7 +290,7 @@ public class BoardManager : MonoBehaviour {
     }
 
 	private void MoveToken(int x, int y, float tileXPos, float tileZPos)
-    { 
+    {
         //Tween the position 
         Vector3 newPosition = new Vector3();
         newPosition.x = tileXPos;
@@ -530,12 +544,8 @@ public class BoardManager : MonoBehaviour {
         tokenScript.SetTokens(player1white, player1character, player2character);
 
         //set the character for the emotes
-        GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-        EmoteController player1emotes = player1.GetComponent<EmoteController>();
-        player1emotes.SetCharacter(player1character);
-        GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-        EmoteController player2emotes = player2.GetComponent<EmoteController>();
-        player2emotes.SetCharacter(player2character);
+        player1emote.SetCharacter(player1character);
+        player2emote.SetCharacter(player2character);
 
         //set the log's characters
         log.SetCharacters(player1character, player2character);
