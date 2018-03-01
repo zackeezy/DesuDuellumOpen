@@ -92,13 +92,13 @@ public class CharacterSelect : MonoBehaviour {
             {
                 //player1 is white
                 PlayerPrefs.SetInt("player1", 0);
-                btn = this.transform.GetChild(1).GetChild(1).gameObject.GetComponent<Button>();
+                btn = this.transform.GetChild(2).GetChild(1).gameObject.GetComponent<Button>();
             }
             else
             {
                 //player1 is black
                 PlayerPrefs.SetInt("player1", 1);
-                btn = this.transform.GetChild(1).GetChild(2).gameObject.GetComponent<Button>();
+                btn = this.transform.GetChild(2).GetChild(2).gameObject.GetComponent<Button>();
             }
 
             //add visual effect to show it was picked
@@ -128,13 +128,13 @@ public class CharacterSelect : MonoBehaviour {
         {
             //easy
             PlayerPrefs.SetInt("difficulty", 0);
-            btn = this.transform.GetChild(2).GetChild(1).gameObject.GetComponent<Button>();
+            btn = this.transform.GetChild(3).GetChild(1).gameObject.GetComponent<Button>();
         }
         else
         {
             //hard
             PlayerPrefs.SetInt("difficulty", 1);
-            btn = this.transform.GetChild(2).GetChild(2).gameObject.GetComponent<Button>();
+            btn = this.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
         }
 
         //add visual effect to show it was picked

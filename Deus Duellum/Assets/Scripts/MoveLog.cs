@@ -20,7 +20,6 @@ public class MoveLog : MonoBehaviour {
 
     private string recentWhite;
     private string recentBlack;
-    private int count = 0;
 
     //private List<string> whiteMoves;
     //private List<string> blackMoves;
