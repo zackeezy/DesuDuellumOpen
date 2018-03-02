@@ -4,8 +4,26 @@ using UnityEngine;
 
 public class ToggleOpen : MonoBehaviour {
 
+    public GameObject SelectedPanel = null;
+
     public void toggleOpen(GameObject panel)
     {
-        panel.SetActive(!panel.activeSelf);
+        if (SelectedPanel != null)
+        {
+            SelectedPanel.SetActive(false);
+        }
+        if (SelectedPanel != panel)
+        {
+            panel.SetActive(!panel.activeSelf);
+        }
+        if (panel.activeSelf)
+        {
+            SelectedPanel = panel;
+        }
+        else
+        {
+            SelectedPanel = null;
+            //Debug.Log("deselect");
+        }
     }
 }

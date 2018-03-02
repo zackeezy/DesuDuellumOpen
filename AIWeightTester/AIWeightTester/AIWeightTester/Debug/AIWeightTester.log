@@ -1,0 +1,4 @@
+﻿  TestDriver.cpp
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\aiweighttester\aiweighttester\aiweighttester\analyzer.h(51): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+  AIWeightTester.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AIWeightTester\AIWeightTester\Debug\AIWeightTester.exe

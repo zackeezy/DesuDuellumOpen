@@ -11,6 +11,7 @@ Analyzer::Analyzer()
 PlayerColor Analyzer::AiColor = PlayerColor::White;
 BitBoard Analyzer::_bestMove;
 
+
 Analyzer::~Analyzer()
 {
 }
@@ -98,7 +99,7 @@ vector<BitBoard> Analyzer::GetChildren(BitBoard board, PlayerColor color)
     return children;
 }
 
-int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer) 
+int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int beta, bool maximizingPlayer, int & bestScore) 
 {
     if (remainingDepth == 0 || IsGameOver(node)) 
     {
@@ -113,12 +114,15 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
         
         for (BitBoard child : children) 
         {
-            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false);
+            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, false, bestScore);
 
-            if (value < childScore && remainingDepth == MAX_DEPTH - 1)
+            if (remainingDepth == MAX_DEPTH)
             {
-                _bestMove = child;
-
+                if (childScore > bestScore)
+                {
+                    _bestMove = child;
+                    bestScore = childScore;
+                }
             }
             value = max(value, childScore);
             alpha = max(alpha, value);
@@ -135,11 +139,15 @@ int Analyzer::AlphaBetaLoop(BitBoard node, int remainingDepth, int alpha, int be
 
         for (BitBoard child : children) 
         {
-            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true);
+            int childScore = AlphaBetaLoop(child, remainingDepth - 1, alpha, beta, true, bestScore);
             
-            if (value > childScore && remainingDepth == MAX_DEPTH - 1) 
+            if (remainingDepth == MAX_DEPTH) 
             {
-                _bestMove = child;
+                if (childScore > bestScore)
+                {
+                    _bestMove = child;
+                    bestScore = childScore;
+                }
             }
             value = min(value, childScore);
             beta = min(beta, value);
@@ -298,7 +306,7 @@ int Analyzer::Evaluate(BitBoard board)
     }
     else
     {
-        totalScore = blackScore = whiteScore;
+        totalScore = blackScore - whiteScore;
     }
 
     return totalScore;
@@ -348,7 +356,7 @@ int Analyzer::GenerateMobilityScore(BitBoard board, int index, PlayerColor color
     * as well as the entire mobility triangle of the piece::  The less enemy pieces
     * in the triangle, the better the score::
     */
-    int score = BASE_MOBILITY;
+    int score = 0;
 
     if (color == PlayerColor::White)
     {
@@ -477,38 +485,38 @@ int Analyzer::GenerateHomeRowProtectionPenalty(BitBoard board, PlayerColor color
 
     if (color == PlayerColor::White)
     {
-        if ((board.whitePieces & Grid::A2) == 0)
+        if ((board.whitePieces & Grid::B1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.whitePieces & Grid::A3) == 0)
+        if ((board.whitePieces & Grid::C1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.whitePieces & Grid::A6) == 0)
+        if ((board.whitePieces & Grid::F1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.whitePieces & Grid::A7) == 0)
+        if ((board.whitePieces & Grid::G1) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
     }
     else if (color == PlayerColor::Black)
     {
-        if ((board.blackPieces & Grid::H2) == 0)
+        if ((board.blackPieces & Grid::B8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.blackPieces & Grid::H3) == 0)
+        if ((board.blackPieces & Grid::C8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.blackPieces & Grid::H6) == 0)
+        if ((board.blackPieces & Grid::F8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
-        if ((board.blackPieces & Grid::H7) == 0)
+        if ((board.blackPieces & Grid::G8) == 0)
         {
             penalty += HOME_ROW_MOVED;
         }
@@ -612,6 +620,7 @@ int Analyzer::GenerateProtectionScore(BitBoard board, int index, PlayerColor col
 BitBoard Analyzer::GetMove(BitBoard board, PlayerColor color) 
 {
     AiColor = color;
-    AlphaBetaLoop(board, MAX_DEPTH, INT_MIN, INT_MAX, true);
+    int bestScore = INT_MIN;
+    AlphaBetaLoop(board, MAX_DEPTH, INT_MIN, INT_MAX, true, bestScore);
     return _bestMove;
 }

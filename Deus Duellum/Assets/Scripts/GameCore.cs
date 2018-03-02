@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
+
+
 namespace Assets.Scripts
 {
     public enum Direction
@@ -24,7 +26,8 @@ namespace Assets.Scripts
         {
             get { return !IsWhiteTurn; }
         }
-
+        public bool whiteWon = false;
+        public bool blackWon = false;
         public GameObject[,] Board;
 
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
@@ -67,6 +70,67 @@ namespace Assets.Scripts
             }
         }
 
+        public void PrepForForeignMove()
+        {
+            if (IsWhiteTurn)
+            {
+                if (WhitePlayer == PlayerType.AI)
+                {
+                    foreach (GameObject space in Board)
+                    {
+                        if (space != null)
+                        {
+                            if (space.GetComponent<Token>().isWhite)
+                            {
+                                FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 0);
+                            }
+                            else if (space.GetComponent<Token>().isBlack)
+                            {
+                                FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 1);
+                            }
+                        }
+                    }
+                }
+                else if (WhitePlayer == PlayerType.Network)
+                {
+                    //Prep for Network Call on Main Thread.
+                }
+                else
+                {
+                    throw new Exception("That Player Is Local.");
+                }
+            }
+            else if (IsBlackTurn)
+            {
+                if (BlackPlayer == PlayerType.AI)
+                {
+                    foreach (GameObject space in Board)
+                    {
+                        if (space != null)
+                        {
+                            if (space.GetComponent<Token>().isWhite)
+                            {
+                                FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 0);
+                            }
+                            else if (space.GetComponent<Token>().isBlack)
+                            {
+                                FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 1);
+                            }
+                        }
+                    }
+                }
+                else if (BlackPlayer == PlayerType.Network)
+                {
+                    //Prep for Network Call on Main Thread.
+                }
+                else
+                {
+                    throw new Exception("That Player Is Local.");
+                }
+            }
+            
+        }
+
         public void GetMove(ref int x, ref int y, ref Direction direction)
         {
             if (IsWhiteTurn)
@@ -103,21 +167,6 @@ namespace Assets.Scripts
 
         private void GetAiMove(ref int x, ref int y, ref Direction direction)
         {
-            foreach (GameObject space in Board)
-            {
-                if (space != null)
-                {
-                    if (space.GetComponent<Token>().isWhite)
-                    {
-                        FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 0);
-                    }
-                    else if (space.GetComponent<Token>().isBlack)
-                    {
-                        FillOrigin(space.GetComponent<Token>().currentX, space.GetComponent<Token>().currentY, 1);
-                    }
-                }
-            }
-
             int fromX = 0, fromY = 0, dir = 0, color = 0;
 
             color = IsWhiteTurn ? 0 : 1;
@@ -272,6 +321,22 @@ namespace Assets.Scripts
             }
 
             return capturedPiece;
+        }
+
+        //check if white or black won 
+        public bool HasWon(int y)
+        {
+            //if it is white's turn and y is equal to 7 than white has won
+            if (IsBlackTurn && y == 7)
+            {
+                whiteWon = true;
+            }
+            //if it is black's turn and y is equal to 0 than black has won
+            else if (IsWhiteTurn && y == 0)
+            {
+                blackWon = !whiteWon;
+            }
+            return whiteWon;
         }
     }
 }

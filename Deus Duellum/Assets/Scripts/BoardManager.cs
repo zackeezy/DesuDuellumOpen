@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts;
+using System.Threading;
 
 public class BoardManager : MonoBehaviour {
 
@@ -13,11 +14,19 @@ public class BoardManager : MonoBehaviour {
     public GameObject Notations;
     public GameObject altNotations;
 
-    public Image player1img;
-    public Image player2img;
+    private int _awaitMoveX;
+    private int _awaitMoveY;
+    private Direction _awaitMoveDirection;
+    private bool _foreignMoveCompleted;
+
+    public GameObject player1img;
+    public GameObject player2img;
     public Sprite AthenaImg;
+    public Sprite AthenaBorder;
     public Sprite RaImg;
+    public Sprite RaBorder;
     public Sprite ThorImg;
+    public Sprite ThorBorder;
 
     public Text turnText;
 	public GameObject gameOverPanel;
@@ -46,6 +55,24 @@ public class BoardManager : MonoBehaviour {
 
     private GameCore _core;
 
+    private float floatTokenYpos = 1.8f;
+    private float flatTokenYpos = 1.084f;
+
+    private MoveLog log;
+
+    private AudioSource effectSource;
+    public AudioClip captureSound;
+    public AudioClip moveSound;
+    public AudioClip athenaTurnSound;
+    public AudioClip raTurnSound;
+    public AudioClip thorTurnSound;
+
+    private EmoteController player1emote;
+    private EmoteController player2emote;
+    private int whiteCharacter;
+    private int blackCharacter;
+    private bool isPlayer1White;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -65,19 +92,48 @@ public class BoardManager : MonoBehaviour {
         notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
 
+        log = GetComponent<MoveLog>();
+
+        GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+        player1emote = player1.GetComponent<EmoteController>();
+        GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+        player2emote = player2.GetComponent<EmoteController>();
+
         setPrefs();
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
-	}
+        _foreignMoveCompleted = false;
 
-	// Update is called once per frame
-	void Update ()
+        //set the clip the effectSource uses
+        //WILL NOT WORK IF DO NOT START AT MAIN MENU
+        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        //effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
-        
-	}
+        if (_foreignMoveCompleted)
+        {
+            if (_core.IsMoveAllowed(_awaitMoveX, _awaitMoveY, _awaitMoveDirection))
+            {
+                GameObject movingPiece = _core.Board[_awaitMoveX, _awaitMoveY];
+                _capturedPiece = _core.MakeMove(_awaitMoveX, _awaitMoveY, _awaitMoveDirection);
+                _core.MoveCoordinates(ref _awaitMoveX, ref _awaitMoveY, _awaitMoveDirection, isWhiteTurn);
+                selectedToken = movingPiece.GetComponent<Token>();
+
+                MoveToken(_awaitMoveX, _awaitMoveY, tilePositionX[_awaitMoveX], tilePositionZ[_awaitMoveY]);
+            }
+            _foreignMoveCompleted = false;
+            gameMode = PlayerType.Local;
+        }
+    }
 
     public void TokenClicked(int x, int y, Token selected)
     {
+        player1emote.CloseEmoteButtons();
+        player2emote.CloseEmoteButtons();
+
         if (whiteWon || blackWon || gameMode != PlayerType.Local)
         {
             return;
@@ -89,8 +145,15 @@ public class BoardManager : MonoBehaviour {
             if (selectedToken != null)
             {
                 BoardHighlights.Instance.HideHighlights();
-                //TODO: if already a selected token, make it not float
-
+                if(selectedToken.currentX != selected.currentX || selectedToken.currentY != selected.currentY)
+                {
+                    //if already a different selected token, make it stop floating
+                    Vector3 flatpos;
+                    flatpos.x = selectedToken.transform.position.x;
+                    flatpos.y = flatTokenYpos;
+                    flatpos.z = selectedToken.transform.position.z;
+                    LeanTween.move(selectedToken.gameObject, flatpos, 0.25f);
+                }
             }
 
             //Debug.Log("selected: " + x + ", " + y);
@@ -99,7 +162,12 @@ public class BoardManager : MonoBehaviour {
             selectionY = y;
             selectedToken = selected;
 
-            //TODO: make the token float a little
+            //make the token start floating a little
+            Vector3 floatpos;
+            floatpos.x = selectedToken.transform.position.x;
+            floatpos.y = floatTokenYpos;
+            floatpos.z = selectedToken.transform.position.z;
+            LeanTween.move(selectedToken.gameObject, floatpos, .25f);
 
             //Check East
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
@@ -156,6 +224,9 @@ public class BoardManager : MonoBehaviour {
 
     public void TileClicked(int x, int y, float xPos, float zPos)
     {
+        player1emote.CloseEmoteButtons();
+        player2emote.CloseEmoteButtons();
+
         if (whiteWon || blackWon || gameMode != PlayerType.Local)
         {
             return;
@@ -225,59 +296,85 @@ public class BoardManager : MonoBehaviour {
     }
 
 	private void MoveToken(int x, int y, float tileXPos, float tileZPos)
-    { 
+    {
         //Tween the position 
         Vector3 newPosition = new Vector3();
         newPosition.x = tileXPos;
-        newPosition.y = selectedToken.gameObject.transform.position.y;
+        newPosition.y = flatTokenYpos;
         newPosition.z = tileZPos;
 
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
 
+        string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
+
         selectedToken.SetBoardPosition (x, y);
-        
+
         //destroy the captured token
-		if(_capturedPiece != null)
+        if (_capturedPiece != null)
         {
-            
             Destroy(_capturedPiece);
             _capturedPiece = null;
 
             //add an x to the the log
+            moveforLog += "x";
+
+            //play the captured sound effect
+            //PlayCaptureSoundEffect(true);
+        }
+        else
+        {
+            //play the normal sound effect
+            //PlayCaptureSoundEffect(false);
         }
 
-        GameWon();
+        moveforLog += log.CoordsToNotations(x, y);
+        //send the move to the log
+        log.ShowNotations(moveforLog, isWhiteTurn);
 
+        //Debug.Log(moveforLog);
+    
         //toggle the turn
         ChangeTurn();
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
-	}
+        GameWon(y);
+    }
+
+    private void GetMove()
+    {
+        int x = 0, y = 0;
+        Direction direction = Direction.East;
+
+        _core.GetMove(ref x, ref y, ref direction);
+
+        _awaitMoveX = x;
+        _awaitMoveY = y;
+        _awaitMoveDirection = direction;
+        _foreignMoveCompleted = true;
+    }
 
     private void ChangeTurn()
     {
         isWhiteTurn = !isWhiteTurn;
         if (isWhiteTurn)
         {
-            turnText.text = "White Player's Turn";
+            if (isPlayer1White)
+            {
+                turnText.text = "Player One's Turn";
+            }
+            else
+            {
+                turnText.text = "Player Two's Turn";
+            }
+
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                int x = 0, y = 0;
-                Direction direction = Direction.East;
+                _core.PrepForForeignMove();
+                ThreadStart aiRef = new ThreadStart(GetMove);
+                Thread aiThread = new Thread(aiRef);
+                aiThread.Start();
 
-                _core.GetMove(ref x, ref y, ref direction);
-
-                if (_core.IsMoveAllowed(x, y, direction))
-                {
-                    GameObject movingPiece = _core.Board[x, y];
-                    _core.MakeMove(x, y, direction);
-                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
-                    selectedToken = movingPiece.GetComponent<Token>();
-
-                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
-                }
-                gameMode = PlayerType.Local;
             }
             else if (whitePlayer == PlayerType.Network)
             {
@@ -290,36 +387,34 @@ public class BoardManager : MonoBehaviour {
             {
                 //enable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote = player1.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote.interactable = true;
 
                 //disable black's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote2 = player2.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = false;
             }
+            //play a sound for the character
+            //PlayTurnChangeSoundEffect(whiteCharacter);
         }
         else if(isBlackTurn)
         {
-            turnText.text = "Black Player's Turn";
+            if (!isPlayer1White)
+            {
+                turnText.text = "Player One's Turn";
+            }
+            else
+            {
+                turnText.text = "Player Two's Turn";
+            }
             if (blackPlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
-                int x = 0, y = 0;
-                Direction direction = Direction.East;
-
-                _core.GetMove(ref x, ref y, ref direction);
-
-                if (_core.IsMoveAllowed(x, y, direction))
-                {
-                    GameObject movingPiece = _core.Board[x, y];
-                    _core.MakeMove(x, y, direction);
-                    _core.MoveCoordinates(ref x, ref y, direction, isWhiteTurn);
-                    selectedToken = movingPiece.GetComponent<Token>();
-                    MoveToken(x, y, tilePositionX[x], tilePositionZ[y]);
-                }
-                gameMode = PlayerType.Local;
-
+                _core.PrepForForeignMove();
+                ThreadStart aiRef = new ThreadStart(GetMove);
+                Thread aiThread = new Thread(aiRef);
+                aiThread.Start();
             }
             else if (blackPlayer == PlayerType.Network)
             {
@@ -332,22 +427,74 @@ public class BoardManager : MonoBehaviour {
             {
                 //disable white's emote button
                 GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
-                Button emote = player1.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote = player1.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote.interactable = false;
 
                 //enable blacks's emote button 
                 GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
-                Button emote2 = player2.transform.GetChild(2).gameObject.GetComponent<Button>();
+                Button emote2 = player2.transform.GetChild(3).GetChild(2).gameObject.GetComponent<Button>();
                 emote2.interactable = true;
             }
+            //play a sound for the character
+            //PlayTurnChangeSoundEffect(blackCharacter);
         }
     }
 
-    private void GameWon()
+    private void GameWon(int y)
     {
         //ask the game core if the game has been won
-        //show that the game was won and who won
-        //gameOverPanel.SetActive(true);
+        _core.HasWon(y);
+
+        //change the winnertext
+        GameObject winTextobj = gameOverPanel.transform.GetChild(2).gameObject;
+        Text winText = winTextobj.GetComponent<Text>();
+
+        if (_core.whiteWon)
+        {
+            if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
+            {
+                //player1 win
+                winText.text = "Player One Wins";
+            }
+            else if (whitePlayer == PlayerType.Local)
+            {
+                //you win
+                winText.text = "You Won!";
+            }
+            else
+            {
+                //you lost
+                winText.text = "You Lost!";
+            }
+
+            log.ShowWin(true);
+            
+            //show that the game was won and who won
+            gameOverPanel.SetActive(true);
+        }
+        else if (_core.blackWon)
+        {
+            if (blackPlayer == PlayerType.Local && whitePlayer == PlayerType.Local)
+            {
+                //player2 win
+                winText.text = "Player Two Wins";
+            }
+            else if (blackPlayer == PlayerType.Local)
+            {
+                //you win
+                winText.text = "You Won!";
+            }
+            else
+            {
+                //you lost
+                winText.text = "You Lost!";
+            }
+
+            log.ShowWin(false);
+
+            //show that the game was won and who won
+            gameOverPanel.SetActive(true);
+        }
     }
 
     private void setPrefs()
@@ -368,7 +515,7 @@ public class BoardManager : MonoBehaviour {
         {
             gameMode = PlayerType.Network;
             //ask for the character they are playing as
-            //player2character =;
+            //player2Character =;
         }
         else if (gameIndex == 6)
         {
@@ -401,7 +548,12 @@ public class BoardManager : MonoBehaviour {
             //player1 is white
             whitePlayer = PlayerType.Local;
             blackPlayer = gameMode;
+            //blackCam.enabled = false;
+            //Camera.main.enabled = true;
             SetNotations(true);
+            whiteCharacter = player1character;
+            blackCharacter = player2character;
+            isPlayer1White = true;
         }
         else if(player1white != 0 && gameMode != PlayerType.Local)
         {
@@ -411,6 +563,9 @@ public class BoardManager : MonoBehaviour {
             blackCam.enabled = true;
             Camera.main.enabled = false;
             SetNotations(false);
+            blackCharacter = player1character;
+            whiteCharacter = player2character;
+            isPlayer1White = false;
         }
         gameMode = whitePlayer;
         //testfirst();
@@ -418,43 +573,59 @@ public class BoardManager : MonoBehaviour {
         //set the tokens
         TokenSetter tokenScript = GetComponent<TokenSetter>();
         tokenScript.SetTokens(player1white, player1character, player2character);
+
+        //set the character for the emotes
+        player1emote.SetCharacter(player1character);
+        player2emote.SetCharacter(player2character);
+
+        //set the log's characters
+        log.SetCharacters(player1character, player2character);
     }
 
     private void setCharacterImage(int player, int character)
     {
+        Image playerImg = null;
+        Image playerBorder = null;
+        float borderWidth = 0f;
+        float borderHeight = 0f;
+
+        //TODO: size the borders to actually fit
+
         if (player == 1)
         {
-            if (character == 0)
-            {
-                //Debug.Log("player " + player + " is Athena");
-                player1img.sprite = AthenaImg;
-            }
-            else if (character == 1)
-            {
-                //Debug.Log("player " + player + " is Ra");
-                player1img.sprite = RaImg;
-            }
-            else if (character == 2)
-            {
-                //Debug.Log("player " + player + " is Thor");
-                player1img.sprite = ThorImg;
-            }
+            playerImg = player1img.GetComponent<Image>();
+            playerBorder = player1img.transform.GetChild(0).GetComponent<Image>();
         }
         else if (player == 2)
         {
-            if (character == 0)
-            {
-                player2img.sprite = AthenaImg;
-            }
-            else if (character == 1)
-            {
-                player2img.sprite = RaImg;
-            }
-            else if (character == 2)
-            {
-                player2img.sprite = ThorImg;
-            }
+            playerImg = player2img.GetComponent<Image>();
+            playerBorder = player2img.transform.GetChild(0).GetComponent<Image>();
         }
+        if (character == 0)
+        {
+            //Debug.Log("player " + player + " is Athena");
+            playerImg.sprite = AthenaImg;
+            playerBorder.sprite = AthenaBorder;
+            borderWidth = 130;
+            borderHeight = 130;
+        }
+        else if (character == 1)
+        {
+            //Debug.Log("player " + player + " is Ra");
+            playerImg.sprite = RaImg;
+            playerBorder.sprite = RaBorder;
+            borderWidth = 135;
+            borderHeight = 135;
+        }
+        else if (character == 2)
+        {
+            //Debug.Log("player " + player + " is Thor");
+            playerImg.sprite = ThorImg;
+            playerBorder.sprite = ThorBorder;
+            borderWidth = 115;
+            borderHeight = 115;
+        }
+        playerBorder.rectTransform.sizeDelta = new Vector2(borderWidth, borderHeight);
     }
 
     //choose which notations to use
@@ -512,6 +683,43 @@ public class BoardManager : MonoBehaviour {
                 Debug.Log("white is ai, black is local");
             }
         }
+    }
+
+    public void PlayCaptureSoundEffect(bool captured)
+    {
+        if (captured)
+        {
+            //choose the capture sound effect
+            effectSource.clip = captureSound;
+        }
+        else
+        {
+            //choose the regular sound effect
+            effectSource.clip = moveSound;
+        }
+        //play the clip
+        effectSource.Play();
+    }
+
+    public void PlayTurnChangeSoundEffect(int character)
+    {
+        if (character == 0)
+        {
+            //choose the athena turn change sound effect
+            effectSource.clip = athenaTurnSound;
+        }
+        else if (character == 1)
+        {
+            //choose the ra turn change sound effect
+            effectSource.clip = raTurnSound;
+        }
+        else if (character == 2)
+        {
+            //choose the thor turn change sound effect
+            effectSource.clip = thorTurnSound;
+        }
+        //play the clip
+        effectSource.Play();
     }
 }
 
