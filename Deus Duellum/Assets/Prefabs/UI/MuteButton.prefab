@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222626620341491250}
   - component: {fileID: 114635302301733716}
   - component: {fileID: 114365916043392044}
-  - component: {fileID: 114088379100854232}
+  - component: {fileID: 114839279305913712}
   m_Layer: 5
   m_Name: MuteButton
   m_TagString: Untagged
@@ -30,21 +30,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114088379100854232
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1137140065131246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f48cf32438bdecb4a8e165d171212085, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mutedImg: {fileID: 21300000, guid: 5dcb2c5e7347c604ab5717915a64c229, type: 3}
-  unMutedImg: {fileID: 21300000, guid: 90d6ba25bb2f99b48af1e3d4c56b3ca2, type: 3}
-  muteButton: {fileID: 114365916043392044}
-  muted: 0
 --- !u!114 &114365916043392044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,8 +69,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114088379100854232}
-        m_MethodName: ToggleMute
+      - m_Target: {fileID: 114839279305913712}
+        m_MethodName: toggleMute
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -116,7 +101,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 90d6ba25bb2f99b48af1e3d4c56b3ca2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -124,6 +109,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114839279305913712
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1137140065131246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dac731e4b5ab8845b7952ceccf86933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mutedImg: {fileID: 21300000, guid: 5dcb2c5e7347c604ab5717915a64c229, type: 3}
+  unMutedImg: {fileID: 21300000, guid: 90d6ba25bb2f99b48af1e3d4c56b3ca2, type: 3}
 --- !u!222 &222626620341491250
 CanvasRenderer:
   m_ObjectHideFlags: 1
