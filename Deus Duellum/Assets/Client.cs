@@ -39,6 +39,7 @@ public class Client : MonoBehaviour {
     byte[] receive_byte_array;
     Thread receiveThread;
     int multicastPort = 10101;
+    List<PlayerInfo> serverList;
 
     public string RecvIP
     {
@@ -68,6 +69,9 @@ public class Client : MonoBehaviour {
         listener.JoinMulticastGroup(ip);
         receive_byte_array = new byte[1024];
         receiveThread = new Thread(ReceiveData);
+        //AutoResetEvent are = new AutoResetEvent(false);
+        //Timer t = new Timer(ReceiveData, are, 1000, 2000);
+        serverList = new List<PlayerInfo>();
     }
 
     // Update is called once per frame
@@ -172,16 +176,21 @@ public class Client : MonoBehaviour {
 
     void ReceiveData(/*IAsyncResult ar*/)
     {
-        try
+        while (true)
         {
-            Byte[] data = listener.Receive(ref groupEP);
-            string strData = Encoding.ASCII.GetString(data);
-            Debug.Log(strData);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.GetType().ToString());
-            Debug.Log(e.ToString());
+            try
+            {
+                Byte[] data = listener.Receive(ref groupEP);
+                string strData = Encoding.ASCII.GetString(data);
+                Debug.Log(strData);
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.GetType().ToString());
+                Debug.Log(e.ToString());
+            }
+            Thread.Sleep(1000);
         }
     }
 
@@ -200,7 +209,31 @@ public class Client : MonoBehaviour {
 
     private void OnApplicationQuit()
     {
-        //receiveThread.Abort();
+        receiveThread.Abort();
         listener.Close();
+    }
+
+    private bool AddServer(PlayerInfo server)
+    {
+        bool val = true;
+        serverList.ForEach((s) =>
+        {
+            if(server.IP == s.IP)
+            {
+                val = false;
+            }
+        });
+        if (val)
+        {
+            serverList.Add(server);
+        }
+        return val;
+    }
+
+    public PlayerInfo[] GetServers()
+    {
+        PlayerInfo[] list = new PlayerInfo[serverList.Count];
+        serverList.CopyTo(list);
+        return list;
     }
 }
