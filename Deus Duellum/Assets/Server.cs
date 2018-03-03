@@ -57,6 +57,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     // Use this for initialization
     void Start () {
+        NetworkTransport.Init();
         clientObj = null;
         myIP = NetworkControl.LocalIPAddress().ToString();
 
@@ -76,76 +77,60 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 	
 	// Update is called once per frame
 	void Update () {
-        if (csharpconnected)
+        int recvHostId;
+        int recvConnectionId;
+        int recvChannelId;
+        byte[] recvBuffer = new byte[1024];
+        int bufferSize = 1024;
+        int datasize;
+
+        NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId,
+            out recvConnectionId, out recvChannelId, recvBuffer, bufferSize,
+            out datasize, out error);
+
+        switch (recvNetworkEvent)
         {
-            int recvHostId;
-            int recvConnectionId;
-            int recvChannelId;
-            byte[] recvBuffer = new byte[1024];
-            int bufferSize = 1024;
-            int datasize;
-
-            NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId,
-                out recvConnectionId, out recvChannelId, recvBuffer, bufferSize,
-                out datasize, out error);
-
-            switch (recvNetworkEvent)
-            {
-                case NetworkEventType.ConnectEvent:
-                    //TODO: add code for starting game
+            case NetworkEventType.ConnectEvent:
+                //TODO: add code for starting game
+                if (!connected)
+                {
                     clientObj = Instantiate(player, transform.position, transform.rotation);
                     connectionIdClient = recvConnectionId;
                     hostIdClient = recvHostId;
                     clientObj.GetComponent<Player>().networkControl = networkControl;
                     Debug.Log("ConnectEvent Triggered.");
+                    Connect();
                     connected = true;
-                    break;
-                case NetworkEventType.DataEvent:
-                    string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
-                    Debug.Log("Receiving " + msg);
-                    string[] splitData = msg.Split('|');
-                    switch (splitData[0])
-                    {
-                        case "MOVE":
-                            //TODO: add code for move
-                            Move(splitData[1], splitData[2], clientObj);
-                            break;
-                        case "EMOTE":
-                            //TODO: add code for emote
-                            break;
-                        case "MESSAGE":
-                            networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
-                            break;
-                    }
-                    break;
-                case NetworkEventType.DisconnectEvent:
-                    clientObj = null;
-
-                    break;
-                    //case NetworkEventType.BroadcastEvent:
-                    //    Debug.Log("BroadcastEvent Triggered");
-                    //    string broadcastMsg = "";
-                    //    byte[] buffer = new byte[1024];
-                    //    int recvsize;
-                    //    byte error;
-
-                    //    NetworkTransport.GetBroadcastConnectionInfo(hostId, out clientIP, out clientPort, out error);
-
-                    //    NetworkTransport.GetBroadcastConnectionMessage(hostId, buffer, 1024, out recvsize, out error);
-
-                    //    broadcastMsg = Encoding.Default.GetString(buffer);
-
-                    //    Connect();
-
-                    //    string response = "CONNECT|" + myIP + "|" + connectionId + "|" + hostId + "|Server";
-
-                    //    NetworkTransport.Send(hostId, connectionId, reliableChannelId, Encoding.ASCII.GetBytes(response),
-                    //        response.Length * sizeof(char), out error);
-
-                    //    break;
-            }
+                }
+                if(connected && recvConnectionId != connectionIdClient)
+                {
+                    NetworkTransport.Disconnect(recvHostId, recvConnectionId, out error);
+                }
+                break;
+            case NetworkEventType.DataEvent:
+                string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
+                Debug.Log("Receiving " + msg);
+                string[] splitData = msg.Split('|');
+                switch (splitData[0])
+                {
+                    case "MOVE":
+                        //TODO: add code for move
+                        Move(splitData[1], splitData[2], clientObj);
+                        break;
+                    case "EMOTE":
+                        //TODO: add code for emote
+                        break;
+                    case "MESSAGE":
+                        networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
+                        break;
+                }
+                break;
+            case NetworkEventType.DisconnectEvent:
+                clientObj = null;
+                csharpconnected = false;
+                break;
         }
-        else
+        if (!csharpconnected)
         {
             sendingSocket.Send(sendByteArray, sendByteArray.Length, ipep);
         }
@@ -153,13 +138,12 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     public void Connect()
     {
-        NetworkTransport.Init();
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
-        connectionId = NetworkTransport.Connect(hostId, ClientIP, clientPort, 0, out error);
+        //connectionId = NetworkTransport.Connect(hostId, ClientIP, clientPort, 0, out error);
     }
 
     public void Move(string x, string y, GameObject obj)
@@ -175,26 +159,6 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, 
             buffer, message.Length * sizeof(char), out error);
     }
-
-    //public void Broadcast()
-    //{
-    //    byte[] sendBuffer = Encoding.ASCII.GetBytes("Client|" + NetworkControl.LocalIPAddress());
-    //    while (!csharpconnected)
-    //    {
-    //        try
-    //        {
-    //            sendingSocket.Send(sendBuffer, sendBuffer.Length, sendingEndPoint);
-    //            Debug.Log("Message sent to broadcast address.");
-    //        }
-    //        catch (Exception sendException)
-    //        {
-    //            Debug.Log(sendException.GetType().ToString());
-    //            Debug.Log("Exception " + sendException.Message);
-    //            Debug.Log("Message not sent :(");
-    //        }
-    //        Thread.Sleep(2000);
-    //    }
-    //}
 
     private void OnApplicationQuit()
     {

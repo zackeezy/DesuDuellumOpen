@@ -65,4 +65,9 @@ public class NetworkControl : MonoBehaviour {
     {
         return client.GetComponent<Client>().GetServers();
     }
+
+    public void ServerSelected(int index)
+    {
+        client.GetComponent<Client>().ServerSelected(index);
+    }
 }

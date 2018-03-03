@@ -22,9 +22,6 @@ public class ConnectButton : MonoBehaviour {
     {
         scrollViewControl.GetComponent<ScrollViewScript>().Connected();
 
-        networkControl.client.GetComponent<Client>().ServerSelected(
-            int.Parse(scrollViewControl.GetComponent<ScrollViewScript>().serverNumber.text));
-
-        networkControl.client.GetComponent<Client>().Connect();
+        networkControl.ServerSelected(int.Parse(scrollViewControl.GetComponent<ScrollViewScript>().serverNumber.text));
     }
 }

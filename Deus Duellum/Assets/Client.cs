@@ -107,22 +107,6 @@ public class Client : MonoBehaviour {
                     string[] splitData = msg.Split('|');
                     switch (splitData[0])
                     {
-                        //case "CONNECT":
-                        //    PlayerInfo pi = new PlayerInfo()
-                        //    {
-                        //        IP = splitData[1],
-                        //        ConnectionId = int.Parse(splitData[2]),
-                        //        HostId = int.Parse(splitData[3]),
-                        //        Name = splitData[4]
-                        //    };
-                        //    if (!servers.Contains(pi))
-                        //    {
-                        //        servers.Add(pi);
-                        //        Debug.Log(pi.Name + " at " + pi.IP + " was received");
-                        //    }
-                        //    Show list of Servers
-                        //    GameObject.Find("ScrollView").GetComponent<ScrollViewScript>().PopulateServers();
-                        //    break;
                         case "MOVE":
                             //TODO: add code for move
                             Move(splitData[1], splitData[2], player);
@@ -154,6 +138,8 @@ public class Client : MonoBehaviour {
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort);
         connectionId = NetworkTransport.Connect(hostId, RecvIP, serverSocketPort, 0, out error);
+        Debug.Log(error);
+        connected = true;
     }
 
     public void Disconnect()
@@ -203,7 +189,11 @@ public class Client : MonoBehaviour {
 
     public void ServerSelected(int index)
     {
-        
+        PlayerInfo selected = serverList[index];
+
+        recvIP = selected.IP;
+
+        Connect();
     }
 
     private void OnApplicationQuit()
