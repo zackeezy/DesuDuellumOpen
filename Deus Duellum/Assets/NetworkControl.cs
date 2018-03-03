@@ -60,4 +60,9 @@ public class NetworkControl : MonoBehaviour {
             .AddressList
             .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
     }
+
+    public PlayerInfo[] GetServerListFromClient()
+    {
+        return client.GetComponent<Client>().GetServers();
+    }
 }

@@ -183,7 +183,14 @@ public class Client : MonoBehaviour {
                 Byte[] data = listener.Receive(ref groupEP);
                 string strData = Encoding.ASCII.GetString(data);
                 Debug.Log(strData);
-
+                string[] splitData = strData.Split('|');
+                PlayerInfo server = new PlayerInfo()
+                {
+                    Name = splitData[0],
+                    IP = splitData[1]
+                };
+                Debug.Log("Server added: " + server.Name + " " + server.IP);
+                AddServer(server);
             }
             catch (Exception e)
             {
@@ -196,15 +203,7 @@ public class Client : MonoBehaviour {
 
     public void ServerSelected(int index)
     {
-        recvIP = servers[index].IP;
-
-        servers.FindAll((server) => server.IP != servers[index].IP || server.Name != servers[index].Name)
-            .ForEach((server) =>
-        {
-            NetworkTransport.Disconnect(server.HostId, server.ConnectionId, out error);
-        });
-
-        NetworkTransport.StopBroadcastDiscovery();
+        
     }
 
     private void OnApplicationQuit()
@@ -216,13 +215,16 @@ public class Client : MonoBehaviour {
     private bool AddServer(PlayerInfo server)
     {
         bool val = true;
-        serverList.ForEach((s) =>
+        if (serverList.Count != 0)
         {
-            if(server.IP == s.IP)
+            serverList.ForEach((s) =>
             {
-                val = false;
-            }
-        });
+                if (server.IP == s.IP)
+                {
+                    val = false;
+                }
+            });
+        }
         if (val)
         {
             serverList.Add(server);
