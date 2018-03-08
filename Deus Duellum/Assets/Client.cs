@@ -57,6 +57,7 @@ public class Client : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        NetworkTransport.Init();
         servers = new List<PlayerInfo>();
         
         IPAddress ip = IPAddress.Parse("224.5.6.7");
@@ -69,70 +70,66 @@ public class Client : MonoBehaviour {
         listener.JoinMulticastGroup(ip);
         receive_byte_array = new byte[1024];
         receiveThread = new Thread(ReceiveData);
-        //AutoResetEvent are = new AutoResetEvent(false);
-        //Timer t = new Timer(ReceiveData, are, 1000, 2000);
         serverList = new List<PlayerInfo>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (csharpconnected) {
-            int recvHostId;
-            int recvConnectionId;
-            int recvChannelId;
-            byte[] recvBuffer = new byte[1024];
-            int bufferSize = 1024;
-            int datasize;
+        
+        int recvHostId;
+        int recvConnectionId;
+        int recvChannelId;
+        byte[] recvBuffer = new byte[1024];
+        int bufferSize = 1024;
+        int datasize;
 
-            NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId,
-                out recvConnectionId, out recvChannelId, recvBuffer, bufferSize, out datasize, out error);
+        NetworkEventType recvNetworkEvent = NetworkTransport.Receive(out recvHostId,
+            out recvConnectionId, out recvChannelId, recvBuffer, bufferSize, out datasize, out error);
 
-            switch (recvNetworkEvent)
-            {
-                case NetworkEventType.ConnectEvent:
-                    if (!connected)
-                    {
-                        connectionIdServer = recvConnectionId;
-                        hostIdServer = recvHostId;
-                        connected = true;
-                    }
-                    break;
-                case NetworkEventType.DisconnectEvent:
-                    connected = false;
-                    break;
-                case NetworkEventType.DataEvent:
-                    string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
-                    Debug.Log("Receiving " + msg);
-                    string[] splitData = msg.Split('|');
-                    switch (splitData[0])
-                    {
-                        case "MOVE":
-                            //TODO: add code for move
-                            Move(splitData[1], splitData[2], player);
-                            break;
-                        case "EMOTE":
-                            //TODO: add code for emote
-                            break;
-                        case "MESSAGE":
-                            //Won't be used in final version 
-                            networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
-                            break;
-                    }
-                    break;
-            }
+        switch (recvNetworkEvent)
+        {
+            case NetworkEventType.ConnectEvent:
+                if (!connected)
+                {
+                    connectionIdServer = recvConnectionId;
+                    hostIdServer = recvHostId;
+                    connected = true;
+                }
+                break;
+            case NetworkEventType.DisconnectEvent:
+                connected = false;
+                break;
+            case NetworkEventType.DataEvent:
+                string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);
+                Debug.Log("Receiving " + msg);
+                string[] splitData = msg.Split('|');
+                switch (splitData[0])
+                {
+                    case "MOVE":
+                        //TODO: add code for move
+                        Move(splitData[1], splitData[2], player);
+                        break;
+                    case "EMOTE":
+                        //TODO: add code for emote
+                        break;
+                    case "MESSAGE":
+                        //Won't be used in final version 
+                        networkControl.GetComponent<NetworkControl>().Receive(splitData[1]);
+                        break;
+                }
+                break;
         }
-        else
+    
+        if (!csharpconnected) 
         {
             if (receiveThread.ThreadState == ThreadState.Unstarted)
                 receiveThread.Start();
-            //listener.Close();
         }
     }
 
     public void Connect()
     {
-        NetworkTransport.Init();
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
@@ -175,7 +172,6 @@ public class Client : MonoBehaviour {
                     Name = splitData[0],
                     IP = splitData[1]
                 };
-                Debug.Log("Server added: " + server.Name + " " + server.IP);
                 AddServer(server);
             }
             catch (Exception e)
@@ -193,12 +189,25 @@ public class Client : MonoBehaviour {
 
         recvIP = selected.IP;
 
+        receiveThread.Abort();
+
+        UdpClient udpClient = new UdpClient();
+
+        byte[] response = Encoding.ASCII.GetBytes("CONNECT|" + NetworkControl.LocalIPAddress().ToString());
+
+        IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(RecvIP), serverSocketPort);
+
+        udpClient.Send(response, response.Length, ipep);
+
         Connect();
     }
 
     private void OnApplicationQuit()
     {
-        receiveThread.Abort();
+        if (receiveThread.IsAlive)
+        {
+            receiveThread.Abort();
+        }
         listener.Close();
     }
 
@@ -217,6 +226,7 @@ public class Client : MonoBehaviour {
         }
         if (val)
         {
+            Debug.Log("Server added: " + server.Name + " " + server.IP);
             serverList.Add(server);
         }
         return val;

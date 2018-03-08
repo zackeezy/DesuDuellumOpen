@@ -36,11 +36,12 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
     UdpClient sendingSocket;
     IPAddress sendToAddress;
     IPEndPoint sendingEndPoint;
-    Thread sendThread;
+    Thread recvThread;
     bool broadcasting = true;
     byte[] sendByteArray;
     int multicastPort = 10101;
     IPEndPoint ipep;
+    Thread responseThread;
 
     public string ClientIP
     {
@@ -63,16 +64,13 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
         sendingSocket = new UdpClient();
         IPAddress ip = IPAddress.Parse("224.5.6.7");
-        //sendToAddress = IPAddress.Broadcast;
-        //sendingEndPoint = new IPEndPoint(IPAddress.Broadcast, clientPort);
-        //Debug.Log(IPAddress.Broadcast.ToString());
         sendingSocket.JoinMulticastGroup(ip);
         ipep = new IPEndPoint(ip, multicastPort);
 
         sendByteArray = Encoding.ASCII.GetBytes("Server|" + NetworkControl.LocalIPAddress().ToString());
 
-        //sendThread = new Thread(Broadcast);
-        //sendThread.Start();
+        recvThread = new Thread(WaitForResponse);
+        recvThread.Start();
     }
 	
 	// Update is called once per frame
@@ -99,8 +97,6 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
                     hostIdClient = recvHostId;
                     clientObj.GetComponent<Player>().networkControl = networkControl;
                     Debug.Log("ConnectEvent Triggered.");
-                    Connect();
-                    connected = true;
                 }
                 if(connected && recvConnectionId != connectionIdClient)
                 {
@@ -143,7 +139,8 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
-        //connectionId = NetworkTransport.Connect(hostId, ClientIP, clientPort, 0, out error);
+        connectionId = NetworkTransport.Connect(hostId, ClientIP, clientPort, 0, out error);
+        connected = true;
     }
 
     public void Move(string x, string y, GameObject obj)
@@ -156,13 +153,33 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
     public void SendNetworkMessage(string message)
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
-        NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, 
-            buffer, message.Length * sizeof(char), out error);
+        NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, buffer, message.Length * sizeof(char), out error);
     }
 
     private void OnApplicationQuit()
     {
-        //sendThread.Abort();
+        if (responseThread.IsAlive)
+        {
+            responseThread.Abort();
+        }
         sendingSocket.Close();
+    }
+
+    void WaitForResponse()
+    {
+        Debug.Log("Response thread Started...");
+        UdpClient waiter = new UdpClient();
+        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, clientPort);
+        byte[] response = waiter.Receive(ref ipep);
+        Debug.Log("Response received: " + response.ToString());
+
+        string responseStr = Encoding.ASCII.GetString(response);
+        string IPAddressStr = responseStr.Split('|')[1];
+
+        ClientIP = IPAddressStr;
+
+        Connect();
+
+        responseThread.Abort();
     }
 }
