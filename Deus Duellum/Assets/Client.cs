@@ -71,6 +71,7 @@ public class Client : MonoBehaviour {
         receive_byte_array = new byte[1024];
         receiveThread = new Thread(ReceiveData);
         serverList = new List<PlayerInfo>();
+        receiveThread.Start();
     }
 
     // Update is called once per frame
@@ -119,12 +120,6 @@ public class Client : MonoBehaviour {
                         break;
                 }
                 break;
-        }
-    
-        if (!csharpconnected) 
-        {
-            if (receiveThread.ThreadState == ThreadState.Unstarted)
-                receiveThread.Start();
         }
     }
 

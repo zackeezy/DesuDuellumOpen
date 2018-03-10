@@ -69,8 +69,14 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
         sendByteArray = Encoding.ASCII.GetBytes("Server|" + NetworkControl.LocalIPAddress().ToString());
 
-        recvThread = new Thread(WaitForResponse);
-        recvThread.Start();
+        //recvThread = new Thread(WaitForResponse);
+        //recvThread.Start();
+
+        ConnectionConfig config = new ConnectionConfig();
+        reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
+        HostTopology topology = new HostTopology(config, maxConnections);
+        hostId = NetworkTransport.AddHost(topology, socketPort);
+        Debug.Log("Socket open. Host ID is: " + hostId);
     }
 	
 	// Update is called once per frame
@@ -97,6 +103,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
                     hostIdClient = recvHostId;
                     clientObj.GetComponent<Player>().networkControl = networkControl;
                     Debug.Log("ConnectEvent Triggered.");
+                    connected = true;
                 }
                 if(connected && recvConnectionId != connectionIdClient)
                 {
