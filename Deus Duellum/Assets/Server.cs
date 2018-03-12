@@ -64,7 +64,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
         sendingSocket = new UdpClient();
         IPAddress ip = IPAddress.Parse("224.5.6.7");
-        sendingSocket.JoinMulticastGroup(ip);
+        sendingSocket.JoinMulticastGroup(ip, 32);
         ipep = new IPEndPoint(ip, multicastPort);
 
         sendByteArray = Encoding.ASCII.GetBytes("Server|" + NetworkControl.LocalIPAddress().ToString());
@@ -165,10 +165,10 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
 
     private void OnApplicationQuit()
     {
-        if (responseThread.IsAlive)
-        {
-            responseThread.Abort();
-        }
+        //if (responseThread.IsAlive)
+        //{
+        //    responseThread.Abort();
+        //}
         sendingSocket.Close();
     }
 

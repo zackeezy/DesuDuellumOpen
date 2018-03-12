@@ -63,10 +63,11 @@ public class Client : MonoBehaviour {
         IPAddress ip = IPAddress.Parse("224.5.6.7");
         //groupEP = new IPEndPoint(IPAddress.Any, socketPort);
         received_data = "";
+        //IPEndPoint ipep = new IPEndPoint(IPAddress.Any, multicastPort);
+        IPEndPoint localEP = new IPEndPoint(NetworkControl.LocalIPAddress(), multicastPort);
         listener = new UdpClient();
-        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, multicastPort);
         listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        listener.Client.Bind(ipep);
+        listener.Client.Bind(localEP);
         listener.JoinMulticastGroup(ip);
         receive_byte_array = new byte[1024];
         receiveThread = new Thread(ReceiveData);
@@ -186,13 +187,13 @@ public class Client : MonoBehaviour {
 
         receiveThread.Abort();
 
-        UdpClient udpClient = new UdpClient();
+        //UdpClient udpClient = new UdpClient();
 
-        byte[] response = Encoding.ASCII.GetBytes("CONNECT|" + NetworkControl.LocalIPAddress().ToString());
+        //byte[] response = Encoding.ASCII.GetBytes("CONNECT|" + NetworkControl.LocalIPAddress().ToString());
 
-        IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(RecvIP), serverSocketPort);
+        //IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(RecvIP), serverSocketPort);
 
-        udpClient.Send(response, response.Length, ipep);
+        //udpClient.Send(response, response.Length, ipep);
 
         Connect();
     }
