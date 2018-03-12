@@ -131,7 +131,15 @@ public class Client : MonoBehaviour {
         HostTopology topology = new HostTopology(config, maxConnections);
         hostId = NetworkTransport.AddHost(topology, socketPort);
         connectionId = NetworkTransport.Connect(hostId, RecvIP, serverSocketPort, 0, out error);
-        Debug.Log(error);
+        NetworkError networkError = (NetworkError)error;
+        if (networkError != NetworkError.Ok)
+        {
+            Debug.LogError(string.Format("Unable to connect to {0}:{1}, Error: {2}", hostId, serverSocketPort, networkError));
+        }
+        else
+        {
+            Debug.Log(string.Format("Connected to {0}:{1} with hostId: {2}, connectionId: {3}, channelId: {4},", hostId, serverSocketPort, hostId, connectionId, reliableChannelId));
+        }
         connected = true;
     }
 
@@ -151,6 +159,15 @@ public class Client : MonoBehaviour {
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
         NetworkTransport.Send(hostId, connectionId, reliableChannelId, buffer, message.Length * sizeof(char), out error);
+        NetworkError networkError = (NetworkError)error;
+        if (networkError != NetworkError.Ok)
+        {
+            Debug.LogError(string.Format("Error: {0}, hostId: {1}, connectionId: {2}, channelId: {3}", error, hostId, connectionId, reliableChannelId));
+        }
+        else
+        {
+            Debug.Log("Message sent!");
+        }
     }
 
     void ReceiveData(/*IAsyncResult ar*/)
