@@ -63,7 +63,7 @@ public class CharacterSelect : MonoBehaviour {
             //let player2 pick a character for a local game
             if (gameIndex == 1)
             {
-                characterSelectText.text = "Player 2 Select a character";
+                characterSelectText.text = "Player Two: Select a character";
                 //show a cancel button? to go back to player1?
                 player = 2;
             }
@@ -207,7 +207,7 @@ public class CharacterSelect : MonoBehaviour {
         {
             player2Highlight.SetActive(false);
             player2Highlight = null;
-            characterSelectText.text = "Player 2 Select a Character";
+            characterSelectText.text = "Player Two: Select a Character";
             playButton.interactable = false;
             player = 2;
             canPlay = false;
@@ -216,7 +216,7 @@ public class CharacterSelect : MonoBehaviour {
         {
             player1Highlight.SetActive(false);
             player1Highlight = null;
-            characterSelectText.text = "Player 1 Select a Character";
+            characterSelectText.text = "Player One: Select a Character";
             player = 1;
 
             Button backButton = transform.GetChild(0).GetChild(4).GetComponent<Button>();
