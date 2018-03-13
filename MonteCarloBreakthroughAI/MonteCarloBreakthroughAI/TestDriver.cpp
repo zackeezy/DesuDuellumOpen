@@ -36,18 +36,25 @@ void TestDriver::PlayGame()
     {
         Move move;
         clock_t timer;
-        //system("cls");
         cout << "Generating Move..." << endl;
         timer = clock();
-        /*if (color == White)
+
+        //Mixed
+       /* if (color == white) 
         {
-            move = Analyzer::GetMove_Heavy(whitePieces, blackPieces, color);
+            move = analyzer::getmove_singleton(whitepieces, blackpieces, color);
         }
-        else 
+        else if (color == black)
         {
-            move = Analyzer::GetMove_Light(whitePieces, blackPieces, color);
+            move = analyzer::getmove_leafparallel(whitepieces, blackpieces, color);
         }*/
-        move = Analyzer::GetMove_Light(whitePieces, blackPieces, color);
+
+        //Heavy vs Heavy
+        move = Analyzer::GetMove_LeafParallel(whitePieces, blackPieces, color);
+
+        //Light vs Light
+        //move = Analyzer::GetMove_Light(whitePieces, blackPieces, color);
+        
         timer = clock() - timer;
 
         //Move Pieces

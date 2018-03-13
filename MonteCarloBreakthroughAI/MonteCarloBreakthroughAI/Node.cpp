@@ -22,7 +22,7 @@ Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, Node 
     _confidence = 0;
    
     _nextToPlay = FlipColor(_parent->GetNextToPlay());
-    GenerateScore();
+    //GenerateScore();
 }
 
 Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color) 
@@ -42,7 +42,7 @@ Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, Playe
     _confidence = 0;
 
     _nextToPlay = color;
-    GenerateScore();
+    //GenerateScore();
 }
 
 Node::~Node()
@@ -81,6 +81,12 @@ void Node::GenerateConfidence()
     }*/
 }
 
+void Node::InitializeWins(int wins) 
+{
+    _wins = wins;
+    _games = 100;
+}
+
 int Node::GenerateChildren() 
 {
     if (_firstChild != NULL) 
@@ -116,10 +122,69 @@ int Node::GenerateChildren()
                             _blackPieces, 
                             this);
 
-                        if (Analyzer::IsGameOver(_firstChild) != Neither)
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            _firstChild->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[forward]];
+                                switch (row) 
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            /*else if (//Captured a piece) 
+                            {
+                                initialWins = 60;
+                            }*/
+                            else  
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        _firstChild->InitializeWins(initialWins);
                     }
                     else 
                     {
@@ -133,10 +198,69 @@ int Node::GenerateChildren()
                             _blackPieces,
                             this);
 
-                        if (Analyzer::IsGameOver(temp->_nextSibling) != Neither)
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            temp->_nextSibling->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[forward]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            /*else if (//Captured a piece)
+                            {
+                            initialWins = 60;
+                            }*/
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        temp->_nextSibling->InitializeWins(initialWins);
 
                         temp->_nextSibling->SetPrevSibling(temp);
                     }
@@ -150,10 +274,70 @@ int Node::GenerateChildren()
                         _firstChild = new Node((_whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | east,
                             _blackPieces & ~east,
                             this);
-                        if (Analyzer::IsGameOver(_firstChild) != Neither)
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            _firstChild->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[east]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((east & _blackPieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        _firstChild->InitializeWins(initialWins);
                     }
                     else
                     {
@@ -166,10 +350,70 @@ int Node::GenerateChildren()
                         temp->_nextSibling = new Node((_whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | east,
                             _blackPieces,
                             this);
-                        if (Analyzer::IsGameOver(temp->_nextSibling) != Neither)
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            temp->_nextSibling->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[east]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((east & _blackPieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        temp->_nextSibling->InitializeWins(initialWins);
 
                         temp->_nextSibling->SetPrevSibling(temp);
                     }
@@ -183,10 +427,70 @@ int Node::GenerateChildren()
                         _firstChild = new Node((_whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | west,
                             _blackPieces & ~west,
                             this);
-                        if (Analyzer::IsGameOver(_firstChild) != Neither)
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            _firstChild->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[west]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((west & _blackPieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        _firstChild->InitializeWins(initialWins);
                     }
                     else
                     {
@@ -199,10 +503,70 @@ int Node::GenerateChildren()
                         temp->_nextSibling = new Node((_whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | west,
                             _blackPieces,
                             this);
-                        if (Analyzer::IsGameOver(temp->_nextSibling) != Neither)
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            temp->_nextSibling->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[west]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((west & _blackPieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        temp->_nextSibling->InitializeWins(initialWins);
 
                         temp->_nextSibling->SetPrevSibling(temp);
                     }
@@ -222,10 +586,70 @@ int Node::GenerateChildren()
                         _firstChild = new Node(_whitePieces,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | forward,
                             this);
-                        if (Analyzer::IsGameOver(_firstChild) != Neither)
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            _firstChild->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[forward]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            /*else if ((forward & _blackPieces) != 0)
+                            {
+                                initialWins = 60;
+                            }*/
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        _firstChild->InitializeWins(initialWins);
                     }
                     else
                     {
@@ -238,10 +662,70 @@ int Node::GenerateChildren()
                         temp->_nextSibling = new Node(_whitePieces, 
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | forward,
                             this);
-                        if (Analyzer::IsGameOver(temp->_nextSibling) != Neither)
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            temp->_nextSibling->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[forward]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[forward]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            /*else if ((forward & _blackPieces) != 0)
+                            {
+                            initialWins = 60;
+                            }*/
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        temp->_nextSibling->InitializeWins(initialWins);
 
                         temp->_nextSibling->SetPrevSibling(temp);
                     }
@@ -255,10 +739,70 @@ int Node::GenerateChildren()
                         _firstChild = new Node(_whitePieces & ~east,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | east,
                             this);
-                        if (Analyzer::IsGameOver(_firstChild) != Neither)
+                       
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            _firstChild->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[east]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((east & _whitePieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        _firstChild->InitializeWins(initialWins);
                     }
                     else
                     {
@@ -271,10 +815,70 @@ int Node::GenerateChildren()
                         temp->_nextSibling = new Node(_whitePieces & ~east, 
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | east,
                             this);
-                        if (Analyzer::IsGameOver(temp->_nextSibling) != Neither)
+                        
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            temp->_nextSibling->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[east]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[east]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((east & _whitePieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        temp->_nextSibling->InitializeWins(initialWins);
 
                         temp->_nextSibling->SetPrevSibling(temp);
                     }
@@ -288,10 +892,72 @@ int Node::GenerateChildren()
                         _firstChild = new Node(_whitePieces & ~west, 
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | west,
                             this);
-                        if (Analyzer::IsGameOver(_firstChild) != Neither)
+
+
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            _firstChild->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((_firstChild->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[west]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((west & _whitePieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        _firstChild->InitializeWins(initialWins);
+
                     }
                     else
                     {
@@ -303,11 +969,71 @@ int Node::GenerateChildren()
 
                         temp->_nextSibling = new Node(_whitePieces & ~west,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | west,
-                            this);
-                        if (Analyzer::IsGameOver(temp->_nextSibling) != Neither)
+                            this); 
+                        
+                        int initialWins = 0;
+                        //Safety Bonus
                         {
-                            temp->_nextSibling->MarkAsNotSelectable();
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetBlackPieces() & Masks::WhiteMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::EastAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->_nextSibling->GetWhitePieces() & Masks::BlackMasks::WestAttack[Masks::OrientationMasks::IndexOf[west]]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if (protectCount >= attackCount)
+                            {
+                                int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[west]];
+                                switch (row)
+                                {
+                                case 8:
+                                    initialWins = 100;
+                                    break;
+                                case 7:
+                                    initialWins = 95;
+                                    break;
+                                case 6:
+                                    initialWins = 85;
+                                    break;
+                                case 5:
+                                    initialWins = 75;
+                                    break;
+                                case 4:
+                                    initialWins = 60;
+                                    break;
+                                default:
+                                    initialWins = 30;
+                                    break;
+                                }
+                            }
+                            else if ((west & _whitePieces) != 0)
+                            {
+                                initialWins = 60;
+                            }
+                            else
+                            {
+                                initialWins = 30;
+                            }
                         }
+
+                        temp->_nextSibling->InitializeWins(initialWins);
 
                         temp->_nextSibling->SetPrevSibling(temp);
                     }

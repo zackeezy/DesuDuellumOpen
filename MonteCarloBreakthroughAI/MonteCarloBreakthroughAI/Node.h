@@ -58,5 +58,6 @@ public:
     int GetDepth();
     void Print();
     int GetScore();
+    void InitializeWins(int wins);
 };
 

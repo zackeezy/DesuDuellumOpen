@@ -9,18 +9,22 @@ static class Analyzer
 {
 private:
     static int _totalPlayOuts;
+
     static const int MAX_TIME = 5900;
-    static vector<int> _gamesAtDepth;
+    static const int PIECE_SCALAR = 10;
+    static const int WhiteScoreArray[64];
+    static const int BlackScoreArray[64];
     
 public:
     Analyzer();
     ~Analyzer();
 
-    static Move GetMove_Heavy(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
-    static Move GetMove_Light(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
+    static Move GetMove_LeafParallel(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
+    static Move GetMove_Singleton(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
     static int GetTotalPlayOuts();
-    static void RunPlayOut_Heavy(Node * root);
-    static void RunPlayOut_Light(Node * root);
+    static void RunPlayOut_Leaf_Parallel(Node * root);
+    static void RunPlayOut_Singleton(Node * root);
     static PlayerColor IsGameOver(Node * node);
+    static PlayerColor ScoreGame(Node * node);
 };
 
