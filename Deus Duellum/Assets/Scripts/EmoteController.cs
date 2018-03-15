@@ -20,6 +20,8 @@ public class EmoteController : MonoBehaviour {
     private GameObject emotePanel;
     private Text emoteText;
 
+    AudioSource emoteSource;
+
     // Use this for initialization
     void Start () {
         //temporary
@@ -27,6 +29,11 @@ public class EmoteController : MonoBehaviour {
 
         emoteButtons = transform.GetChild(4).gameObject;
         emotePanel = transform.GetChild(5).gameObject;
+
+        //set the clip the emoteSource uses
+        //WILL NOT WORK IF DO NOT START AT MAIN MENU
+        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,9 +58,11 @@ public class EmoteController : MonoBehaviour {
         emoteButtons.SetActive(false);  
     }
 
-    public void SetCharacter(int character)
+    public void SetCharacter(int givenCharacter)
     {
         //function is called in BoardManager's setPrefs()
+
+        character = givenCharacter;
         if (character == 0)
         {
             //athena's emotes
@@ -77,7 +86,7 @@ public class EmoteController : MonoBehaviour {
         }
     }
 
-    public void EmoteClicked(int character)
+    public void EmoteClicked(int emote)
     {
         //deactivate emote buttons
         emoteButtons.SetActive(false);
@@ -85,7 +94,7 @@ public class EmoteController : MonoBehaviour {
         //get the emote text
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
-        PlayEmoteAudio(character);
+        PlayEmoteAudio(emote);
         StartCoroutine(AnimateLocalEmotePanel());
     }
 
@@ -99,37 +108,38 @@ public class EmoteController : MonoBehaviour {
         StartCoroutine(AnimateLocalEmotePanel());
     }
 
-    public void PlayEmoteAudio(int character)
+    public void PlayEmoteAudio(int emote)
     {
         //change the text of emote panel and which voiceline to play
         AudioClip emoteClip = new AudioClip();
-        if (character == 0)
+        if (emote == 0)
         {
             //hello
             emoteText.text = HelloEmote;
-            //emoteClip = HelloVoices[0];
+            emoteClip = HelloVoices[character];
         }
-        else if (character == 1)
+        else if (emote == 1)
         {
             //wow
             emoteText.text = WowEmote;
-            //emoteClip = WowVoices[1];
+            emoteClip = WowVoices[character];
         }
-        else if (character == 2)
+        else if (emote == 2)
         {
             //taunt
             emoteText.text = TauntEmote;
-            //emoteClip = TauntVoices[2];
+            emoteClip = TauntVoices[character];
         }
-        //voiceLineLength = emoteClip.length;
+        voiceLineLength = emoteClip.length;
 
-        ////set the clip the emoteSource uses
-        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        //AudioSource emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
-        //emoteSource.clip = emoteClip;
-        ////play the clip
-        //emoteSource.Play();
-        ////maybe also play an emote sound?
+        //make sure it will be able to play
+        if (emoteSource)
+        {
+            emoteSource.clip = emoteClip;
+            //play the clip
+            emoteSource.Play();
+            //maybe also play an emote sound?
+        }
     }
 
     IEnumerator AnimateLocalEmotePanel()

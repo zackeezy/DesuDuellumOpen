@@ -109,13 +109,12 @@ public class BoardManager : MonoBehaviour {
         {
             GetMove();
         }
-	}
 
         //set the clip the effectSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
-        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        //effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
-    
+        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update ()
@@ -326,12 +325,12 @@ public class BoardManager : MonoBehaviour {
             moveforLog += "x";
 
             //play the captured sound effect
-            //PlayCaptureSoundEffect(true);
+            PlayMovementSoundEffect(true);
         }
         else
         {
             //play the normal sound effect
-            //PlayCaptureSoundEffect(false);
+            PlayMovementSoundEffect(false);
         }
 
         moveforLog += log.CoordsToNotations(x, y);
@@ -410,7 +409,7 @@ public class BoardManager : MonoBehaviour {
                 emote2.interactable = false;
             }
             //play a sound for the character
-            //PlayTurnChangeSoundEffect(whiteCharacter);
+            PlayTurnChangeSoundEffect(whiteCharacter);
         }
         else if(isBlackTurn)
         {
@@ -447,7 +446,7 @@ public class BoardManager : MonoBehaviour {
                 emote2.interactable = true;
             }
             //play a sound for the character
-            //PlayTurnChangeSoundEffect(blackCharacter);
+            PlayTurnChangeSoundEffect(blackCharacter);
         }
     }
 
@@ -600,8 +599,6 @@ public class BoardManager : MonoBehaviour {
         float borderWidth = 0f;
         float borderHeight = 0f;
 
-        //TODO: size the borders to actually fit
-
         if (player == 1)
         {
             playerImg = player1img.GetComponent<Image>();
@@ -696,41 +693,49 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void PlayCaptureSoundEffect(bool captured)
+    public void PlayMovementSoundEffect(bool captured)
     {
-        if (captured)
+        //make sure it will be able to play
+        if (effectSource)
         {
-            //choose the capture sound effect
-            effectSource.clip = captureSound;
+            if (captured)
+            {
+                //choose the capture sound effect
+                effectSource.clip = captureSound;
+            }
+            else
+            {
+                //choose the regular sound effect
+                effectSource.clip = moveSound;
+            }
+            //play the clip
+            effectSource.Play();
         }
-        else
-        {
-            //choose the regular sound effect
-            effectSource.clip = moveSound;
-        }
-        //play the clip
-        effectSource.Play();
     }
 
     public void PlayTurnChangeSoundEffect(int character)
     {
-        if (character == 0)
+        //make sure it will be able to play
+        if (effectSource)
         {
-            //choose the athena turn change sound effect
-            effectSource.clip = athenaTurnSound;
+            if (character == 0)
+            {
+                //choose the athena turn change sound effect
+                effectSource.clip = athenaTurnSound;
+            }
+            else if (character == 1)
+            {
+                //choose the ra turn change sound effect
+                effectSource.clip = raTurnSound;
+            }
+            else if (character == 2)
+            {
+                //choose the thor turn change sound effect
+                effectSource.clip = thorTurnSound;
+            }
+            //play the clip
+            effectSource.Play();
         }
-        else if (character == 1)
-        {
-            //choose the ra turn change sound effect
-            effectSource.clip = raTurnSound;
-        }
-        else if (character == 2)
-        {
-            //choose the thor turn change sound effect
-            effectSource.clip = thorTurnSound;
-        }
-        //play the clip
-        effectSource.Play();
     }
 }
 
