@@ -11,6 +11,7 @@ TagManager:
   - Tiles
   - Player1
   - Player2
+  - QuitPanel
   layers:
   - Default
   - TransparentFX

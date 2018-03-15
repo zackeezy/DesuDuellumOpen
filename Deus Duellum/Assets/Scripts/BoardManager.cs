@@ -73,6 +73,9 @@ public class BoardManager : MonoBehaviour {
     private int blackCharacter;
     private bool isPlayer1White;
 
+    private string player1;
+    private string player2;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -112,8 +115,8 @@ public class BoardManager : MonoBehaviour {
 
         //set the clip the effectSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
-        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
+        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        //effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -376,11 +379,11 @@ public class BoardManager : MonoBehaviour {
         {
             if (isPlayer1White)
             {
-                turnText.text = "Player One's Turn";
+                turnText.text = player1 + "'s Turn";
             }
             else
             {
-                turnText.text = "Player Two's Turn";
+                turnText.text = player2 + "'s Turn";
             }
 
             if (whitePlayer == PlayerType.AI)
@@ -415,11 +418,11 @@ public class BoardManager : MonoBehaviour {
         {
             if (!isPlayer1White)
             {
-                turnText.text = "Player One's Turn";
+                turnText.text = player1 + "'s Turn";
             }
             else
             {
-                turnText.text = "Player Two's Turn";
+                turnText.text = player2 + "'s Turn";
             }
             if (blackPlayer == PlayerType.AI)
             {
@@ -599,10 +602,13 @@ public class BoardManager : MonoBehaviour {
         float borderWidth = 0f;
         float borderHeight = 0f;
 
+        bool isplayer1=false;
+
         if (player == 1)
         {
             playerImg = player1img.GetComponent<Image>();
             playerBorder = player1img.transform.GetChild(0).GetComponent<Image>();
+            isplayer1 = true;
         }
         else if (player == 2)
         {
@@ -616,6 +622,16 @@ public class BoardManager : MonoBehaviour {
             playerBorder.sprite = AthenaBorder;
             borderWidth = 130;
             borderHeight = 130;
+
+            //set the text for the turn indicator
+            if (isplayer1)
+            {
+                player1 = "Athena";
+            }
+            else
+            {
+                player2 = "Athena";
+            }
         }
         else if (character == 1)
         {
@@ -624,6 +640,16 @@ public class BoardManager : MonoBehaviour {
             playerBorder.sprite = RaBorder;
             borderWidth = 135;
             borderHeight = 135;
+
+            //set the text for the turn indicator
+            if (isplayer1)
+            {
+                player1 = "Ra";
+            }
+            else
+            {
+                player2 = "Ra";
+            }
         }
         else if (character == 2)
         {
@@ -632,7 +658,28 @@ public class BoardManager : MonoBehaviour {
             playerBorder.sprite = ThorBorder;
             borderWidth = 115;
             borderHeight = 115;
+
+            //set the text for the turn indicator
+            if (isplayer1)
+            {
+                player1 = "Thor";
+            }
+            else
+            {
+                player2 = "Thor";
+            }
         }
+
+        //set the turn indicator banner
+        turnText.text = player1 + "'s Turn";
+
+        //set the banners for each character
+        Text player1BannerText = GameObject.FindGameObjectWithTag("Player1").transform.GetChild(2).GetComponent<Text>();
+        player1BannerText.text = player1;
+
+        Text player2BannerText = GameObject.FindGameObjectWithTag("Player2").transform.GetChild(2).GetComponent<Text>();
+        player2BannerText.text = player2;
+
         playerBorder.rectTransform.sizeDelta = new Vector2(borderWidth, borderHeight);
     }
 
