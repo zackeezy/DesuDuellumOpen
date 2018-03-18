@@ -244,6 +244,14 @@ public class BoardManager : MonoBehaviour {
         if (selectedToken != null)
         {
             //Debug.Log("moving to: " + x + ", " + y);
+            //if a network game, send move to opponent
+            if(gameMode == PlayerType.Network)
+            {
+                NetworkControl netcontroller = GameObject.FindGameObjectWithTag("network")
+                    .GetComponent<NetworkControl>();
+                string moveStr = string.Format("move|{0}|{1}|{2}|{3}", x, y, xPos, zPos);
+                netcontroller.Send(moveStr);
+            }
             //if that spot is a valid move
             AttemptMove(x, y, xPos, zPos);
         }
@@ -351,12 +359,21 @@ public class BoardManager : MonoBehaviour {
 
     private void GetMove()
     {
-        //Split into AI and Network paths maybe.
+        //Split into AI and Network paths.
+        if (gameMode == PlayerType.AI)
+        {
+            _core.PrepForForeignMove();
+            ThreadStart aiRef = new ThreadStart(GetMoveHelper);
+            Thread aiThread = new Thread(aiRef);
+            aiThread.Start();
+        }
+        else if (gameMode == PlayerType.Network)
+        {
+            //tell core to tell the network what move was made
+            //ask the core for an network move from the game core
 
-        _core.PrepForForeignMove();
-        ThreadStart aiRef = new ThreadStart(GetMoveHelper);
-        Thread aiThread = new Thread(aiRef);
-        aiThread.Start();
+            //use the net's move received from core to show a move was made
+        }
     }
 
     private void GetMoveHelper()
@@ -390,14 +407,11 @@ public class BoardManager : MonoBehaviour {
             {
                 gameMode = PlayerType.AI;
                 GetMove();
-
             }
             else if (whitePlayer == PlayerType.Network)
             {
-                gameMode = PlayerType.Network;
-                //ask for an network move from the game core
-                //use the net's move received from core to show a move was made
-
+                gameMode = PlayerType.Network;              
+                GetMove();
             }
             else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
             {
@@ -432,9 +446,7 @@ public class BoardManager : MonoBehaviour {
             else if (blackPlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
-                //ask for an network move from the game core
-                //use the net's move received from core to show a move was made
-
+                GetMove();
             }
             else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
             {
@@ -513,8 +525,8 @@ public class BoardManager : MonoBehaviour {
     private void setPrefs()
     {
         //set gameMode, whiteplayer, and blackplayer variables based on input from character select screen
-        int player1character = PlayerPrefs.GetInt("Player1Character", 0);
-        int player2character = 1;
+        int player1character = PlayerPrefs.GetInt("Player1Character");
+        int player2character = PlayerPrefs.GetInt("Player2Character");
         //set the player portraits
         setCharacterImage(1, player1character);
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
@@ -522,7 +534,7 @@ public class BoardManager : MonoBehaviour {
         {
             gameMode = PlayerType.Local;
             //set the player2 character
-            player2character = PlayerPrefs.GetInt("Player2Character", 1);
+            player2character = PlayerPrefs.GetInt("Player2Character");
         }
         else if (gameIndex == 5)
         {

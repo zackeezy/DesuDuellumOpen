@@ -12,6 +12,12 @@ TagManager:
   - Player1
   - Player2
   - QuitPanel
+  - server
+  - client
+  - network
+  - options
+  - waitPanel
+  - boardManager
   layers:
   - Default
   - TransparentFX

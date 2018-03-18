@@ -5,8 +5,6 @@ using System.Text;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
-
-
 namespace Assets.Scripts
 {
     public enum Direction
@@ -135,8 +133,6 @@ namespace Assets.Scripts
 
         public void GetMove(ref int x, ref int y, ref Direction direction)
         {
-            
-
             if (IsWhiteTurn)
             {
                 if (WhitePlayer == PlayerType.AI)
@@ -193,7 +189,8 @@ namespace Assets.Scripts
 
         private void GetNetworkMove(ref int x, ref int y, ref Direction direction)
         {
-            throw new NotImplementedException("We Dont Have Networking Yet!!!!!!1!?;)");
+            //throw new NotImplementedException("We Dont Have Networking Yet!!!!!!1!?;)");
+
         }
 
         public bool IsMoveAllowed(int x, int y, Direction direction)

@@ -23,6 +23,8 @@ public class CharacterSelect : MonoBehaviour {
     private bool turnSelected = false;
     private int gameIndex;
     private bool canPlay = false;
+    private bool opponentChose = false;
+    private GameObject waitPanel;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +32,10 @@ public class CharacterSelect : MonoBehaviour {
         CharacterHighlights = new List<GameObject>();
         difficultyHighlight = null;
         turnHighlight = null;
+        waitPanel = GameObject.FindGameObjectWithTag("waitPanel");
+        if(waitPanel){
+            waitPanel.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -152,8 +158,8 @@ public class CharacterSelect : MonoBehaviour {
         {
             canPlay = true;
         }
-        //if network, must also choose turn
-        else if (gameIndex == 2 && charactersSelected && turnSelected)
+        //if network, must also choose turn, an
+        else if (gameIndex == 2 && charactersSelected)
         {
             canPlay = true;
         }
@@ -223,5 +229,32 @@ public class CharacterSelect : MonoBehaviour {
             backButton.interactable = false;
         }
         charactersSelected = false;
+    }
+
+    public void OtherPlayerSelected(int character)
+    {
+        opponentChose = true;
+        PlayerPrefs.SetInt("Player2Character", character);
+        MoveToNetworkGame();
+    }
+
+    public void MoveToNetworkGame()
+    {
+        //send the character
+        string tosend = "character|" + player1character;
+        NetworkControl netcontroller = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+        netcontroller.Send(tosend);
+
+        if (canPlay && opponentChose)
+        {
+            //move to next scene
+            LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
+            scenechanger.LoadByIndex(5);
+        }
+        else if (!opponentChose)
+        { 
+            //popup
+            waitPanel.SetActive(true);
+        }
     }
 }
