@@ -28,6 +28,8 @@ namespace Assets.Scripts
         }
         public bool whiteWon = false;
         public bool blackWon = false;
+        public int whiteCapturedPieces = 0;
+        public int blackCapturedPieces = 0;
         public GameObject[,] Board;
 
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
@@ -262,6 +264,7 @@ namespace Assets.Scripts
                     if(Board[x, y + 1] != null)
                     {
                         capturedPiece = Board[x, y + 1];
+                        whiteCapturedPieces++;
                     }
                     Board[x, y + 1] = temp;
                 }
@@ -270,6 +273,7 @@ namespace Assets.Scripts
                     if (Board[x + 1, y + 1] != null)
                     {
                         capturedPiece = Board[x + 1, y + 1];
+                        whiteCapturedPieces++;
                     }
                     Board[x + 1, y + 1] = temp;
                 }
@@ -278,6 +282,7 @@ namespace Assets.Scripts
                     if (Board[x - 1, y + 1] != null)
                     {
                         capturedPiece = Board[x - 1, y + 1];
+                        whiteCapturedPieces++;
                     }
                     Board[x - 1, y + 1] = temp;
                 }
@@ -293,6 +298,7 @@ namespace Assets.Scripts
                     if (Board[x, y - 1] != null)
                     {
                         capturedPiece = Board[x, y - 1];
+                        blackCapturedPieces++;
                     }
                     Board[x, y - 1] = temp;
                 }
@@ -301,6 +307,7 @@ namespace Assets.Scripts
                     if (Board[x + 1, y - 1] != null)
                     {
                         capturedPiece = Board[x + 1, y - 1];
+                        blackCapturedPieces++;
                     }
                     Board[x + 1, y - 1] = temp;
                 }
@@ -309,6 +316,7 @@ namespace Assets.Scripts
                     if (Board[x - 1, y - 1] != null)
                     {
                         capturedPiece = Board[x - 1, y - 1];
+                        blackCapturedPieces++;
                     }
                     Board[x - 1, y - 1] = temp;
                 }
@@ -327,12 +335,12 @@ namespace Assets.Scripts
         public bool HasWon(int y)
         {
             //if it is white's turn and y is equal to 7 than white has won
-            if (IsBlackTurn && y == 7)
+            if (IsBlackTurn && y == 7 || whiteCapturedPieces == 16)
             {
                 whiteWon = true;
             }
             //if it is black's turn and y is equal to 0 than black has won
-            else if (IsWhiteTurn && y == 0)
+            else if (IsWhiteTurn && y == 0 || blackCapturedPieces == 16)
             {
                 blackWon = !whiteWon;
             }
