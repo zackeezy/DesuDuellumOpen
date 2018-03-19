@@ -103,10 +103,15 @@ public class BoardManager : MonoBehaviour {
         player2emote = player2.GetComponent<EmoteController>();
 
         setPrefs();
+
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
         _foreignMoveCompleted = false;
 
+        if (whitePlayer == PlayerType.Network || blackPlayer == PlayerType.Network)
+        {
+            SetNetworkStuff();
+        }
 
         if (whitePlayer != PlayerType.Local)
         {
@@ -302,13 +307,16 @@ public class BoardManager : MonoBehaviour {
                 sendDirection = Direction.East;
             }
 
+            int inallcapsx = selectedToken.currentX;
+            int inallcapsy = selectedToken.currentY;
+
             //actually move the token object visually
             MoveToken(x, y, xPos, zPos);
 
             //Send move over network if it's a network game
-            if(gameMode == PlayerType.Network)
+            if (gameMode == PlayerType.Network)
             {
-                _core.SendNetworkMove(x, y, sendDirection);
+                _core.SendNetworkMove(inallcapsx, inallcapsy, sendDirection);
             }
         }
         return isAllowed;
@@ -389,11 +397,7 @@ public class BoardManager : MonoBehaviour {
         _awaitMoveDirection = direction;
         _foreignMoveCompleted = true;
     }
-
-    private void NetworkMoveHelper()
-    {
-
-    }
+    
 
     private void ChangeTurn()
     {
@@ -545,14 +549,7 @@ public class BoardManager : MonoBehaviour {
         else if (gameIndex == 5)
         {
             gameMode = PlayerType.Network;
-
-            if (GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>().isClient)
-            {
-                PlayerPrefs.SetInt("player1", 1);
-            }
-            else{
-                PlayerPrefs.SetInt("player1", 0);
-            }
+            //more in another function because need the game core by then
         }
         else if (gameIndex == 6)
         {
@@ -812,6 +809,21 @@ public class BoardManager : MonoBehaviour {
     public GameCore GetGameCore()
     {
         return _core;
+    }
+
+    private void SetNetworkStuff()
+    {
+        NetworkControl netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+        netController.SetCore(_core);
+
+        if (netController.isClient)
+        {
+            PlayerPrefs.SetInt("player1", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("player1", 0);
+        }
     }
 }
 

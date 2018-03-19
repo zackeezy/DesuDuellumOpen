@@ -50,15 +50,6 @@ public class NetworkControl : MonoBehaviour {
             serverstuff.SetActive(false);
             clientstuff.SetActive(true);
         }
-
-        try
-        {
-            _core = GameObject.FindGameObjectWithTag("boardManager").GetComponent<BoardManager>().GetGameCore();
-        }
-        catch(Exception e)
-        {
-            Debug.Log(e.Message);
-        }
 	}
 	
 	// Update is called once per frame
@@ -119,11 +110,12 @@ public class NetworkControl : MonoBehaviour {
             case "move":
                 int x = int.Parse(messages[1]), y = int.Parse(messages[2]);
                 Direction direction = ParseDirection(messages[3]);
+
                 try
                 {
                     _core.MakeNetworkMove(x, y, direction);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.Log(e.Message);
                 }
@@ -182,5 +174,10 @@ public class NetworkControl : MonoBehaviour {
 
         //Should not reach here
         throw new System.Exception("Direction not in the correct format");
+    }
+
+    public void SetCore(GameCore core)
+    {
+        _core = core;
     }
 }

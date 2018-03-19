@@ -360,9 +360,9 @@ namespace Assets.Scripts
             return whiteWon;
         }
 
-        public GameObject MakeNetworkMove(int x, int y, Direction direction)
+        public void MakeNetworkMove(int x, int y, Direction direction)
         {
-            GameObject capturedPiece = MakeMove(x, y, direction);
+            //GameObject capturedPiece = MakeMove(x, y, direction);
 
             networkX = x;
 
@@ -372,7 +372,7 @@ namespace Assets.Scripts
 
             netMoveReceivedButNotRead = true;
 
-            return capturedPiece;
+            //return capturedPiece;
         }
 
         public void SendNetworkMove(int x, int y, Direction direction)
