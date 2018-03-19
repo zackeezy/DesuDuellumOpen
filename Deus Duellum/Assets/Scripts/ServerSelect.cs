@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 //using System.Linq;
 using UnityEngine;
@@ -23,19 +24,25 @@ public class ServerSelect : MonoBehaviour {
         string servername = GetComponent<InputField>().text;
         if (servername != "")
         {
-            PlayerInfo[] servers = netcontroller.GetServerListFromClient();
-
-            int index = 0;
-            foreach (PlayerInfo info in servers)
+            try
             {
-                if (servername == info.Name)
+                PlayerInfo[] servers = netcontroller.GetServerListFromClient();
+                int index = 0;
+                foreach (PlayerInfo info in servers)
                 {
-                    netcontroller.ServerSelected(index);
-                    LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
-                    scenechanger.LoadByIndex(2);
-                    break;
+                    if (servername == info.Name)
+                    {
+                        netcontroller.ServerSelected(index);
+                        LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
+                        scenechanger.LoadByIndex(2);
+                        break;
+                    }
+                    index++;
                 }
-                index++;
+            }
+            catch(Exception e)
+            {
+                Debug.Log(e.Message);
             }
         }
     }

@@ -244,14 +244,6 @@ public class BoardManager : MonoBehaviour {
         if (selectedToken != null)
         {
             //Debug.Log("moving to: " + x + ", " + y);
-            //if a network game, send move to opponent
-            if(gameMode == PlayerType.Network)
-            {
-                NetworkControl netcontroller = GameObject.FindGameObjectWithTag("network")
-                    .GetComponent<NetworkControl>();
-                string moveStr = string.Format("move|{0}|{1}|{2}|{3}", x, y, xPos, zPos);
-                netcontroller.Send(moveStr);
-            }
             //if that spot is a valid move
             AttemptMove(x, y, xPos, zPos);
         }
@@ -260,6 +252,7 @@ public class BoardManager : MonoBehaviour {
     public bool AttemptMove(int x, int y, float xPos, float zPos)
     {
         bool isAllowed = false;
+        Direction sendDirection;
         if (isWhiteTurn && y == selectedToken.currentY + 1)
         {
             if (x == selectedToken.currentX - 1)
@@ -296,18 +289,27 @@ public class BoardManager : MonoBehaviour {
             if (x < selectedToken.currentX)
             {
                 _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.West);
+                sendDirection = Direction.West;
             }
             else if (x == selectedToken.currentX)
             {
                 _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+                sendDirection = Direction.Forward;
             }
-            else if (x > selectedToken.currentX)
+            else /*if (x > selectedToken.currentX)*/
             {
                 _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.East);
+                sendDirection = Direction.East;
             }
 
             //actually move the token object visually
             MoveToken(x, y, xPos, zPos);
+
+            //Send move over network if it's a network game
+            if(gameMode == PlayerType.Network)
+            {
+                _core.SendNetworkMove(x, y, sendDirection);
+            }
         }
         return isAllowed;
     }
@@ -369,10 +371,9 @@ public class BoardManager : MonoBehaviour {
         }
         else if (gameMode == PlayerType.Network)
         {
-            //tell core to tell the network what move was made
-            //ask the core for an network move from the game core
-
-            //use the net's move received from core to show a move was made
+            ThreadStart netRef = new ThreadStart(GetMoveHelper);
+            Thread netThread = new Thread(netRef);
+            netThread.Start();
         }
     }
 
@@ -387,6 +388,11 @@ public class BoardManager : MonoBehaviour {
         _awaitMoveY = y;
         _awaitMoveDirection = direction;
         _foreignMoveCompleted = true;
+    }
+
+    private void NetworkMoveHelper()
+    {
+
     }
 
     private void ChangeTurn()
@@ -539,8 +545,14 @@ public class BoardManager : MonoBehaviour {
         else if (gameIndex == 5)
         {
             gameMode = PlayerType.Network;
-            //ask for the character they are playing as
-            //player2Character =;
+
+            if (GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>().isClient)
+            {
+                PlayerPrefs.SetInt("player1", 1);
+            }
+            else{
+                PlayerPrefs.SetInt("player1", 0);
+            }
         }
         else if (gameIndex == 6)
         {
@@ -795,6 +807,11 @@ public class BoardManager : MonoBehaviour {
             //play the clip
             effectSource.Play();
         }
+    }
+
+    public GameCore GetGameCore()
+    {
+        return _core;
     }
 }
 

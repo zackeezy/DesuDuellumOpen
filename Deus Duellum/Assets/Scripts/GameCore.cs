@@ -28,6 +28,12 @@ namespace Assets.Scripts
         public bool blackWon = false;
         public GameObject[,] Board;
 
+        //Network Move data
+        bool netMoveReceivedButNotRead = false;
+        int networkX;
+        int networkY;
+        Direction networkDirection;
+
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
         {
             InitializeAI();
@@ -141,7 +147,7 @@ namespace Assets.Scripts
                 }
                 else if(WhitePlayer == PlayerType.Network)
                 {
-                    GetNetworkMove(ref x, ref y, ref direction);
+                    while(!GetNetworkMove(ref x, ref y, ref direction)) { }
                 }
                 else
                 {
@@ -156,7 +162,7 @@ namespace Assets.Scripts
                 }
                 else if (BlackPlayer == PlayerType.Network)
                 {
-                    GetNetworkMove(ref x, ref y, ref direction);
+                    while(!GetNetworkMove(ref x, ref y, ref direction)) { }
                 }
                 else
                 {
@@ -187,10 +193,21 @@ namespace Assets.Scripts
         [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
         public static extern void InitializeAI();
 
-        private void GetNetworkMove(ref int x, ref int y, ref Direction direction)
+        public bool GetNetworkMove(ref int x, ref int y, ref Direction direction)
         {
-            //throw new NotImplementedException("We Dont Have Networking Yet!!!!!!1!?;)");
+            bool moveReceived = false;
 
+            if (netMoveReceivedButNotRead)
+            {
+                x = networkX;
+                y = networkY;
+                direction = networkDirection;
+
+                netMoveReceivedButNotRead = false;
+                moveReceived = true;
+            }
+
+            return moveReceived;
         }
 
         public bool IsMoveAllowed(int x, int y, Direction direction)
@@ -341,6 +358,27 @@ namespace Assets.Scripts
                 blackWon = !whiteWon;
             }
             return whiteWon;
+        }
+
+        public GameObject MakeNetworkMove(int x, int y, Direction direction)
+        {
+            GameObject capturedPiece = MakeMove(x, y, direction);
+
+            networkX = x;
+
+            networkY = y;
+
+            networkDirection = direction;
+
+            netMoveReceivedButNotRead = true;
+
+            return capturedPiece;
+        }
+
+        public void SendNetworkMove(int x, int y, Direction direction)
+        {
+            NetworkControl networkControl = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+            networkControl.SendMove(x, y, direction);
         }
     }
 }

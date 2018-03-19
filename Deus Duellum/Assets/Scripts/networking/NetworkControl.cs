@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts;
+using System;
 
 public class NetworkControl : MonoBehaviour {
 
@@ -15,7 +17,7 @@ public class NetworkControl : MonoBehaviour {
     private GameObject serverstuff;
     private GameObject clientstuff;
 
-    public BoardManager manager;
+    public GameCore _core;
 
     void Awake()
     {
@@ -49,7 +51,14 @@ public class NetworkControl : MonoBehaviour {
             clientstuff.SetActive(true);
         }
 
-        manager = GameObject.FindGameObjectWithTag("boardManager").GetComponent<BoardManager>();
+        try
+        {
+            _core = GameObject.FindGameObjectWithTag("boardManager").GetComponent<BoardManager>().GetGameCore();
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
+        }
 	}
 	
 	// Update is called once per frame
@@ -109,8 +118,15 @@ public class NetworkControl : MonoBehaviour {
                 break;
             case "move":
                 int x = int.Parse(messages[1]), y = int.Parse(messages[2]);
-                float xPos = float.Parse(messages[3]), zPos = float.Parse(messages[4]);
-                bool success = manager.AttemptMove(x, y, xPos, zPos);
+                Direction direction = ParseDirection(messages[3]);
+                try
+                {
+                    _core.MakeNetworkMove(x, y, direction);
+                }
+                catch(Exception e)
+                {
+                    Debug.Log(e.Message);
+                }
                 break;
             case "emote":
 
@@ -146,9 +162,25 @@ public class NetworkControl : MonoBehaviour {
         serverstuff.transform.GetChild(1).GetComponent<Button>().interactable = true;
     }
 
-    public void SendMove(int x, int y, float xPos, float zPos)
+    public void SendMove(int x, int y, Direction direction)
     {
-        string moveMessage = string.Format("move|{0}|{1}|{2}|{3}",x,y,xPos,zPos);
+        string moveMessage = string.Format("move|{0}|{1}|{2}",x,y,direction);
         Send(moveMessage);
+    }
+
+    private Direction ParseDirection(string str)
+    {
+        switch (str)
+        {
+            case "West":
+                return Direction.West;
+            case "Forward":
+                return Direction.Forward;
+            case "East":
+                return Direction.East;
+        }
+
+        //Should not reach here
+        throw new System.Exception("Direction not in the correct format");
     }
 }
