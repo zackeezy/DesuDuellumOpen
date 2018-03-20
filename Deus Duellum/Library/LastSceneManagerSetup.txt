@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Local_Game.unity
+- path: Assets/Scenes/SplashTeamLogo.unity
   isLoaded: 1
   isActive: 1
