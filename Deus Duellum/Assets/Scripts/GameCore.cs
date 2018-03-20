@@ -26,6 +26,8 @@ namespace Assets.Scripts
         }
         public bool whiteWon = false;
         public bool blackWon = false;
+        public int blackPiecesTaken = 0;
+        public int whitePiecesTaken = 0;
         public GameObject[,] Board;
 
         //Network Move data
@@ -283,6 +285,7 @@ namespace Assets.Scripts
                     if(Board[x, y + 1] != null)
                     {
                         capturedPiece = Board[x, y + 1];
+                        blackPiecesTaken++;
                     }
                     Board[x, y + 1] = temp;
                 }
@@ -291,6 +294,7 @@ namespace Assets.Scripts
                     if (Board[x + 1, y + 1] != null)
                     {
                         capturedPiece = Board[x + 1, y + 1];
+                        blackPiecesTaken++;
                     }
                     Board[x + 1, y + 1] = temp;
                 }
@@ -299,6 +303,7 @@ namespace Assets.Scripts
                     if (Board[x - 1, y + 1] != null)
                     {
                         capturedPiece = Board[x - 1, y + 1];
+                        blackPiecesTaken++;
                     }
                     Board[x - 1, y + 1] = temp;
                 }
@@ -314,6 +319,7 @@ namespace Assets.Scripts
                     if (Board[x, y - 1] != null)
                     {
                         capturedPiece = Board[x, y - 1];
+                        whitePiecesTaken++;
                     }
                     Board[x, y - 1] = temp;
                 }
@@ -322,6 +328,7 @@ namespace Assets.Scripts
                     if (Board[x + 1, y - 1] != null)
                     {
                         capturedPiece = Board[x + 1, y - 1];
+                        whitePiecesTaken++;
                     }
                     Board[x + 1, y - 1] = temp;
                 }
@@ -330,6 +337,7 @@ namespace Assets.Scripts
                     if (Board[x - 1, y - 1] != null)
                     {
                         capturedPiece = Board[x - 1, y - 1];
+                        whitePiecesTaken++;
                     }
                     Board[x - 1, y - 1] = temp;
                 }
@@ -348,12 +356,12 @@ namespace Assets.Scripts
         public bool HasWon(int y)
         {
             //if it is white's turn and y is equal to 7 than white has won
-            if (IsBlackTurn && y == 7)
+            if (IsBlackTurn && y == 7 || blackPiecesTaken==16)
             {
                 whiteWon = true;
             }
             //if it is black's turn and y is equal to 0 than black has won
-            else if (IsWhiteTurn && y == 0)
+            else if (IsWhiteTurn && y == 0 || whitePiecesTaken==16)
             {
                 blackWon = !whiteWon;
             }
