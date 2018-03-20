@@ -66,23 +66,23 @@ public class EmoteController : MonoBehaviour {
         if (character == 0)
         {
             //athena's emotes
-            HelloEmote = "Athena's Hello";
-            WowEmote = "Athena's Wow";
-            TauntEmote = "Athena's Taunt";
+            HelloEmote = "Yamas! Good health to all.";
+            WowEmote = "Even the goddess of strategy \ncouldn't see that coming.";
+            TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know";
         }
         else if (character == 1)
         {
             //ra's emotes
-            HelloEmote = "Ra's Hello";
-            WowEmote = "Ra's Wow";
-            TauntEmote = "Ra's Taunt";
+            HelloEmote = "Good morrow from the Sun.";
+            WowEmote = "You shine brighter than the sun!";
+            TauntEmote = "Even Anubis couldn't tip the scales in your favor.";
         }
         else if (character == 2)
         {
             //thor's emotes
-            HelloEmote = "Thor's Hello";
-            WowEmote = "Thor's Wow";
-            TauntEmote = "Thor's Taunt";
+            HelloEmote = "Good health, my friend.";
+            WowEmote = "By Odin's beard!";
+            TauntEmote = "You can't even spell Meal-near!";
         }
     }
 
