@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LoadSceneOnClick : MonoBehaviour {
 
     public int player = 1;
+    public Button newNetButton;
+    public Button joinNetButton;
 
     public void LoadByIndex(int sceneIndex)
     {
@@ -16,17 +19,39 @@ public class LoadSceneOnClick : MonoBehaviour {
 
     public void LoadNetworkConnection(bool server)
     {
-        if (server)
+        InputField nameInput = GameObject.FindGameObjectWithTag("network").GetComponent<InputField>();
+        if (nameInput)
         {
-            PlayerPrefs.SetInt("server", 1);
-            AutoFade.LoadLevel(7, 1, 1, Color.black);
+            string name = nameInput.text;
+            if (name != "")
+            {
+                PlayerPrefs.SetString("name", name);
+                if (server)
+                {
+                    PlayerPrefs.SetInt("server", 1);
+                    AutoFade.LoadLevel(7, 1, 1, Color.black);
+                }
+                else
+                {
+                    PlayerPrefs.SetInt("server", 0);
+                    AutoFade.LoadLevel(7, 1, 1, Color.black);
+                }
+            }
+        }
+    }
 
+    public void EnableNetworkButtons()
+    {
+        string servername = GetComponent<InputField>().text;
+        if (servername != "")
+        {
+            newNetButton.interactable = true;
+            joinNetButton.interactable = true;
         }
         else
         {
-            PlayerPrefs.SetInt("server", 0);
-            AutoFade.LoadLevel(7, 1, 1, Color.black);
-
+            newNetButton.interactable = false;
+            joinNetButton.interactable = false;
         }
     }
 }

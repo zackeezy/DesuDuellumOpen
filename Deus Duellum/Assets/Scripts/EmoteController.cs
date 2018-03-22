@@ -25,7 +25,7 @@ public class EmoteController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //temporary
-        voiceLineLength = 2;
+        voiceLineLength = 3;
 
         emoteButtons = transform.GetChild(4).gameObject;
         emotePanel = transform.GetChild(5).gameObject;
@@ -75,14 +75,15 @@ public class EmoteController : MonoBehaviour {
             //ra's emotes
             HelloEmote = "Good morrow from the Sun.";
             WowEmote = "You shine brighter than the sun!";
-            TauntEmote = "Even Anubis couldn't tip the scales in your favor.";
+            TauntEmote = "Even Anubis couldn't tip \nthe scales in your favor.";
         }
         else if (character == 2)
         {
             //thor's emotes
             HelloEmote = "Good health, my friend.";
             WowEmote = "By Odin's beard!";
-            TauntEmote = "You can't even spell Meal-near!";
+            //TauntEmote = "You can't even spell Meal-near!";
+            TauntEmote = "You can't even spell Mjolnir!";
         }
     }
 
@@ -130,7 +131,7 @@ public class EmoteController : MonoBehaviour {
             emoteText.text = TauntEmote;
             emoteClip = TauntVoices[character];
         }
-        voiceLineLength = emoteClip.length;
+        //voiceLineLength = emoteClip.length;
 
         //make sure it will be able to play
         if (emoteSource)

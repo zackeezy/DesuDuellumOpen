@@ -33,7 +33,7 @@ public class NetworkControl : MonoBehaviour {
     // Use this for initialization
     void Start () {
         int isserver = PlayerPrefs.GetInt("server", 1);
-        string name = "test";
+        string name = PlayerPrefs.GetString("name", "test");
 
         serverstuff = GameObject.FindGameObjectWithTag("server");
         clientstuff = GameObject.FindGameObjectWithTag("client");
