@@ -116,6 +116,11 @@ public class BoardManager : MonoBehaviour {
         if (whitePlayer != PlayerType.Local)
         {
             GetMove();
+            AnimateAvatars(2);
+        }
+        else
+        {
+            AnimateAvatars(1);
         }
 
         //set the clip the effectSource uses
@@ -398,7 +403,6 @@ public class BoardManager : MonoBehaviour {
         _foreignMoveCompleted = true;
     }
     
-
     private void ChangeTurn()
     {
         isWhiteTurn = !isWhiteTurn;
@@ -407,10 +411,12 @@ public class BoardManager : MonoBehaviour {
             if (isPlayer1White)
             {
                 turnText.text = player1 + "'s Turn";
+                AnimateAvatars(1);
             }
             else
             {
                 turnText.text = player2 + "'s Turn";
+                AnimateAvatars(2);
             }
 
             if (whitePlayer == PlayerType.AI)
@@ -443,10 +449,12 @@ public class BoardManager : MonoBehaviour {
             if (!isPlayer1White)
             {
                 turnText.text = player1 + "'s Turn";
+                AnimateAvatars(1);
             }
             else
             {
                 turnText.text = player2 + "'s Turn";
+                AnimateAvatars(2);
             }
             if (blackPlayer == PlayerType.AI)
             {
@@ -641,8 +649,8 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Athena");
             playerImg.sprite = AthenaImg;
             playerBorder.sprite = AthenaBorder;
-            borderWidth = 130;
-            borderHeight = 130;
+            borderWidth = 195;
+            borderHeight = 195;
 
             //set the text for the turn indicator
             if (isplayer1)
@@ -659,8 +667,8 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Ra");
             playerImg.sprite = RaImg;
             playerBorder.sprite = RaBorder;
-            borderWidth = 135;
-            borderHeight = 135;
+            borderWidth = 205;
+            borderHeight = 205;
 
             //set the text for the turn indicator
             if (isplayer1)
@@ -677,8 +685,8 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Thor");
             playerImg.sprite = ThorImg;
             playerBorder.sprite = ThorBorder;
-            borderWidth = 115;
-            borderHeight = 115;
+            borderWidth = 175;
+            borderHeight = 175;
 
             //set the text for the turn indicator
             if (isplayer1)
@@ -823,6 +831,29 @@ public class BoardManager : MonoBehaviour {
         else
         {
             PlayerPrefs.SetInt("player1", 0);
+        }
+    }
+
+    private void AnimateAvatars(int player)
+    {
+        GameObject player1 = GameObject.FindWithTag("Player1");
+        GameObject player2 = GameObject.FindWithTag("Player2");
+
+        if (player == 1)
+        {
+            Vector3 oldScale = player1.transform.localScale;
+            LeanTween.scale(player1, player1.transform.localScale * 1.1f, 0.1f);
+            LeanTween.scale(player2, oldScale, 0.1f);
+        }
+        else if (player == 2)
+        {
+            Vector3 oldScale = player2.transform.localScale;
+            LeanTween.scale(player2, player2.transform.localScale * 1.1f, 0.1f);
+            LeanTween.scale(player1, oldScale, 0.1f);
+        }
+        else
+        {
+            //SHOULD NOT GET HERE
         }
     }
 }
