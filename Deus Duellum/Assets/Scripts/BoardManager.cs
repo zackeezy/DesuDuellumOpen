@@ -153,7 +153,7 @@ public class BoardManager : MonoBehaviour {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
 
-        if (whiteWon || blackWon || gameMode != PlayerType.Local)
+        if (whiteWon || blackWon || gameMode != PlayerType.Local )
         {
             return;
         }

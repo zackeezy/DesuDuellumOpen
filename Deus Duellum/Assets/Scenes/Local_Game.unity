@@ -3600,7 +3600,7 @@ Prefab:
     - target: {fileID: 224674347501424038, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -21
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224674347501424038, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -3610,7 +3610,7 @@ Prefab:
     - target: {fileID: 224674347501424038, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 22
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -3630,7 +3630,7 @@ Prefab:
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -21
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -3640,12 +3640,12 @@ Prefab:
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 22
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224448326028618130, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114773645532725018, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -10017,6 +10017,51 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: WowVoices.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: a7884c7044252be4c89fc4fc64e7efe8, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: HelloVoices.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: abe76c4340e0aae46b6f2e73c601d029, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: TauntVoices.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a74555333e6d654d83fda56679e33b7, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: TauntVoices.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ba566fd72e30391429f521600a422ac5, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: HelloVoices.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ca64d2ed27ac1ad42b88c214f7130008, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: WowVoices.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ae2edffa112508d4786999adac81b634, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: TauntVoices.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: ba4a85ff5608a2d4bb51db97a20b54af, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: HelloVoices.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 21df927e197e4f5429b91bc945471d62, type: 3}
+    - target: {fileID: 114568008462110012, guid: 27aeaf25843b42642bb2ee66d4c15528,
+        type: 2}
+      propertyPath: WowVoices.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: b0a16932c66d2134a87988fb412c8fa8, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27aeaf25843b42642bb2ee66d4c15528, type: 2}
   m_IsPrefabParent: 0
@@ -10542,6 +10587,51 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: WowVoices.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: a7884c7044252be4c89fc4fc64e7efe8, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: HelloVoices.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: abe76c4340e0aae46b6f2e73c601d029, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: HelloVoices.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ca64d2ed27ac1ad42b88c214f7130008, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: HelloVoices.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 21df927e197e4f5429b91bc945471d62, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: WowVoices.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ae2edffa112508d4786999adac81b634, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: WowVoices.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: b0a16932c66d2134a87988fb412c8fa8, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: TauntVoices.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a74555333e6d654d83fda56679e33b7, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: TauntVoices.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ba566fd72e30391429f521600a422ac5, type: 3}
+    - target: {fileID: 114190430905688762, guid: 23321ef150d00a0409fe7a305ee2b8db,
+        type: 2}
+      propertyPath: TauntVoices.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: ba4a85ff5608a2d4bb51db97a20b54af, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 23321ef150d00a0409fe7a305ee2b8db, type: 2}
   m_IsPrefabParent: 0
@@ -10993,6 +11083,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1153841496}
     m_Modifications:
+    - target: {fileID: 114635720356102670, guid: ab86b33c05d6db34996c64b6823250ef,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 224166556310185352, guid: ab86b33c05d6db34996c64b6823250ef,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -11086,6 +11181,16 @@ Prefab:
     - target: {fileID: 1469837864640284, guid: ab86b33c05d6db34996c64b6823250ef, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114635720356102670, guid: ab86b33c05d6db34996c64b6823250ef,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114635720356102670, guid: ab86b33c05d6db34996c64b6823250ef,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab86b33c05d6db34996c64b6823250ef, type: 2}
@@ -11926,7 +12031,7 @@ Prefab:
     - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224137490134494296, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
@@ -12040,16 +12145,41 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1867348634}
+      objectReference: {fileID: 0}
     - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: ResetPanel
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1344728399}
+    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1db18a0234f7e6343984e65f68699571, type: 2}
