@@ -11192,6 +11192,21 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114386267951251880, guid: ab86b33c05d6db34996c64b6823250ef,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114994932996367770, guid: ab86b33c05d6db34996c64b6823250ef,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114956879002765978, guid: ab86b33c05d6db34996c64b6823250ef,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab86b33c05d6db34996c64b6823250ef, type: 2}
   m_IsPrefabParent: 0
