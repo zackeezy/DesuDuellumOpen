@@ -3600,7 +3600,7 @@ Prefab:
     - target: {fileID: 224674347501424038, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 224674347501424038, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -3610,7 +3610,7 @@ Prefab:
     - target: {fileID: 224674347501424038, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -3630,7 +3630,7 @@ Prefab:
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -3640,12 +3640,12 @@ Prefab:
     - target: {fileID: 224713744573119592, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 224448326028618130, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 114773645532725018, guid: 4da17ef4f706903469b12805be50069c,
         type: 2}
@@ -20244,11 +20244,11 @@ MonoBehaviour:
   altNotations: {fileID: 1481801}
   player1img: {fileID: 1893615704}
   player2img: {fileID: 612183609}
-  AthenaImg: {fileID: 21300000, guid: 3ca7c35555539f3488cfd3aa937335ef, type: 3}
+  AthenaImg: {fileID: 21300000, guid: a698daa3a8c7f4d4e87c4668c9db2089, type: 3}
   AthenaBorder: {fileID: 21300000, guid: 42d136e7014cbf240aaa211f6ab8526b, type: 3}
-  RaImg: {fileID: 21300000, guid: ccb2937e8fc3d434da16ef9648f3b9d1, type: 3}
+  RaImg: {fileID: 21300000, guid: 5a954bbc621a23e49a0bd28bae630b92, type: 3}
   RaBorder: {fileID: 21300000, guid: 5a4c0b6a2fe000743a9ea6f6d1fe67b1, type: 3}
-  ThorImg: {fileID: 21300000, guid: 2678d0c736e19384eb7c83a16a911e30, type: 3}
+  ThorImg: {fileID: 21300000, guid: 4d4a2357f2c56e243bd7a5ee0bdfdfa1, type: 3}
   ThorBorder: {fileID: 21300000, guid: 7dd9b54c4c658a24a87348fdd85626dc, type: 3}
   turnText: {fileID: 1996608110}
   gameOverPanel: {fileID: 15643098}
