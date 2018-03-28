@@ -10,6 +10,7 @@ enum Direction
     East = 0,
     Forward = 1,
     West = 2,
+    BAD = 3,
 };
 
 static PlayerColor FlipColor(PlayerColor color)

@@ -7,7 +7,6 @@
 #include <iostream>
 using namespace std;
 
-
 TestDriver::TestDriver()
 {
     for (int i = 0; i < 8; i++)
@@ -20,7 +19,6 @@ TestDriver::TestDriver()
         _board.push_back(temp);
     }
 }
-
 
 TestDriver::~TestDriver()
 {
@@ -39,21 +37,7 @@ void TestDriver::PlayGame()
         cout << "Generating Move..." << endl;
         timer = clock();
 
-        //Mixed
-       /* if (color == white) 
-        {
-            move = analyzer::getmove_singleton(whitepieces, blackpieces, color);
-        }
-        else if (color == black)
-        {
-            move = analyzer::getmove_leafparallel(whitepieces, blackpieces, color);
-        }*/
-
-        //Heavy vs Heavy
-        move = Analyzer::GetMove_LeafParallel(whitePieces, blackPieces, color);
-
-        //Light vs Light
-        //move = Analyzer::GetMove_Light(whitePieces, blackPieces, color);
+        move = Analyzer::GetMove(whitePieces, blackPieces, color);
         
         timer = clock() - timer;
 
@@ -103,7 +87,7 @@ void TestDriver::PlayGame()
 
 void TestDriver::PrintBoard(unsigned long long whitePieces, unsigned long long blackPieces, clock_t t) 
 {
-    system("cls");
+    
     unsigned long long iterator = 1;
     for (int row = 7; row >= 0; row--)
     {

@@ -49,15 +49,40 @@ int Analyzer::GetTotalPlayOuts()
     return _totalPlayOuts;
 }
 
-Move TranslateChildToMove(Node * parent, Node * child) 
+Move Analyzer::GetMove(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color)
 {
-    if (parent->GetNextToPlay() == PlayerColor::White)
+    Move bestMove;
+    Node * root = new Node(whitePieces, blackPieces, color);
+
+    _totalPlayOuts = 0;
+
+    clock_t startTime = clock();
+    while ((((float)(clock() - startTime))) < MAX_TIME)
     {
-        unsigned long long movedPiece = parent->GetWhitePieces() ^ child->GetWhitePieces();
+        RunPlayOut(root);
+    }
+
+    Node* children = root->GetFirstChild();
+    Node* bestChild = children;
+
+    while (children != NULL)
+    {
+        if (children->GetGames() > bestChild->GetGames())
+        {
+            bestChild = children;
+        }
+
+        children = children->GetNextSibling();
+    }
+    
+    Move move;
+    if (root->GetNextToPlay() == PlayerColor::White)
+    {
+        unsigned long long movedPiece = root->GetWhitePieces() ^ bestChild->GetWhitePieces();
         int destination = BitsMagic::BitScanForwardWithReset(movedPiece);
         int start = BitsMagic::BitScanForwardWithReset(movedPiece);
-        Move move;
-        move.xCoordinate = Masks::OrientationMasks::CurrentColumn[start];;
+        
+        move.xCoordinate = Masks::OrientationMasks::CurrentColumn[start];
         move.yCoordinate = Masks::OrientationMasks::CurrentRow[start];
         if ((Masks::WhiteMasks::EastAttack[start] & Masks::OrientationMasks::CurrentSquare[destination]) != 0)
         {
@@ -71,15 +96,15 @@ Move TranslateChildToMove(Node * parent, Node * child)
         {
             move.direction = West;
         }
-        return move;
+        
     }
     else
     {
-        unsigned long long movedPiece = parent->GetBlackPieces() ^ child->GetBlackPieces();
+        unsigned long long movedPiece = root->GetBlackPieces() ^ bestChild->GetBlackPieces();
         int start = BitsMagic::BitScanForwardWithReset(movedPiece);
         int destination = BitsMagic::BitScanForwardWithReset(movedPiece);
         Move move;
-        move.xCoordinate = Masks::OrientationMasks::CurrentColumn[start];;
+        move.xCoordinate = Masks::OrientationMasks::CurrentColumn[start];
         move.yCoordinate = Masks::OrientationMasks::CurrentRow[start];
         if ((Masks::BlackMasks::EastAttack[start] & Masks::OrientationMasks::CurrentSquare[destination]) != 0)
         {
@@ -93,162 +118,11 @@ Move TranslateChildToMove(Node * parent, Node * child)
         {
             move.direction = West;
         }
-        return move;
-    }
-}
-
-Move Analyzer::GetMove_Singleton(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color) 
-{
-    Move bestMove;
-    Node * root = new Node(whitePieces, blackPieces, color);
-    
-    _totalPlayOuts = 0;
-
-    clock_t startTime = clock();
-    while ((((float)(clock() - startTime))) < MAX_TIME)
-    {
-        RunPlayOut_Singleton(root);
+        
     }
 
-    Node* children = root->GetFirstChild();
-    Node* bestChild = children;
-
-    while (children != NULL) 
-    {
-        if (children->GetGames() > bestChild->GetGames())
-        {
-            bestChild = children;
-        }
-
-        children = children->GetNextSibling();
-    }
-    Move move = TranslateChildToMove(root, bestChild);
-    
     delete root;
     return move;
-}
-
-Move Analyzer::GetMove_LeafParallel(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color)
-{
-    Move bestMove;
-    Node * root = new Node(whitePieces, blackPieces, color);
-
-    _totalPlayOuts = 0;
-
-    clock_t startTime = clock();
-    while ((((float)(clock() - startTime))) < MAX_TIME)
-    {
-        //cout << "Start RunPlayOut" << endl;
-        RunPlayOut_Leaf_Parallel(root);
-        //cout << "End RunPlayOut" << endl;
-    }
-
-    Node* children = root->GetFirstChild();
-    Node* bestChild = children;
-
-    //cout << "Start best move selection." << endl;
-    while (children != NULL)
-    {
-        //cout << "My depth was " << children->GetDepth() << " and my winrate was " << children->GetWins() << "/" << children->GetGames() << endl;
-        if (children->GetGames() > bestChild->GetGames())
-        {
-            bestChild = children;
-        }
-
-        children = children->GetNextSibling();
-    }
-    //cout << "End best move selection." << endl;
-
-    //cout << "Start TranslateChildToMove" << endl;
-    Move move = TranslateChildToMove(root, bestChild);
-    //cout << "End TranslateChildToMove" << endl;
-
-    //root->Print();
-    delete root;
-    return move;
-}
-
-Node * GetSelectableChildWithBestConfidence(Node * currentNode) 
-{
-    if (currentNode->GetFirstChild() == NULL) 
-    {
-        return currentNode;
-    }
-
-    Node * children = currentNode->GetFirstChild();
-
-    int bestConfidence = INT_MIN;
-    Node * bestChild = NULL;
-
-    vector<Node *> bestOptions;
-
-    while (children != NULL) 
-    {
-        if (children->GetConfidence() > bestConfidence)
-        {
-            bestOptions.clear();
-            bestOptions.push_back(children);
-            bestConfidence = children->GetConfidence();
-        }
-        else if (children->GetConfidence() == bestConfidence) 
-        {
-            bestOptions.push_back(children);
-            bestConfidence = children->GetConfidence();
-        }
-        children = children->GetNextSibling();
-    }
-
-    random_device random;
-    mt19937 mt(random());
-
-    uniform_int_distribution<int> distribution(0, bestOptions.size() - 1);
-
-    return bestOptions[distribution(mt)];
-}
-
-Node * TraverseForNextMove(Node * root)
-{
-    /*if (!root->GetSelectable())
-    {
-        return NULL;
-    }*/
-
-    if (root->GetFirstChild() == NULL)
-    {
-        return root;
-    }
-
-    Node * bestCurrentChild = GetSelectableChildWithBestConfidence(root);
-
-    if (bestCurrentChild == NULL)
-    {
-        root->MarkAsNotSelectable();
-        return NULL;
-    }
-
-    else if (bestCurrentChild->GetFirstChild() == NULL) 
-    {
-        return bestCurrentChild;
-    }
-
-    bool continueLoop = true;
-    while (continueLoop) 
-    {
-        Node * temp = GetSelectableChildWithBestConfidence(bestCurrentChild);
-
-        if (temp->GetFirstChild() == NULL) 
-        {
-            bestCurrentChild = temp;
-            continueLoop = false;
-        }
-
-        else 
-        {
-            bestCurrentChild = temp;
-        }
-    }
-
-    return bestCurrentChild;
 }
 
 PlayerColor Analyzer::IsGameOver(Node * node)
@@ -275,33 +149,6 @@ PlayerColor Analyzer::IsGameOver(Node * node)
     {
         return PlayerColor::Neither;
     }
-}
-
-PlayerColor FinishPlayOut_Light(Node * initialState) 
-{
-    Node * currentBoard = new Node(initialState->GetWhitePieces(), initialState->GetBlackPieces(), initialState->GetNextToPlay());
-    Node * root = currentBoard;
-    random_device random;
-    mt19937 mt(random());
-
-    PlayerColor gameOver = Analyzer::IsGameOver(currentBoard);
-    while (gameOver == PlayerColor::Neither) 
-    {
-        int totalKids = currentBoard->GenerateChildren();
-        uniform_int_distribution<int> distribution(0, totalKids - 1);
-        int selectedChild = distribution(mt);
-        
-        currentBoard = currentBoard->GetFirstChild();
-        for (int i = 0; i < selectedChild; i++) 
-        {
-            currentBoard = currentBoard->GetNextSibling();
-        }
-
-        gameOver = Analyzer::IsGameOver(currentBoard);
-    }
-
-    delete root;
-    return FlipColor(gameOver);
 }
 
 PlayerColor Analyzer::ScoreGame(Node * node)
@@ -352,24 +199,6 @@ PlayerColor Analyzer::ScoreGame(Node * node)
             }
         }
 
-        //Breakthrough Bonus
-        //I honestly don't know if I want to do this one...
-        {
-            //int breakthroughBonus = 6;
-            //int forward = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[iterator]];
-            //int forward2 = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[forward]];
-            //int east = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::EastAttack[iterator]];
-            //int east2 = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[east]];
-            //int west = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::WestAttack[iterator]];
-            //int west2 = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[west]];
-
-            ////for each location, if the location has a black piece on it, subtract one from breakthrough bonus.
-            //if ([]) 
-            //{
-
-            //}
-        }
-
         iterator = BitsMagic::BitScanForwardWithReset(whitePieces);
     }
 
@@ -416,24 +245,6 @@ PlayerColor Analyzer::ScoreGame(Node * node)
             }
         }
 
-        //Breakthrough Bonus
-        //I honestly don't know if I want to do this one...
-        {
-            //int breakthroughBonus = 6;
-            //int forward = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[iterator]];
-            //int forward2 = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[forward]];
-            //int east = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::EastAttack[iterator]];
-            //int east2 = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[east]];
-            //int west = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::WestAttack[iterator]];
-            //int west2 = Masks::OrientationMasks::IndexOf[Masks::WhiteMasks::Forward[west]];
-
-            ////for each location, if the location has a black piece on it, subtract one from breakthrough bonus.
-            //if ([]) 
-            //{
-
-            //}
-        }
-
         iterator = BitsMagic::BitScanForwardWithReset(blackPieces);
     }
     
@@ -472,107 +283,132 @@ PlayerColor Analyzer::ScoreGame(Node * node)
     return winner;
 }
 
-PlayerColor FinishPlayOut_Heavy(Node * initialState)
-{
-    Node * currentBoard = new Node(initialState->GetWhitePieces(), initialState->GetBlackPieces(), initialState->GetNextToPlay());
-    Node * root = currentBoard;
-    random_device random;
-    mt19937 mt(random());
-
-    PlayerColor gameOver = Analyzer::IsGameOver(currentBoard);
-    int turnCounter = 0;
-    while (gameOver == PlayerColor::Neither && turnCounter < 5)
-    {
-        int totalKids = currentBoard->GenerateChildren();
-        uniform_int_distribution<int> distribution(0, totalKids - 1);
-        int selectedChild = distribution(mt);
-        
-        currentBoard = currentBoard->GetFirstChild();
-        for (int i = 0; i < selectedChild; i++)
-        {
-            currentBoard = currentBoard->GetNextSibling();
-        }
-
-        gameOver = Analyzer::IsGameOver(currentBoard);
-        turnCounter++;
-    }
-
-    if (gameOver == Neither) 
-    {
-        gameOver = Analyzer::ScoreGame(currentBoard);
-    }
-
-    delete root;
-    return FlipColor(gameOver);
-}
-
 //Now runs with leaf parallelization of factor 8.
-void Analyzer::RunPlayOut_Singleton(Node * root) 
-{
-
-    Node * bestNode;
-    bestNode = TraverseForNextMove(root);
-
-    if (bestNode == NULL) 
-    {
-        return;
-    }
-
-    PlayerColor winner;
-
-    int childrenCount = bestNode->GenerateChildren();
-    Node * firstMove;
-    if (childrenCount == 0) 
-    {
-        firstMove = bestNode;
-        winner = IsGameOver(firstMove);
-
-        _totalPlayOuts++;
-        while (firstMove != NULL)
-        {
-            if (firstMove->GetNextToPlay() == winner)
-            {
-                firstMove->AddWin();
-            }
-            else
-            {
-                firstMove->AddLoss();
-            }
-            firstMove = firstMove->GetParent();
-        }
-    }
-    else
-    {
-        firstMove = bestNode->GetFirstChild();
-
-        PlayerColor winner = FinishPlayOut_Heavy(firstMove);
-        
-
-        _totalPlayOuts++;
-
-        while (firstMove != NULL)
-        {
-            if (winner == firstMove->GetNextToPlay())
-            {
-                firstMove->AddWin();
-            }
-            else
-            {
-                firstMove->AddLoss();
-            }
-            firstMove = firstMove->GetParent();
-        }
-    }
-}
-
-//Now runs with leaf parallelization of factor 8.
-//Now terminates simulations at 4 turns deep.
+//Now terminates simulations at 5 turns deep.
 //Now scores games using 3/4 of Lorentz's algorithm.
-void Analyzer::RunPlayOut_Leaf_Parallel(Node * root)
+void Analyzer::RunPlayOut(Node * root)
 {
+    
     Node * bestNode;
-    bestNode = TraverseForNextMove(root);
+    
+    if (root->GetFirstChild() == NULL)
+    {
+        bestNode = root;
+    }
+    else 
+    {
+        Node * bestCurrentChild;
 
+        Node* currentNode = root;
+
+        if (currentNode->GetFirstChild() == NULL)
+        {
+            bestCurrentChild = currentNode;
+        }
+
+        Node * children = currentNode->GetFirstChild();
+
+        int bestConfidence = INT_MIN;
+        Node * bestChild = NULL;
+
+        vector<Node *> bestOptions;
+
+        //First While
+        while (children != NULL)
+        {
+            
+            if (children->GetConfidence() > bestConfidence)
+            {
+                bestOptions.clear();
+                bestOptions.push_back(children);
+                bestConfidence = children->GetConfidence();
+            }
+            else if (children->GetConfidence() == bestConfidence)
+            {
+                bestOptions.push_back(children);
+                bestConfidence = children->GetConfidence();
+            }
+            children = children->GetNextSibling();
+            
+        }
+
+        random_device random;
+        mt19937 mt(random());
+
+        uniform_int_distribution<int> distribution(0, bestOptions.size() - 1);
+
+        bestCurrentChild = bestOptions[distribution(mt)];
+
+        if (bestCurrentChild == NULL)
+        {
+            root->MarkAsNotSelectable();
+            bestNode = NULL;
+        }
+        else if (bestCurrentChild->GetFirstChild() == NULL)
+        {
+            bestNode = bestCurrentChild;
+        }
+        else
+        {
+            bool continueLoop = true;
+            while (continueLoop)
+            {
+                Node * temp;
+
+                if (currentNode->GetFirstChild() == NULL)
+                {
+                    temp = currentNode;
+                }
+
+                Node * children = currentNode->GetFirstChild();
+
+                int bestConfidence = INT_MIN;
+                Node * bestChild = NULL;
+
+                vector<Node *> bestOptions;
+
+                //2nd while
+                while (children != NULL)
+                {
+                    cout << "Begin 2nd While" << endl;
+                    if (children->GetConfidence() > bestConfidence)
+                    {
+                        bestOptions.clear();
+                        bestOptions.push_back(children);
+                        bestConfidence = children->GetConfidence();
+                    }
+                    else if (children->GetConfidence() == bestConfidence)
+                    {
+                        bestOptions.push_back(children);
+                        bestConfidence = children->GetConfidence();
+                    }
+                    children = children->GetNextSibling();
+                    cout << "End 2ndWhile" << endl;
+                }
+
+                random_device random;
+                mt19937 mt(random());
+
+                uniform_int_distribution<int> distribution(0, bestOptions.size() - 1);
+
+                temp = bestOptions[distribution(mt)];
+
+                if (temp->GetFirstChild() == NULL)
+                {
+                    bestCurrentChild = temp;
+                    continueLoop = false;
+                }
+
+                else
+                {
+                    bestCurrentChild = temp;
+                }
+            }
+        }
+        
+        bestNode = bestCurrentChild;
+    }
+   
     if (bestNode == NULL)
     {
         return;
@@ -613,7 +449,165 @@ void Analyzer::RunPlayOut_Leaf_Parallel(Node * root)
     #pragma omp parallel for
         for (int i = 0; i < threadCount; i++)
         {
-            colors[i] = FinishPlayOut_Heavy(firstMove);
+            Node * currentBoard = new Node(bestNode->GetWhitePieces(), bestNode->GetBlackPieces(), bestNode->GetNextToPlay());
+            Node * root = currentBoard;
+            random_device random;
+            mt19937 mt(random());
+
+            PlayerColor gameOver = Analyzer::IsGameOver(currentBoard);
+            int turnCounter = 0;
+            while (gameOver == PlayerColor::Neither && turnCounter < 5)
+            {
+                int totalKids = currentBoard->GenerateChildren();
+                vector<Node*> selectionPool;//Will have safe moves three times to make safe moves have preference in playout.
+                Node* temp = currentBoard->GetFirstChild();
+
+                Node* winningMove = NULL;
+                Node* savingMove = NULL;
+                while (temp != NULL)
+                {
+
+                    if (currentBoard->GetNextToPlay() == Black)
+                    {
+
+                        if (Analyzer::IsGameOver(temp) == White)
+                        {
+                            winningMove = temp;
+                        }
+                        else if ((currentBoard->GetBlackPieces() & Grid::Row2) != 0
+                            && (temp->GetBlackPieces() & Grid::Row2) == 0)
+                        {
+                            savingMove = temp;
+                        }
+                        else
+                        {
+                            unsigned long long movedPiece = currentBoard->GetWhitePieces() ^ temp->GetWhitePieces();
+                            int destination = BitsMagic::BitScanForwardWithReset(movedPiece);
+
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+
+                            if ((temp->GetWhitePieces() & Masks::BlackMasks::EastAttack[destination]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->GetWhitePieces() & Masks::BlackMasks::WestAttack[destination]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->GetBlackPieces() & Masks::WhiteMasks::EastAttack[destination]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->GetBlackPieces() & Masks::WhiteMasks::WestAttack[destination]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            //If destination is safe, add three times.
+                            if (protectCount >= attackCount)
+                            {
+                                selectionPool.push_back(temp);
+                                selectionPool.push_back(temp);
+                                selectionPool.push_back(temp);
+                            }
+                            //If destination is not safe, add once.
+                            else
+                            {
+                                selectionPool.push_back(temp);
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        if (Analyzer::IsGameOver(temp) == Black)
+                        {
+                            winningMove = temp;
+                        }
+                        else if ((currentBoard->GetWhitePieces() & Grid::Row7) != 0
+                            && (temp->GetWhitePieces() & Grid::Row7) == 0)
+                        {
+                            savingMove = temp;
+                        }
+                        else
+                        {
+                            unsigned long long movedPiece = currentBoard->GetBlackPieces() ^ temp->GetBlackPieces();
+                            int start = BitsMagic::BitScanForwardWithReset(movedPiece);
+                            int destination = BitsMagic::BitScanForwardWithReset(movedPiece);
+
+                            int attackCount = 0;
+                            int protectCount = 0;
+
+                            if ((temp->GetBlackPieces() & Masks::WhiteMasks::EastAttack[destination]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->GetBlackPieces() & Masks::WhiteMasks::WestAttack[destination]) != 0)
+                            {
+                                protectCount++;
+                            }
+
+                            if ((temp->GetWhitePieces() & Masks::BlackMasks::EastAttack[destination]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            if ((temp->GetWhitePieces() & Masks::BlackMasks::WestAttack[destination]) != 0)
+                            {
+                                attackCount++;
+                            }
+
+                            //If destination is safe, add three times.
+                            if (protectCount >= attackCount)
+                            {
+                                selectionPool.push_back(temp);
+                                selectionPool.push_back(temp);
+                                selectionPool.push_back(temp);
+                            }
+                            //If destination is not safe, add once.
+                            else
+                            {
+                                selectionPool.push_back(temp);
+                            }
+                        }
+                    }
+                    temp = temp->GetNextSibling();
+                }
+
+                if (winningMove != NULL)
+                {
+                    currentBoard = winningMove;
+                }
+                else if (savingMove != NULL)
+                {
+                    currentBoard = savingMove;
+                }
+                else
+                {
+                    uniform_int_distribution<int> distribution(0, totalKids - 1);
+                    int selectedChild = distribution(mt);
+
+                    currentBoard = selectionPool[selectedChild];
+                }
+
+                gameOver = Analyzer::IsGameOver(currentBoard);
+                turnCounter++;
+            }
+
+            if (gameOver == Neither)
+            {
+                gameOver = Analyzer::ScoreGame(currentBoard);
+            }
+
+            delete root;
+            colors[i] = FlipColor(gameOver);
+
         }
 
         _totalPlayOuts += threadCount;
@@ -635,5 +629,7 @@ void Analyzer::RunPlayOut_Leaf_Parallel(Node * root)
             firstMove = firstMove->GetParent();
         }
     }
+
+    
 }
 

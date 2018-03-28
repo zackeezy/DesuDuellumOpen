@@ -19,11 +19,9 @@ public:
     Analyzer();
     ~Analyzer();
 
-    static Move GetMove_LeafParallel(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
-    static Move GetMove_Singleton(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
+    static Move GetMove(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
     static int GetTotalPlayOuts();
-    static void RunPlayOut_Leaf_Parallel(Node * root);
-    static void RunPlayOut_Singleton(Node * root);
+    static void RunPlayOut(Node * root);
     static PlayerColor IsGameOver(Node * node);
     static PlayerColor ScoreGame(Node * node);
 };

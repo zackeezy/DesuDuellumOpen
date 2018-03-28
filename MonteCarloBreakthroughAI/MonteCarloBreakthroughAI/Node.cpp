@@ -1132,14 +1132,6 @@ int Node::GetDepth()
 void Node::Print() 
 {
     cout << "My depth was " << _depth << " and my winrate was " << _wins << "/" << _games << endl;
-    if (_nextSibling != NULL) 
-    {
-        _nextSibling->Print();
-    }
-    if (_firstChild != NULL)
-    {
-        _firstChild->Print();
-    }
 }
 
 Node * Node::GenerateChildren_Scored() 
