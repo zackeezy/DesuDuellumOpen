@@ -32,8 +32,8 @@ public class EmoteController : MonoBehaviour {
 
         //set the clip the emoteSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
-        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        //emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
+        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

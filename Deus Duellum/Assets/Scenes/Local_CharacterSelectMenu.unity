@@ -470,7 +470,7 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 83424944}
     - target: {fileID: 114036900399544602, guid: 006ddea639fc99644bf2ac43ad56b7d9,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -904,6 +904,11 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.x
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 114995257850611348, guid: ff06dd1c990e7c349b53aea58db947eb,
+        type: 2}
+      propertyPath: SelectedPanel
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ff06dd1c990e7c349b53aea58db947eb, type: 2}
