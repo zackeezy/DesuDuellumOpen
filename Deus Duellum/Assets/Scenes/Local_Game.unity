@@ -11030,6 +11030,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1469837864640284, guid: ab86b33c05d6db34996c64b6823250ef, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab86b33c05d6db34996c64b6823250ef, type: 2}
   m_IsPrefabParent: 0
@@ -20124,7 +20128,7 @@ MonoBehaviour:
   selectedToken: {fileID: 0}
   selectionX: -1
   selectionY: -1
-  muted: 0
+  muted: 1
   boardTokens: []
   captureSound: {fileID: 8300000, guid: 6ab3670f313b0534c94fc3a008bb9cc9, type: 3}
   moveSound: {fileID: 8300000, guid: b8264e118309666478c32221a862e3b0, type: 3}
