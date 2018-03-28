@@ -32,8 +32,8 @@ public class EmoteController : MonoBehaviour {
 
         //set the clip the emoteSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
-        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
+        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        //emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -91,6 +91,8 @@ public class EmoteController : MonoBehaviour {
     {
         //deactivate emote buttons
         emoteButtons.SetActive(false);
+        ToggleOpen panelManager = GameObject.FindGameObjectWithTag("panelManager").GetComponent<ToggleOpen>();
+        panelManager.SelectedPanel = null;
 
         //get the emote text
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
@@ -131,7 +133,7 @@ public class EmoteController : MonoBehaviour {
             emoteText.text = TauntEmote;
             emoteClip = TauntVoices[character];
         }
-        //voiceLineLength = emoteClip.length;
+        voiceLineLength = emoteClip.length;
 
         //make sure it will be able to play
         if (emoteSource)

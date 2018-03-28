@@ -18,6 +18,8 @@ TagManager:
   - options
   - waitPanel
   - boardManager
+  - Background
+  - panelManager
   layers:
   - Default
   - TransparentFX

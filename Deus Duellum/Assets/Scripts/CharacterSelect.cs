@@ -72,14 +72,14 @@ public class CharacterSelect : MonoBehaviour {
                 characterSelectText.text = "Player Two: Select a character";
                 //show a cancel button? to go back to player1?
                 player = 2;
+
+                Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
+                backButton.interactable = true;
             }
             else
             {
                 charactersSelected = true;
             }
-
-            Button backButton = transform.GetChild(0).GetChild(4).GetComponent<Button>();
-            backButton.interactable = true;
         }
     }
 
@@ -174,7 +174,7 @@ public class CharacterSelect : MonoBehaviour {
 
     public void SetCharacterHighlight(int character, bool player1)
     {
-        Button btn = this.transform.GetChild(0).GetChild(character + 1).gameObject.GetComponent<Button>();
+        Button btn = this.transform.GetChild(0).GetChild(character + 2).gameObject.GetComponent<Button>();
         GameObject highlight;
         if (player1)
         {
@@ -225,7 +225,7 @@ public class CharacterSelect : MonoBehaviour {
             characterSelectText.text = "Player One: Select a Character";
             player = 1;
 
-            Button backButton = transform.GetChild(0).GetChild(4).GetComponent<Button>();
+            Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
             backButton.interactable = false;
         }
         charactersSelected = false;

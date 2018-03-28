@@ -443,7 +443,7 @@ public class BoardManager : MonoBehaviour {
                 emote2.interactable = false;
             }
             //play a sound for the character
-            PlayTurnChangeSoundEffect(whiteCharacter);
+            //PlayTurnChangeSoundEffect(whiteCharacter);
         }
         else if(isBlackTurn)
         {
@@ -480,7 +480,7 @@ public class BoardManager : MonoBehaviour {
                 emote2.interactable = true;
             }
             //play a sound for the character
-            PlayTurnChangeSoundEffect(blackCharacter);
+            //PlayTurnChangeSoundEffect(blackCharacter);
         }
     }
 
@@ -632,26 +632,26 @@ public class BoardManager : MonoBehaviour {
         float borderWidth = 0f;
         float borderHeight = 0f;
 
-        bool isplayer1=false;
+        bool isplayer1 = false;
 
         if (player == 1)
         {
-            playerImg = player1img.GetComponent<Image>();
-            playerBorder = player1img.transform.GetChild(0).GetComponent<Image>();
+            playerImg = player1img.transform.GetChild(1).GetComponent<Image>();
+            playerBorder = player1img.transform.GetChild(2).GetComponent<Image>();
             isplayer1 = true;
         }
         else if (player == 2)
         {
-            playerImg = player2img.GetComponent<Image>();
-            playerBorder = player2img.transform.GetChild(0).GetComponent<Image>();
+            playerImg = player2img.transform.GetChild(1).GetComponent<Image>();
+            playerBorder = player2img.transform.GetChild(2).GetComponent<Image>();
         }
         if (character == 0)
         {
             //Debug.Log("player " + player + " is Athena");
             playerImg.sprite = AthenaImg;
             playerBorder.sprite = AthenaBorder;
-            borderWidth = 195;
-            borderHeight = 195;
+            borderWidth = 260;
+            borderHeight = 260;
 
             //set the text for the turn indicator
             if (isplayer1)
@@ -668,8 +668,8 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Ra");
             playerImg.sprite = RaImg;
             playerBorder.sprite = RaBorder;
-            borderWidth = 205;
-            borderHeight = 205;
+            borderWidth = 275;
+            borderHeight = 275;
 
             //set the text for the turn indicator
             if (isplayer1)
@@ -686,8 +686,8 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Thor");
             playerImg.sprite = ThorImg;
             playerBorder.sprite = ThorBorder;
-            borderWidth = 175;
-            borderHeight = 175;
+            borderWidth = 230;
+            borderHeight = 230;
 
             //set the text for the turn indicator
             if (isplayer1)
@@ -713,16 +713,24 @@ public class BoardManager : MonoBehaviour {
         playerBorder.rectTransform.sizeDelta = new Vector2(borderWidth, borderHeight);
     }
 
-    //choose which notations to use
+    //choose which notations and background to use
     private void SetNotations(bool first)
     {
+        GameObject backgrounds = GameObject.FindGameObjectWithTag("Background");
+
         if (first)
         {
             notationsToggle.onValueChanged.AddListener(toggleNotations);
+            //use normal background
+            backgrounds.transform.GetChild(0).gameObject.SetActive(true);
+            backgrounds.transform.GetChild(1).gameObject.SetActive(false);
         }
         else
         {
             notationsToggle.onValueChanged.AddListener(toggleAltNotations);
+            //use upside-down background
+            backgrounds.transform.GetChild(0).gameObject.SetActive(false);
+            backgrounds.transform.GetChild(1).gameObject.SetActive(true);
         }
     }
 
