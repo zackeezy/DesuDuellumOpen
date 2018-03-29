@@ -106,7 +106,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         switch (recvNetworkEvent)
         {
             case NetworkEventType.ConnectEvent:
-                //TODO: add code for starting game
+                //code for starting game
                 if (!connected)
                 {
                     connectionIdClient = recvConnectionId;
@@ -128,6 +128,7 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
                 break;
             case NetworkEventType.DisconnectEvent:
                 csharpconnected = false;
+                //TODO: add something to tell UI got disconnected from
                 break;
         }
         if (!csharpconnected)
@@ -174,5 +175,10 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         Connect();
 
         responseThread.Abort();
+    }
+
+    public void Disconnect()
+    {
+        NetworkTransport.Disconnect(hostId, connectionId, out error);
     }
 }

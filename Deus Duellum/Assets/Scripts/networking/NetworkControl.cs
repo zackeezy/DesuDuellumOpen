@@ -121,11 +121,12 @@ public class NetworkControl : MonoBehaviour {
                 }
                 break;
             case "emote":
-
+                //call "OtherEmote" on player2's emotecontroller
+                EmoteController player2Emotes = GameObject.FindGameObjectWithTag("Player2").GetComponent<EmoteController>();
+                int emote = int.Parse(messages[1]);
+                player2Emotes.OtherEmote(emote);
                 break;
-
         }
-
     }
 
     public void InitializeAs(bool isClient, string name)
@@ -150,8 +151,8 @@ public class NetworkControl : MonoBehaviour {
 
     public void ServerConnected()
     {
-        serverstuff.transform.GetChild(0).GetComponent<Text>().text = "connection found";
-        serverstuff.transform.GetChild(1).GetComponent<Button>().interactable = true;
+        serverstuff.transform.GetChild(1).GetComponent<Text>().text = "connection found";
+        serverstuff.transform.GetChild(2).GetComponent<Button>().interactable = true;
     }
 
     public void SendMove(int x, int y, Direction direction)
@@ -179,5 +180,17 @@ public class NetworkControl : MonoBehaviour {
     public void SetCore(GameCore core)
     {
         _core = core;
+    }
+
+    public void Disconnect()
+    {
+        if (isClient)
+        {
+            client.Disconnect();
+        }
+        else
+        {
+            server.Disconnect();
+        }
     }
 }

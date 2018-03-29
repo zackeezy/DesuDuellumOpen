@@ -55,6 +55,7 @@ public class BoardManager : MonoBehaviour {
     private Toggle notationsToggle;
 
     private GameCore _core;
+    NetworkControl netController;
 
     private float floatTokenYpos = 1.8f;
     private float flatTokenYpos = 1.084f;
@@ -123,6 +124,9 @@ public class BoardManager : MonoBehaviour {
         {
             AnimateAvatars(1);
         }
+
+        netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+
 
         //set the clip the effectSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
@@ -490,7 +494,7 @@ public class BoardManager : MonoBehaviour {
         _core.HasWon(y);
 
         //change the winnertext
-        GameObject winTextobj = gameOverPanel.transform.GetChild(2).gameObject;
+        GameObject winTextobj = gameOverPanel.transform.GetChild(3).gameObject;
         Text winText = winTextobj.GetComponent<Text>();
 
         if (_core.whiteWon)
@@ -830,7 +834,6 @@ public class BoardManager : MonoBehaviour {
 
     private void SetNetworkStuff()
     {
-        NetworkControl netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
         netController.SetCore(_core);
 
         if (netController.isClient)
@@ -864,6 +867,11 @@ public class BoardManager : MonoBehaviour {
         {
             //SHOULD NOT GET HERE
         }
+    }
+
+    public void Disconnect()
+    {
+        netController.Disconnect();
     }
 }
 

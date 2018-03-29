@@ -11,9 +11,12 @@ public class MuteOther : MonoBehaviour {
     private bool muted = false;
     private Image buttonImg;
 
+    public EmoteController player2Emotes;
+
 	// Use this for initialization
 	void Start () {
         buttonImg = transform.GetComponent<Image>();
+
 	}
 	
 	// Update is called once per frame
@@ -28,13 +31,13 @@ public class MuteOther : MonoBehaviour {
         {
             buttonImg.sprite = mutedImg;
             //tell the boardmanager to stop accepting emotes from AI or net
-
+            player2Emotes.emotesMuted = true;
         }
         else
         {
             buttonImg.sprite = unMutedImg;
             //tell the boardmanager to start accepting emotes from AI or net
-
+            player2Emotes.emotesMuted = false;
         }
     }
 }

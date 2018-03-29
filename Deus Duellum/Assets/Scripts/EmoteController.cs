@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EmoteController : MonoBehaviour {
 
@@ -21,6 +22,10 @@ public class EmoteController : MonoBehaviour {
     private Text emoteText;
 
     AudioSource emoteSource;
+
+    NetworkControl netController;
+
+    public bool emotesMuted = false;
 
     // Use this for initialization
     void Start () {
@@ -99,16 +104,28 @@ public class EmoteController : MonoBehaviour {
 
         PlayEmoteAudio(emote);
         StartCoroutine(AnimateLocalEmotePanel());
+
+        int gameIndex = SceneManager.GetActiveScene().buildIndex;
+        if (gameIndex == 5)
+        {
+            //send the emote over the network
+            netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+            string tosend = "emote|" + emote;
+            netController.Send(tosend);
+        }
     }
 
-    public void OtherEmote(int character)
+    public void OtherEmote(int emote)
     {
-        //get the emote panel
-        emotePanel = transform.GetChild(3).gameObject;
-        emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
+        if (!emotesMuted)
+        {
+            //get the emote panel
+            emotePanel = transform.GetChild(3).gameObject;
+            emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
-        PlayEmoteAudio(character);
-        StartCoroutine(AnimateLocalEmotePanel());
+            PlayEmoteAudio(emote);
+            StartCoroutine(AnimateLocalEmotePanel());
+        }
     }
 
     public void PlayEmoteAudio(int emote)

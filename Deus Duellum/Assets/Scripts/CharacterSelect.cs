@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Threading;
+using System;
 
 public class CharacterSelect : MonoBehaviour {
 
@@ -25,6 +27,10 @@ public class CharacterSelect : MonoBehaviour {
     private bool canPlay = false;
     private bool opponentChose = false;
     private GameObject waitPanel;
+    private GameObject timeoutPanel;
+    private NetworkControl netController;
+
+    private Thread characterWaitThread;
 
 	// Use this for initialization
 	void Start () {
@@ -32,10 +38,21 @@ public class CharacterSelect : MonoBehaviour {
         CharacterHighlights = new List<GameObject>();
         difficultyHighlight = null;
         turnHighlight = null;
+
+        netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+
         waitPanel = GameObject.FindGameObjectWithTag("waitPanel");
         if(waitPanel){
             waitPanel.SetActive(false);
         }
+
+        timeoutPanel = GameObject.FindGameObjectWithTag("timeoutPanel");
+        if (timeoutPanel)
+        {
+            timeoutPanel.SetActive(false);
+        }
+
+        //characterWaitThread = new Thread(WaitForNetworkCharacter);
     }
 
     // Update is called once per frame
@@ -235,26 +252,37 @@ public class CharacterSelect : MonoBehaviour {
     {
         opponentChose = true;
         PlayerPrefs.SetInt("Player2Character", character);
-        MoveToNetworkGame();
+        CheckNetworkSelections();
     }
 
     public void MoveToNetworkGame()
     {
         //send the character
         string tosend = "character|" + player1character;
-        NetworkControl netcontroller = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
-        netcontroller.Send(tosend);
+        netController.Send(tosend);
 
+        CheckNetworkSelections();
+    }
+
+    private void CheckNetworkSelections()
+    {
         if (canPlay && opponentChose)
         {
             //move to next scene
             LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
             scenechanger.LoadByIndex(5);
+            CancelInvoke();
         }
         else if (!opponentChose)
-        { 
+        {
             //popup
             waitPanel.SetActive(true);
+            Invoke("Disconnect", 60);
         }
+    }
+
+    public void Disconnect()
+    {
+        netController.Disconnect();
     }
 }
