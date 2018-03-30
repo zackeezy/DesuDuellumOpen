@@ -188,11 +188,11 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-44618e96a0252e5908dc45e63153e4a2 Assembly-CSharp.dll:.EmoteController
+bea11f7778ba08bebb5755aad2173bf0 Assembly-CSharp.dll:.EmoteController
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f49f4863272689244b774579270d34da Assembly-CSharp.dll:.TestingIssue2
 5fae01465e9ee6da395623c44346c0b4 Assembly-CSharp.dll:.BoardManager
-8aa175bd6d4c5db2d2a1dc55dc3211b9 Assembly-CSharp.dll:.MuteOther
+dbb09a3b70f825f13ce7a78b6151b335 Assembly-CSharp.dll:.MuteOther
 8c247cb09a6459153e96b5332168046d Assembly-CSharp.dll:.ButtonDescription
 872e272b3af04602a12204b9278180d6 Assembly-CSharp.dll:.LoadSceneOnClick
 1ea0c28c827862689dcc0bc0416f80c7 Assembly-CSharp.dll:.PathSplines

@@ -51,8 +51,6 @@ public class CharacterSelect : MonoBehaviour {
         {
             timeoutPanel.SetActive(false);
         }
-
-        //characterWaitThread = new Thread(WaitForNetworkCharacter);
     }
 
     // Update is called once per frame
