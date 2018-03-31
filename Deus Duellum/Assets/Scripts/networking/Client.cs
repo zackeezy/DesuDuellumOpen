@@ -234,4 +234,9 @@ public class Client : MonoBehaviour {
         serverList.CopyTo(list);
         return list;
     }
+
+    public bool IsConnected()
+    {
+        return connected;
+    }
 }

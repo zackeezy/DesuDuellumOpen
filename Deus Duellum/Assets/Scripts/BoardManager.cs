@@ -112,6 +112,7 @@ public class BoardManager : MonoBehaviour {
 
         if (whitePlayer == PlayerType.Network || blackPlayer == PlayerType.Network)
         {
+            netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
             SetNetworkStuff();
         }
 
@@ -124,8 +125,6 @@ public class BoardManager : MonoBehaviour {
         {
             AnimateAvatars(1);
         }
-
-        netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
 
 
         //set the clip the effectSource uses
@@ -251,7 +250,7 @@ public class BoardManager : MonoBehaviour {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
 
-        if (whiteWon || blackWon || gameMode != PlayerType.Local)
+        if (whiteWon || blackWon || gameMode != PlayerType.Local || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -324,7 +323,7 @@ public class BoardManager : MonoBehaviour {
             MoveToken(x, y, xPos, zPos);
 
             //Send move over network if it's a network game
-            if (gameMode == PlayerType.Network)
+            if (gameMode == PlayerType.Network || blackPlayer == PlayerType.Network || whitePlayer == PlayerType.Network)
             {
                 _core.SendNetworkMove(inallcapsx, inallcapsy, sendDirection);
             }
@@ -872,6 +871,12 @@ public class BoardManager : MonoBehaviour {
     public void Disconnect()
     {
         netController.Disconnect();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(netController && netController.IsConnected())
+            Disconnect();
     }
 }
 

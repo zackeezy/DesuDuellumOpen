@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,13 +17,20 @@ public class ShowServers : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        PlayerInfo[] servers = netcontroller.GetServerListFromClient();
-
-        serverlist.text = "";
-
-        foreach(PlayerInfo info in servers)
+        try
         {
-            serverlist.text += info.Name + "\n";
+            PlayerInfo[] servers = netcontroller.GetServerListFromClient();
+
+            serverlist.text = "";
+
+            foreach (PlayerInfo info in servers)
+            {
+                serverlist.text += info.Name + "\n";
+            }
+        }
+        catch(Exception e)
+        {
+            Debug.Log(e.Message);
         }
 	}
 }

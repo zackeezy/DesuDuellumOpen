@@ -181,4 +181,9 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
     {
         NetworkTransport.Disconnect(hostId, connectionId, out error);
     }
+
+    public bool IsConnected()
+    {
+        return connected;
+    }
 }

@@ -193,4 +193,16 @@ public class NetworkControl : MonoBehaviour {
             server.Disconnect();
         }
     }
+
+    public bool IsConnected()
+    {
+        if (isClient)
+        {
+            return client.IsConnected();
+        }
+        else
+        {
+            return server.IsConnected();
+        }
+    }
 }

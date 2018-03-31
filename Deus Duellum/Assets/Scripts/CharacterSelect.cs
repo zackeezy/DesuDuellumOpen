@@ -39,7 +39,11 @@ public class CharacterSelect : MonoBehaviour {
         difficultyHighlight = null;
         turnHighlight = null;
 
-        netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+        GameObject net = GameObject.FindGameObjectWithTag("network");
+        if (net)
+        {
+            netController = net.GetComponent<NetworkControl>();
+        }
 
         waitPanel = GameObject.FindGameObjectWithTag("waitPanel");
         if(waitPanel){

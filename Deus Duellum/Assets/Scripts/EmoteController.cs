@@ -72,8 +72,8 @@ public class EmoteController : MonoBehaviour {
         {
             //athena's emotes
             HelloEmote = "Yamas! Good health to all.";
-            WowEmote = "Even the goddess of strategy \ncouldn't see that coming.";
-            TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know";
+            WowEmote = "Even the goddess of strategy \ncouldn't see that one coming.";
+            TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know...";
         }
         else if (character == 1)
         {
