@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts;
 using System.Threading;
+using UnityEngine.EventSystems;
 
 public class BoardManager : MonoBehaviour {
 
@@ -148,7 +149,7 @@ public class BoardManager : MonoBehaviour {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
 
-        if (whiteWon || blackWon || gameMode != PlayerType.Local)
+        if (whiteWon || blackWon || gameMode != PlayerType.Local|| EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -241,7 +242,7 @@ public class BoardManager : MonoBehaviour {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
 
-        if (whiteWon || blackWon || gameMode != PlayerType.Local)
+        if (whiteWon || blackWon || gameMode != PlayerType.Local || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
