@@ -184,6 +184,8 @@ public class BoardManager : MonoBehaviour {
             floatpos.z = selectedToken.transform.position.z;
             LeanTween.move(selectedToken.gameObject, floatpos, .25f);
 
+            //BoardHighlights.Instance.HighlightPiece(x, y,selected);
+            BoardHighlights.Instance.HighlightTile(x, y);
             //Check East
             if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
             {

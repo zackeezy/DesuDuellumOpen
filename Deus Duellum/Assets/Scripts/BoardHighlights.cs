@@ -30,6 +30,23 @@ public class BoardHighlights : MonoBehaviour {
             }
         }
     }
+    //still need the tag name for pieces...
+
+    //public void HighlightPiece(int x, int y,Token selected)
+    //{
+    //    //get the tile at that spot, activate the highlight gameobject
+    //    GameObject[] pieces = GameObject.FindGameObjectsWithTag("WhitePieces");
+    //    foreach (GameObject p in pieces)
+    //    {
+    //        BoardPiece piece = p.GetComponent<BoardPiece>();
+    //        if (piece.xCoordinate == x && piece.yCoordinate == y)
+    //        {
+    //            GameObject highlight = piece.transform.GetChild(0).gameObject;
+    //            highlight.SetActive(true);
+    //            highlights.Add(highlight);
+    //        }
+    //    }
+    //}
 
     public void HideHighlights()
     {
