@@ -5,8 +5,6 @@ using System.Text;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
-
-
 namespace Assets.Scripts
 {
     public enum Direction
@@ -28,7 +26,15 @@ namespace Assets.Scripts
         }
         public bool whiteWon = false;
         public bool blackWon = false;
+        public int blackPiecesTaken = 0;
+        public int whitePiecesTaken = 0;
         public GameObject[,] Board;
+
+        //Network Move data
+        bool netMoveReceivedButNotRead = false;
+        int networkX;
+        int networkY;
+        Direction networkDirection;
 
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
         {
@@ -143,7 +149,7 @@ namespace Assets.Scripts
                 }
                 else if(WhitePlayer == PlayerType.Network)
                 {
-                    GetNetworkMove(ref x, ref y, ref direction);
+                    while(!GetNetworkMove(ref x, ref y, ref direction)) { }
                 }
                 else
                 {
@@ -158,7 +164,7 @@ namespace Assets.Scripts
                 }
                 else if (BlackPlayer == PlayerType.Network)
                 {
-                    GetNetworkMove(ref x, ref y, ref direction);
+                    while(!GetNetworkMove(ref x, ref y, ref direction)) { }
                 }
                 else
                 {
@@ -189,9 +195,21 @@ namespace Assets.Scripts
         [DllImport("DeusAI", CallingConvention = CallingConvention.StdCall)]
         public static extern void InitializeAI();
 
-        private void GetNetworkMove(ref int x, ref int y, ref Direction direction)
+        public bool GetNetworkMove(ref int x, ref int y, ref Direction direction)
         {
-            throw new NotImplementedException("We Dont Have Networking Yet!!!!!!1!?;)");
+            bool moveReceived = false;
+
+            if (netMoveReceivedButNotRead)
+            {
+                x = networkX;
+                y = networkY;
+                direction = networkDirection;
+
+                netMoveReceivedButNotRead = false;
+                moveReceived = true;
+            }
+
+            return moveReceived;
         }
 
         public bool IsMoveAllowed(int x, int y, Direction direction)
@@ -267,6 +285,7 @@ namespace Assets.Scripts
                     if(Board[x, y + 1] != null)
                     {
                         capturedPiece = Board[x, y + 1];
+                        blackPiecesTaken++;
                     }
                     Board[x, y + 1] = temp;
                 }
@@ -275,6 +294,7 @@ namespace Assets.Scripts
                     if (Board[x + 1, y + 1] != null)
                     {
                         capturedPiece = Board[x + 1, y + 1];
+                        blackPiecesTaken++;
                     }
                     Board[x + 1, y + 1] = temp;
                 }
@@ -283,6 +303,7 @@ namespace Assets.Scripts
                     if (Board[x - 1, y + 1] != null)
                     {
                         capturedPiece = Board[x - 1, y + 1];
+                        blackPiecesTaken++;
                     }
                     Board[x - 1, y + 1] = temp;
                 }
@@ -298,6 +319,7 @@ namespace Assets.Scripts
                     if (Board[x, y - 1] != null)
                     {
                         capturedPiece = Board[x, y - 1];
+                        whitePiecesTaken++;
                     }
                     Board[x, y - 1] = temp;
                 }
@@ -306,6 +328,7 @@ namespace Assets.Scripts
                     if (Board[x + 1, y - 1] != null)
                     {
                         capturedPiece = Board[x + 1, y - 1];
+                        whitePiecesTaken++;
                     }
                     Board[x + 1, y - 1] = temp;
                 }
@@ -314,6 +337,7 @@ namespace Assets.Scripts
                     if (Board[x - 1, y - 1] != null)
                     {
                         capturedPiece = Board[x - 1, y - 1];
+                        whitePiecesTaken++;
                     }
                     Board[x - 1, y - 1] = temp;
                 }
@@ -332,16 +356,37 @@ namespace Assets.Scripts
         public bool HasWon(int y)
         {
             //if it is white's turn and y is equal to 7 than white has won
-            if (IsBlackTurn && y == 7)
+            if (IsBlackTurn && y == 7 || blackPiecesTaken==16)
             {
                 whiteWon = true;
             }
             //if it is black's turn and y is equal to 0 than black has won
-            else if (IsWhiteTurn && y == 0)
+            else if (IsWhiteTurn && y == 0 || whitePiecesTaken==16)
             {
                 blackWon = !whiteWon;
             }
             return whiteWon;
+        }
+
+        public void MakeNetworkMove(int x, int y, Direction direction)
+        {
+            //GameObject capturedPiece = MakeMove(x, y, direction);
+
+            networkX = x;
+
+            networkY = y;
+
+            networkDirection = direction;
+
+            netMoveReceivedButNotRead = true;
+
+            //return capturedPiece;
+        }
+
+        public void SendNetworkMove(int x, int y, Direction direction)
+        {
+            NetworkControl networkControl = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+            networkControl.SendMove(x, y, direction);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EmoteController : MonoBehaviour {
 
@@ -20,13 +21,24 @@ public class EmoteController : MonoBehaviour {
     private GameObject emotePanel;
     private Text emoteText;
 
+    AudioSource emoteSource;
+
+    NetworkControl netController;
+
+    public bool emotesMuted = false;
+
     // Use this for initialization
     void Start () {
         //temporary
-        voiceLineLength = 2;
+        voiceLineLength = 3;
 
         emoteButtons = transform.GetChild(4).gameObject;
         emotePanel = transform.GetChild(5).gameObject;
+
+        //set the clip the emoteSource uses
+        //WILL NOT WORK IF DO NOT START AT MAIN MENU
+        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,85 +63,103 @@ public class EmoteController : MonoBehaviour {
         emoteButtons.SetActive(false);  
     }
 
-    public void SetCharacter(int character)
+    public void SetCharacter(int givenCharacter)
     {
         //function is called in BoardManager's setPrefs()
+
+        character = givenCharacter;
         if (character == 0)
         {
             //athena's emotes
-            HelloEmote = "Athena's Hello";
-            WowEmote = "Athena's Wow";
-            TauntEmote = "Athena's Taunt";
+            HelloEmote = "Yamas! Good health to all.";
+            WowEmote = "Even the goddess of strategy \ncouldn't see that one coming.";
+            TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know...";
         }
         else if (character == 1)
         {
             //ra's emotes
-            HelloEmote = "Ra's Hello";
-            WowEmote = "Ra's Wow";
-            TauntEmote = "Ra's Taunt";
+            HelloEmote = "Good morrow from the Sun.";
+            WowEmote = "You shine brighter than the sun!";
+            TauntEmote = "Even Anubis couldn't tip \nthe scales in your favor.";
         }
         else if (character == 2)
         {
             //thor's emotes
-            HelloEmote = "Thor's Hello";
-            WowEmote = "Thor's Wow";
-            TauntEmote = "Thor's Taunt";
+            HelloEmote = "Good health, my friend.";
+            WowEmote = "By Odin's beard!";
+            //TauntEmote = "You can't even spell Meal-near!";
+            TauntEmote = "You can't even spell Mjolnir!";
         }
     }
 
-    public void EmoteClicked(int character)
+    public void EmoteClicked(int emote)
     {
         //deactivate emote buttons
         emoteButtons.SetActive(false);
+        ToggleOpen panelManager = GameObject.FindGameObjectWithTag("panelManager").GetComponent<ToggleOpen>();
+        panelManager.SelectedPanel = null;
 
         //get the emote text
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
-        PlayEmoteAudio(character);
+        PlayEmoteAudio(emote);
         StartCoroutine(AnimateLocalEmotePanel());
+
+        int gameIndex = SceneManager.GetActiveScene().buildIndex;
+        if (gameIndex == 5)
+        {
+            //send the emote over the network
+            netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+            string tosend = "emote|" + emote;
+            netController.Send(tosend);
+        }
     }
 
-    public void OtherEmote(int character)
+    public void OtherEmote(int emote)
     {
-        //get the emote panel
-        emotePanel = transform.GetChild(3).gameObject;
-        emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
+        if (!emotesMuted)
+        {
+            //get the emote panel
+            emotePanel = transform.GetChild(3).gameObject;
+            emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
-        PlayEmoteAudio(character);
-        StartCoroutine(AnimateLocalEmotePanel());
+            PlayEmoteAudio(emote);
+            StartCoroutine(AnimateLocalEmotePanel());
+        }
     }
 
-    public void PlayEmoteAudio(int character)
+    public void PlayEmoteAudio(int emote)
     {
         //change the text of emote panel and which voiceline to play
         AudioClip emoteClip = new AudioClip();
-        if (character == 0)
+        if (emote == 0)
         {
             //hello
             emoteText.text = HelloEmote;
-            //emoteClip = HelloVoices[0];
+            emoteClip = HelloVoices[character];
         }
-        else if (character == 1)
+        else if (emote == 1)
         {
             //wow
             emoteText.text = WowEmote;
-            //emoteClip = WowVoices[1];
+            emoteClip = WowVoices[character];
         }
-        else if (character == 2)
+        else if (emote == 2)
         {
             //taunt
             emoteText.text = TauntEmote;
-            //emoteClip = TauntVoices[2];
+            emoteClip = TauntVoices[character];
         }
-        //voiceLineLength = emoteClip.length;
+        voiceLineLength = emoteClip.length;
 
-        ////set the clip the emoteSource uses
-        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        //AudioSource emoteSource = Audio.GetComponent<MusicInfo>().emotesSource.GetComponent<AudioSource>();
-        //emoteSource.clip = emoteClip;
-        ////play the clip
-        //emoteSource.Play();
-        ////maybe also play an emote sound?
+        //make sure it will be able to play
+        if (emoteSource)
+        {
+            emoteSource.clip = emoteClip;
+            //play the clip
+            emoteSource.Play();
+            //maybe also play an emote sound?
+        }
     }
 
     IEnumerator AnimateLocalEmotePanel()
