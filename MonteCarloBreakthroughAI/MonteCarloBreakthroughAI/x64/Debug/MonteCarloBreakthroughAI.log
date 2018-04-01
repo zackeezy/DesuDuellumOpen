@@ -1,0 +1,5 @@
+﻿  dllmain.cpp
+c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\dllmain.cpp(4): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\dllmain.cpp(4): error C2146: syntax error: missing ';' before identifier 'APIENTRY'
+c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\dllmain.cpp(8): error C2143: syntax error: missing ';' before '{'
+c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\dllmain.cpp(8): error C2447: '{': missing function header (old-style formal list?)

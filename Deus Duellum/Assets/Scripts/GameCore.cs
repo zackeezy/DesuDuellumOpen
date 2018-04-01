@@ -135,8 +135,6 @@ namespace Assets.Scripts
 
         public void GetMove(ref int x, ref int y, ref Direction direction)
         {
-            
-
             if (IsWhiteTurn)
             {
                 if (WhitePlayer == PlayerType.AI)
@@ -182,13 +180,13 @@ namespace Assets.Scripts
             direction = (Direction)dir;
         }
 
-        [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("DeusAI", CallingConvention = CallingConvention.StdCall)]
         public static extern void GenerateMove(ref int fromX, ref int fromY, ref int direction, int color);
 
-        [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("DeusAI", CallingConvention = CallingConvention.StdCall)]
         public static extern void FillOrigin(int x, int y, int color);
 
-        [DllImport("AI_CPP", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("DeusAI", CallingConvention = CallingConvention.StdCall)]
         public static extern void InitializeAI();
 
         private void GetNetworkMove(ref int x, ref int y, ref Direction direction)

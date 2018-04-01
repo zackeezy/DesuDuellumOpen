@@ -9,7 +9,7 @@ c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\monteca
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\Masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
-Analyzer.cpp(54): warning C4101: 'bestMove': unreferenced local variable
+Analyzer.cpp(104): warning C4101: 'bestMove': unreferenced local variable
   BitsMagic.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
@@ -33,7 +33,7 @@ c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\monteca
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\Masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\Masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\Masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
-Node.cpp(1078): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+Node.cpp(1074): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
   TestDriver.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
@@ -45,6 +45,6 @@ c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\monteca
   Utils.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
   Generating code
-  All 430 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 431 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   MonteCarloBreakthroughAI.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\MonteCarloBreakthroughAI\Release\MonteCarloBreakthroughAI.exe

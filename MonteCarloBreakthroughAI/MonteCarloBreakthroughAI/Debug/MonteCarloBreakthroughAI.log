@@ -14,7 +14,7 @@ c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\monteca
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
-c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\node.cpp(1078): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\node.cpp(1074): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
   MonteCarloBreakthroughAI.cpp
   Masks.cpp
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
@@ -34,6 +34,6 @@ c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\monteca
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\bitsmagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
-c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\analyzer.cpp(54): warning C4101: 'bestMove': unreferenced local variable
+c:\users\johneaton\documents\github\deusduellum\montecarlobreakthroughai\montecarlobreakthroughai\analyzer.cpp(104): warning C4101: 'bestMove': unreferenced local variable
   Generating Code...
   MonteCarloBreakthroughAI.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\MonteCarloBreakthroughAI\Debug\MonteCarloBreakthroughAI.exe
