@@ -129,8 +129,8 @@ public class BoardManager : MonoBehaviour {
 
         //set the clip the effectSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
-        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        //effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
+        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
