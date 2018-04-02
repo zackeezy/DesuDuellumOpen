@@ -20251,7 +20251,7 @@ MonoBehaviour:
   selectionY: -1
   muted: 1
   boardTokens: []
-  captureSound: {fileID: 8300000, guid: 6ab3670f313b0534c94fc3a008bb9cc9, type: 3}
+  captureSound: {fileID: 8300000, guid: a40b96cbea26e9545905c3be9b5a255f, type: 3}
   moveSound: {fileID: 8300000, guid: b8264e118309666478c32221a862e3b0, type: 3}
   athenaTurnSound: {fileID: 8300000, guid: 822e1009e01ba3247a3774f2e28bbe04, type: 3}
   raTurnSound: {fileID: 8300000, guid: 88b1bbcfedb51bc4694d63b3b42d35c2, type: 3}
