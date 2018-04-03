@@ -152,6 +152,11 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
+    private void OnDestroy()
+    {
+        Debug.Log("the scene got destroyed");
+    }
+
     public void TokenClicked(int x, int y, Token selected)
     {
         player1emote.CloseEmoteButtons();
