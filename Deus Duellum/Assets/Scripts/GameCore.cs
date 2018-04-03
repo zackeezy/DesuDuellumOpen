@@ -180,8 +180,8 @@ namespace Assets.Scripts
             color = IsWhiteTurn ? 0 : 1;
 
             GenerateMove(ref fromX, ref fromY, ref dir, color);
-            x = fromX;
-            y = fromY;
+            x = fromX - 1;
+            y = fromY - 1;
 
             direction = (Direction)dir;
         }
