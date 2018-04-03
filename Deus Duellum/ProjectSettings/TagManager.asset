@@ -11,6 +11,16 @@ TagManager:
   - Tiles
   - Player1
   - Player2
+  - QuitPanel
+  - server
+  - client
+  - network
+  - options
+  - waitPanel
+  - boardManager
+  - Background
+  - panelManager
+  - timeoutPanel
   layers:
   - Default
   - TransparentFX

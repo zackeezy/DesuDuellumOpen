@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts;
 using System.Threading;
+using UnityEngine.EventSystems;
 
 public class BoardManager : MonoBehaviour {
 
@@ -54,6 +55,7 @@ public class BoardManager : MonoBehaviour {
     private Toggle notationsToggle;
 
     private GameCore _core;
+    NetworkControl netController;
 
     private float floatTokenYpos = 1.8f;
     private float flatTokenYpos = 1.084f;
@@ -72,6 +74,9 @@ public class BoardManager : MonoBehaviour {
     private int whiteCharacter;
     private int blackCharacter;
     private bool isPlayer1White;
+
+    private string player1;
+    private string player2;
 
     private float[] tilePositionX =
     {
@@ -100,22 +105,33 @@ public class BoardManager : MonoBehaviour {
         player2emote = player2.GetComponent<EmoteController>();
 
         setPrefs();
+
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
         _capturedPiece = null;
         _foreignMoveCompleted = false;
 
+        if (whitePlayer == PlayerType.Network || blackPlayer == PlayerType.Network)
+        {
+            netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+            SetNetworkStuff();
+        }
 
         if (whitePlayer != PlayerType.Local)
         {
             GetMove();
+            AnimateAvatars(2);
         }
-	}
+        else
+        {
+            AnimateAvatars(1);
+        }
+
 
         //set the clip the effectSource uses
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
-        //GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
-        //effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
-    
+        GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
+        effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update ()
@@ -141,7 +157,7 @@ public class BoardManager : MonoBehaviour {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
 
-        if (whiteWon || blackWon || gameMode != PlayerType.Local)
+        if (whiteWon || blackWon || gameMode != PlayerType.Local || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -234,7 +250,7 @@ public class BoardManager : MonoBehaviour {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
 
-        if (whiteWon || blackWon || gameMode != PlayerType.Local)
+        if (whiteWon || blackWon || gameMode != PlayerType.Local || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -250,6 +266,7 @@ public class BoardManager : MonoBehaviour {
     public bool AttemptMove(int x, int y, float xPos, float zPos)
     {
         bool isAllowed = false;
+        Direction sendDirection;
         if (isWhiteTurn && y == selectedToken.currentY + 1)
         {
             if (x == selectedToken.currentX - 1)
@@ -286,18 +303,30 @@ public class BoardManager : MonoBehaviour {
             if (x < selectedToken.currentX)
             {
                 _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.West);
+                sendDirection = Direction.West;
             }
             else if (x == selectedToken.currentX)
             {
                 _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.Forward);
+                sendDirection = Direction.Forward;
             }
-            else if (x > selectedToken.currentX)
+            else /*if (x > selectedToken.currentX)*/
             {
                 _capturedPiece = _core.MakeMove(selectedToken.currentX, selectedToken.currentY, Direction.East);
+                sendDirection = Direction.East;
             }
+
+            int inallcapsx = selectedToken.currentX;
+            int inallcapsy = selectedToken.currentY;
 
             //actually move the token object visually
             MoveToken(x, y, xPos, zPos);
+
+            //Send move over network if it's a network game
+            if (gameMode == PlayerType.Network || blackPlayer == PlayerType.Network || whitePlayer == PlayerType.Network)
+            {
+                _core.SendNetworkMove(inallcapsx, inallcapsy, sendDirection);
+            }
         }
         return isAllowed;
     }
@@ -326,12 +355,12 @@ public class BoardManager : MonoBehaviour {
             moveforLog += "x";
 
             //play the captured sound effect
-            //PlayCaptureSoundEffect(true);
+            PlayMovementSoundEffect(true);
         }
         else
         {
             //play the normal sound effect
-            //PlayCaptureSoundEffect(false);
+            PlayMovementSoundEffect(false);
         }
 
         moveforLog += log.CoordsToNotations(x, y);
@@ -349,12 +378,20 @@ public class BoardManager : MonoBehaviour {
 
     private void GetMove()
     {
-        //Split into AI and Network paths maybe.
-
-        _core.PrepForForeignMove();
-        ThreadStart aiRef = new ThreadStart(GetMoveHelper);
-        Thread aiThread = new Thread(aiRef);
-        aiThread.Start();
+        //Split into AI and Network paths.
+        if (gameMode == PlayerType.AI)
+        {
+            _core.PrepForForeignMove();
+            ThreadStart aiRef = new ThreadStart(GetMoveHelper);
+            Thread aiThread = new Thread(aiRef);
+            aiThread.Start();
+        }
+        else if (gameMode == PlayerType.Network)
+        {
+            ThreadStart netRef = new ThreadStart(GetMoveHelper);
+            Thread netThread = new Thread(netRef);
+            netThread.Start();
+        }
     }
 
     private void GetMoveHelper()
@@ -369,7 +406,7 @@ public class BoardManager : MonoBehaviour {
         _awaitMoveDirection = direction;
         _foreignMoveCompleted = true;
     }
-
+    
     private void ChangeTurn()
     {
         isWhiteTurn = !isWhiteTurn;
@@ -377,25 +414,24 @@ public class BoardManager : MonoBehaviour {
         {
             if (isPlayer1White)
             {
-                turnText.text = "Player One's Turn";
+                turnText.text = player1 + "'s Turn";
+                AnimateAvatars(1);
             }
             else
             {
-                turnText.text = "Player Two's Turn";
+                turnText.text = player2 + "'s Turn";
+                AnimateAvatars(2);
             }
 
             if (whitePlayer == PlayerType.AI)
             {
                 gameMode = PlayerType.AI;
                 GetMove();
-
             }
             else if (whitePlayer == PlayerType.Network)
             {
-                gameMode = PlayerType.Network;
-                //ask for an network move from the game core
-                //use the net's move received from core to show a move was made
-
+                gameMode = PlayerType.Network;              
+                GetMove();
             }
             else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
             {
@@ -416,11 +452,13 @@ public class BoardManager : MonoBehaviour {
         {
             if (!isPlayer1White)
             {
-                turnText.text = "Player One's Turn";
+                turnText.text = player1 + "'s Turn";
+                AnimateAvatars(1);
             }
             else
             {
-                turnText.text = "Player Two's Turn";
+                turnText.text = player2 + "'s Turn";
+                AnimateAvatars(2);
             }
             if (blackPlayer == PlayerType.AI)
             {
@@ -430,9 +468,7 @@ public class BoardManager : MonoBehaviour {
             else if (blackPlayer == PlayerType.Network)
             {
                 gameMode = PlayerType.Network;
-                //ask for an network move from the game core
-                //use the net's move received from core to show a move was made
-
+                GetMove();
             }
             else if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
             {
@@ -457,7 +493,7 @@ public class BoardManager : MonoBehaviour {
         _core.HasWon(y);
 
         //change the winnertext
-        GameObject winTextobj = gameOverPanel.transform.GetChild(2).gameObject;
+        GameObject winTextobj = gameOverPanel.transform.GetChild(3).gameObject;
         Text winText = winTextobj.GetComponent<Text>();
 
         if (_core.whiteWon)
@@ -511,8 +547,8 @@ public class BoardManager : MonoBehaviour {
     private void setPrefs()
     {
         //set gameMode, whiteplayer, and blackplayer variables based on input from character select screen
-        int player1character = PlayerPrefs.GetInt("Player1Character", 0);
-        int player2character = 1;
+        int player1character = PlayerPrefs.GetInt("Player1Character");
+        int player2character = PlayerPrefs.GetInt("Player2Character");
         //set the player portraits
         setCharacterImage(1, player1character);
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
@@ -520,13 +556,12 @@ public class BoardManager : MonoBehaviour {
         {
             gameMode = PlayerType.Local;
             //set the player2 character
-            player2character = PlayerPrefs.GetInt("Player2Character", 1);
+            player2character = PlayerPrefs.GetInt("Player2Character");
         }
         else if (gameIndex == 5)
         {
             gameMode = PlayerType.Network;
-            //ask for the character they are playing as
-            //player2Character =;
+            //more in another function because need the game core by then
         }
         else if (gameIndex == 6)
         {
@@ -600,55 +635,105 @@ public class BoardManager : MonoBehaviour {
         float borderWidth = 0f;
         float borderHeight = 0f;
 
-        //TODO: size the borders to actually fit
+        bool isplayer1 = false;
 
         if (player == 1)
         {
-            playerImg = player1img.GetComponent<Image>();
-            playerBorder = player1img.transform.GetChild(0).GetComponent<Image>();
+            playerImg = player1img.transform.GetChild(1).GetComponent<Image>();
+            playerBorder = player1img.transform.GetChild(2).GetComponent<Image>();
+            isplayer1 = true;
         }
         else if (player == 2)
         {
-            playerImg = player2img.GetComponent<Image>();
-            playerBorder = player2img.transform.GetChild(0).GetComponent<Image>();
+            playerImg = player2img.transform.GetChild(1).GetComponent<Image>();
+            playerBorder = player2img.transform.GetChild(2).GetComponent<Image>();
         }
         if (character == 0)
         {
             //Debug.Log("player " + player + " is Athena");
             playerImg.sprite = AthenaImg;
             playerBorder.sprite = AthenaBorder;
-            borderWidth = 130;
-            borderHeight = 130;
+            borderWidth = 260;
+            borderHeight = 260;
+
+            //set the text for the turn indicator
+            if (isplayer1)
+            {
+                player1 = "Athena";
+            }
+            else
+            {
+                player2 = "Athena";
+            }
         }
         else if (character == 1)
         {
             //Debug.Log("player " + player + " is Ra");
             playerImg.sprite = RaImg;
             playerBorder.sprite = RaBorder;
-            borderWidth = 135;
-            borderHeight = 135;
+            borderWidth = 275;
+            borderHeight = 275;
+
+            //set the text for the turn indicator
+            if (isplayer1)
+            {
+                player1 = "Ra";
+            }
+            else
+            {
+                player2 = "Ra";
+            }
         }
         else if (character == 2)
         {
             //Debug.Log("player " + player + " is Thor");
             playerImg.sprite = ThorImg;
             playerBorder.sprite = ThorBorder;
-            borderWidth = 115;
-            borderHeight = 115;
+            borderWidth = 230;
+            borderHeight = 230;
+
+            //set the text for the turn indicator
+            if (isplayer1)
+            {
+                player1 = "Thor";
+            }
+            else
+            {
+                player2 = "Thor";
+            }
         }
+
+        //set the turn indicator banner
+        turnText.text = player1 + "'s Turn";
+
+        //set the banners for each character
+        Text player1BannerText = GameObject.FindGameObjectWithTag("Player1").transform.GetChild(2).GetComponent<Text>();
+        player1BannerText.text = player1;
+
+        Text player2BannerText = GameObject.FindGameObjectWithTag("Player2").transform.GetChild(2).GetComponent<Text>();
+        player2BannerText.text = player2;
+
         playerBorder.rectTransform.sizeDelta = new Vector2(borderWidth, borderHeight);
     }
 
-    //choose which notations to use
+    //choose which notations and background to use
     private void SetNotations(bool first)
     {
+        GameObject backgrounds = GameObject.FindGameObjectWithTag("Background");
+
         if (first)
         {
             notationsToggle.onValueChanged.AddListener(toggleNotations);
+            //use normal background
+            backgrounds.transform.GetChild(0).gameObject.SetActive(true);
+            backgrounds.transform.GetChild(1).gameObject.SetActive(false);
         }
         else
         {
             notationsToggle.onValueChanged.AddListener(toggleAltNotations);
+            //use upside-down background
+            backgrounds.transform.GetChild(0).gameObject.SetActive(false);
+            backgrounds.transform.GetChild(1).gameObject.SetActive(true);
         }
     }
 
@@ -696,41 +781,102 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void PlayCaptureSoundEffect(bool captured)
+    public void PlayMovementSoundEffect(bool captured)
     {
-        if (captured)
+        //make sure it will be able to play
+        if (effectSource)
         {
-            //choose the capture sound effect
-            effectSource.clip = captureSound;
+            if (captured)
+            {
+                //choose the capture sound effect
+                effectSource.clip = captureSound;
+            }
+            else
+            {
+                //choose the regular sound effect
+                effectSource.clip = moveSound;
+            }
+            //play the clip
+            effectSource.Play();
         }
-        else
-        {
-            //choose the regular sound effect
-            effectSource.clip = moveSound;
-        }
-        //play the clip
-        effectSource.Play();
     }
 
     public void PlayTurnChangeSoundEffect(int character)
     {
-        if (character == 0)
+        //make sure it will be able to play
+        if (effectSource)
         {
-            //choose the athena turn change sound effect
-            effectSource.clip = athenaTurnSound;
+            if (character == 0)
+            {
+                //choose the athena turn change sound effect
+                effectSource.clip = athenaTurnSound;
+            }
+            else if (character == 1)
+            {
+                //choose the ra turn change sound effect
+                effectSource.clip = raTurnSound;
+            }
+            else if (character == 2)
+            {
+                //choose the thor turn change sound effect
+                effectSource.clip = thorTurnSound;
+            }
+            //play the clip
+            effectSource.Play();
         }
-        else if (character == 1)
+    }
+
+    public GameCore GetGameCore()
+    {
+        return _core;
+    }
+
+    private void SetNetworkStuff()
+    {
+        netController.SetCore(_core);
+
+        if (netController.isClient)
         {
-            //choose the ra turn change sound effect
-            effectSource.clip = raTurnSound;
+            PlayerPrefs.SetInt("player1", 1);
         }
-        else if (character == 2)
+        else
         {
-            //choose the thor turn change sound effect
-            effectSource.clip = thorTurnSound;
+            PlayerPrefs.SetInt("player1", 0);
         }
-        //play the clip
-        effectSource.Play();
+    }
+
+    private void AnimateAvatars(int player)
+    {
+        GameObject player1 = GameObject.FindWithTag("Player1");
+        GameObject player2 = GameObject.FindWithTag("Player2");
+
+        if (player == 1)
+        {
+            Vector3 oldScale = player1.transform.localScale;
+            LeanTween.scale(player1, player1.transform.localScale * 1.1f, 0.1f);
+            LeanTween.scale(player2, oldScale, 0.1f);
+        }
+        else if (player == 2)
+        {
+            Vector3 oldScale = player2.transform.localScale;
+            LeanTween.scale(player2, player2.transform.localScale * 1.1f, 0.1f);
+            LeanTween.scale(player1, oldScale, 0.1f);
+        }
+        else
+        {
+            //SHOULD NOT GET HERE
+        }
+    }
+
+    public void Disconnect()
+    {
+        netController.Disconnect();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(netController && netController.IsConnected())
+            Disconnect();
     }
 }
 
