@@ -2581,7 +2581,7 @@ Prefab:
     - target: {fileID: 114542570821755614, guid: 09eee636c6fc6164eb94de96bcc771d9,
         type: 2}
       propertyPath: m_Text
-      value: Select a Character
+      value: Thor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09eee636c6fc6164eb94de96bcc771d9, type: 2}
