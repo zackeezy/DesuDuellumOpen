@@ -1,4 +1,6 @@
 WindowsStandalone
+PlayerPath?
+C:/Users/Heather/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0403.exe
 SceneListBegin?
 Assets/Scenes/_MainMenu.unity
 Assets/Scenes/Local_CharacterSelectMenu.unity
@@ -178,9 +180,15 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 96d0fbde9fd209878a0a291f82c9bcdd UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
 1ea0c28c827862689dcc0bc0416f80c7 Assembly-CSharp.dll:DentedPixel.LTExamples.PathBezier
+9e0ef5bf862444b5dc48b5a99554ce7c UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
+67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
+67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestingMaxTweens
+9e0ef5bf862444b5dc48b5a99554ce7c UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
+67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
+67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AutoFade
 a9940f726586bb5bbf8f87212e097e6d Assembly-CSharp.dll:.VolumeConnector
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
@@ -191,7 +199,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 bea11f7778ba08bebb5755aad2173bf0 Assembly-CSharp.dll:.EmoteController
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f49f4863272689244b774579270d34da Assembly-CSharp.dll:.TestingIssue2
-5fae01465e9ee6da395623c44346c0b4 Assembly-CSharp.dll:.BoardManager
+a81a5bf9d07dc43eaa2354c723761b92 Assembly-CSharp.dll:.BoardManager
 dbb09a3b70f825f13ce7a78b6151b335 Assembly-CSharp.dll:.MuteOther
 8c247cb09a6459153e96b5332168046d Assembly-CSharp.dll:.ButtonDescription
 872e272b3af04602a12204b9278180d6 Assembly-CSharp.dll:.LoadSceneOnClick
