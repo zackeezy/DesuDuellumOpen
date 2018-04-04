@@ -168,11 +168,16 @@ public class BoardManager : MonoBehaviour {
             return;
         }
 
+        int rotationId = 0;
+
         //if the game is not over and same team
         if (!whiteWon && !blackWon && selected.isWhite == isWhiteTurn)
         {
             if (selectedToken != null)
             {
+                LeanTween.cancelAll();
+                LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 0, 0), .01f);
+
                 BoardHighlights.Instance.HideHighlights();
                 Vector3 flatpos;
                 flatpos.x = selectedToken.transform.position.x;
@@ -185,26 +190,28 @@ public class BoardManager : MonoBehaviour {
                 if (selectedToken.currentX == selected.currentX && selectedToken.currentY == selected.currentY)
                 {
                     sameToken = true;
+                    selectedToken = null;
                 }
             }
-
-            //Debug.Log("selected: " + x + ", " + y);
-            //select that token
-            selectionX = x;
-            selectionY = y;
-            selectedToken = selected;
 
             //make the token start floating a little
             //unless it was the previously selected token
             if (!sameToken)
             {
+                //Debug.Log("selected: " + x + ", " + y);
+                //select that token
+                selectionX = x;
+                selectionY = y;
+                selectedToken = selected;
+
                 Vector3 floatpos;
                 floatpos.x = selectedToken.transform.position.x;
                 floatpos.y = floatTokenYpos;
                 floatpos.z = selectedToken.transform.position.z;
                 LeanTween.move(selectedToken.gameObject, floatpos, .25f);
+
                 //make it spin
-                
+                rotationId = LeanTween.rotateAround(selectedToken.gameObject, Vector3.up, 360f, 3).setLoopClamp().id;
 
                 //Check East
                 if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
@@ -354,8 +361,10 @@ public class BoardManager : MonoBehaviour {
         newPosition.y = flatTokenYpos;
         newPosition.z = tileZPos;
 
+        LeanTween.cancelAll();
+        LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 0, 0), .01f);
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
-
+        
         string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
 
         selectedToken.SetBoardPosition (x, y);
