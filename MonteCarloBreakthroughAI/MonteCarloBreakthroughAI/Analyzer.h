@@ -3,6 +3,7 @@
 #include "Node.h"
 #include <random>
 #include <vector>
+#include <vld.h>
 
 using namespace std;
 static class Analyzer

@@ -380,6 +380,7 @@ void Analyzer::RunPlayOut(Node * root)
 
     int childrenCount = bestNode->GenerateChildren();
     Node * firstMove;
+
     if (childrenCount == 0)
     {
         firstMove = bestNode;
@@ -401,6 +402,7 @@ void Analyzer::RunPlayOut(Node * root)
     }
     else
     {
+
         firstMove = bestNode->GetFirstChild();
 
         int threadCount = 8;
@@ -408,7 +410,7 @@ void Analyzer::RunPlayOut(Node * root)
         omp_set_num_threads(threadCount);
         PlayerColor colors[8];
 
-    #pragma omp parallel for
+#pragma omp parallel for
         for (int i = 0; i < threadCount; i++)
         {
             Node * currentBoard = new Node(bestNode->GetWhitePieces(), bestNode->GetBlackPieces(), bestNode->GetNextToPlay());
