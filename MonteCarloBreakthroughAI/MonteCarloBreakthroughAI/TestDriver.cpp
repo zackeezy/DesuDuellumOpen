@@ -30,8 +30,8 @@ void TestDriver::PlayGame()
     unsigned long long blackPieces = Grid::Row7 | Grid::Row8;
     PlayerColor color = White;
     bool continuePlaying = true;
-    while (continuePlaying = true)
-    {
+    /*while (continuePlaying = true)
+    {*/
         Move move;
         clock_t timer;
         cout << "Generating Move..." << endl;
@@ -82,7 +82,7 @@ void TestDriver::PlayGame()
         }
         color = FlipColor(color);
         PrintBoard(whitePieces, blackPieces, timer);
-    }
+    //}
 }
 
 void TestDriver::PrintBoard(unsigned long long whitePieces, unsigned long long blackPieces, clock_t t) 

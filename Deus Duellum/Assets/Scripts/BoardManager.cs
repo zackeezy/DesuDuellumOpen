@@ -385,10 +385,11 @@ public class BoardManager : MonoBehaviour {
         //Debug.Log(moveforLog);
     
         //toggle the turn
-        ChangeTurn();
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
-        GameWon(y);
+        if(!GameWon(y))
+        { ChangeTurn(); }
+        
     }
 
     private void GetMove()
@@ -502,7 +503,7 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    private void GameWon(int y)
+    private bool GameWon(int y)
     {
         //ask the game core if the game has been won
         _core.HasWon(y);
@@ -557,6 +558,8 @@ public class BoardManager : MonoBehaviour {
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
         }
+
+        return _core.HasWon(y);
     }
 
     private void setPrefs()
