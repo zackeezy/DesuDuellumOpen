@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Assets.Scripts;
 using System;
+using UnityEngine.SceneManagement;
+
 
 public class NetworkControl : MonoBehaviour {
 
@@ -54,8 +56,13 @@ public class NetworkControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        int gameIndex = SceneManager.GetActiveScene().buildIndex;
+        if(gameIndex == 0)
+        {
+            Debug.Log("destroyed the netcontroller");
+            Destroy(gameObject);
+        }
+    }
 
     public void Send(string s)
     {

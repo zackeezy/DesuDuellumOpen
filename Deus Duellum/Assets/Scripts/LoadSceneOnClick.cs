@@ -54,4 +54,5 @@ public class LoadSceneOnClick : MonoBehaviour {
             joinNetButton.interactable = false;
         }
     }
+
 }

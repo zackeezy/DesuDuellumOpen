@@ -88,7 +88,7 @@ public class EmoteController : MonoBehaviour {
             HelloEmote = "Good health, my friend.";
             WowEmote = "By Odin's beard!";
             //TauntEmote = "You can't even spell Meal-near!";
-            TauntEmote = "You can't even spell Mjolnir!";
+            TauntEmote = "Ha! You can't even spell Mjolnir!";
         }
     }
 

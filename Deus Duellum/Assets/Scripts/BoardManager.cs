@@ -161,6 +161,7 @@ public class BoardManager : MonoBehaviour {
     {
         player1emote.CloseEmoteButtons();
         player2emote.CloseEmoteButtons();
+        bool sameToken = false;
 
         if (whiteWon || blackWon || gameMode != PlayerType.Local || EventSystem.current.IsPointerOverGameObject())
         {
@@ -173,14 +174,17 @@ public class BoardManager : MonoBehaviour {
             if (selectedToken != null)
             {
                 BoardHighlights.Instance.HideHighlights();
-                if(selectedToken.currentX != selected.currentX || selectedToken.currentY != selected.currentY)
+                Vector3 flatpos;
+                flatpos.x = selectedToken.transform.position.x;
+                flatpos.y = flatTokenYpos;
+                flatpos.z = selectedToken.transform.position.z;
+                //if already a selected token, make it stop floating                  
+                LeanTween.move(selectedToken.gameObject, flatpos, 0.25f);
+                
+                //check to see if this is the same token
+                if (selectedToken.currentX == selected.currentX && selectedToken.currentY == selected.currentY)
                 {
-                    //if already a different selected token, make it stop floating
-                    Vector3 flatpos;
-                    flatpos.x = selectedToken.transform.position.x;
-                    flatpos.y = flatTokenYpos;
-                    flatpos.z = selectedToken.transform.position.z;
-                    LeanTween.move(selectedToken.gameObject, flatpos, 0.25f);
+                    sameToken = true;
                 }
             }
 
@@ -191,54 +195,60 @@ public class BoardManager : MonoBehaviour {
             selectedToken = selected;
 
             //make the token start floating a little
-            Vector3 floatpos;
-            floatpos.x = selectedToken.transform.position.x;
-            floatpos.y = floatTokenYpos;
-            floatpos.z = selectedToken.transform.position.z;
-            LeanTween.move(selectedToken.gameObject, floatpos, .25f);
-
-            //Check East
-            if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
+            //unless it was the previously selected token
+            if (!sameToken)
             {
-                //Highlight
-                if (isWhiteTurn)
-                {
-                    BoardHighlights.Instance.HighlightTile(x + 1, y + 1);
-                }
-                else if(isBlackTurn)
-                {
-                    BoardHighlights.Instance.HighlightTile(x + 1, y - 1);
-                }
-            }
+                Vector3 floatpos;
+                floatpos.x = selectedToken.transform.position.x;
+                floatpos.y = floatTokenYpos;
+                floatpos.z = selectedToken.transform.position.z;
+                LeanTween.move(selectedToken.gameObject, floatpos, .25f);
+                //make it spin
+                
 
-            //Check Forward
-            if (_core.IsMoveAllowed(selectionX, selectionY, Direction.Forward))
-            {
-                //Highlight
-                if (isWhiteTurn)
+                //Check East
+                if (_core.IsMoveAllowed(selectionX, selectionY, Direction.East))
                 {
-                    BoardHighlights.Instance.HighlightTile(x, y + 1);
-                }
-                else if (isBlackTurn)
-                {
-                    BoardHighlights.Instance.HighlightTile(x, y - 1);
+                    //Highlight
+                    if (isWhiteTurn)
+                    {
+                        BoardHighlights.Instance.HighlightTile(x + 1, y + 1);
+                    }
+                    else if (isBlackTurn)
+                    {
+                        BoardHighlights.Instance.HighlightTile(x + 1, y - 1);
+                    }
                 }
 
-            }
+                //Check Forward
+                if (_core.IsMoveAllowed(selectionX, selectionY, Direction.Forward))
+                {
+                    //Highlight
+                    if (isWhiteTurn)
+                    {
+                        BoardHighlights.Instance.HighlightTile(x, y + 1);
+                    }
+                    else if (isBlackTurn)
+                    {
+                        BoardHighlights.Instance.HighlightTile(x, y - 1);
+                    }
 
-            //Check West
-            if (_core.IsMoveAllowed(selectionX, selectionY, Direction.West))
-            {
-                //Highlight
-                if (isWhiteTurn)
-                {
-                    BoardHighlights.Instance.HighlightTile(x - 1, y + 1);
                 }
-                else if (isBlackTurn)
+
+                //Check West
+                if (_core.IsMoveAllowed(selectionX, selectionY, Direction.West))
                 {
-                    BoardHighlights.Instance.HighlightTile(x - 1, y - 1);
+                    //Highlight
+                    if (isWhiteTurn)
+                    {
+                        BoardHighlights.Instance.HighlightTile(x - 1, y + 1);
+                    }
+                    else if (isBlackTurn)
+                    {
+                        BoardHighlights.Instance.HighlightTile(x - 1, y - 1);
+                    }
                 }
-            }
+            }        
         }
         else
         {
@@ -554,6 +564,7 @@ public class BoardManager : MonoBehaviour {
         //set gameMode, whiteplayer, and blackplayer variables based on input from character select screen
         int player1character = PlayerPrefs.GetInt("Player1Character");
         int player2character = PlayerPrefs.GetInt("Player2Character");
+
         //set the player portraits
         setCharacterImage(1, player1character);
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
@@ -882,6 +893,13 @@ public class BoardManager : MonoBehaviour {
     {
         if(netController && netController.IsConnected())
             Disconnect();
+    }
+
+    public void DestroyCoreOnAiGameOver()
+    {
+        _core = null;
+        System.GC.Collect();
+        System.GC.WaitForPendingFinalizers();
     }
 }
 

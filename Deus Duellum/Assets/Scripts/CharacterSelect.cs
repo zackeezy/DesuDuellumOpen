@@ -210,19 +210,16 @@ public class CharacterSelect : MonoBehaviour {
         }
         else
         {
-            if(player1Highlight!= btn.transform.GetChild(0).gameObject)
+            if (player2Highlight)
             {
-                if (player2Highlight)
-                {
-                    player2Highlight.SetActive(false);
-                }
-                highlight = btn.transform.GetChild(1).gameObject;
-                player2Highlight = highlight;
-                //Image btnImg = highlight.GetComponent<Image>();
-                //btnImg.sprite = highlight2;
-                highlight.SetActive(true);
-                CharacterHighlights.Add(highlight);
+                player2Highlight.SetActive(false);
             }
+            highlight = btn.transform.GetChild(1).gameObject;
+            player2Highlight = highlight;
+            //Image btnImg = highlight.GetComponent<Image>();
+            //btnImg.sprite = highlight2;
+            highlight.SetActive(true);
+            CharacterHighlights.Add(highlight);
         }
     }
 
