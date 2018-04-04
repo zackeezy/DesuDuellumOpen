@@ -23,10 +23,16 @@ public class BoardManager : MonoBehaviour {
     public GameObject player1img;
     public GameObject player2img;
     public Sprite AthenaImg;
+    public Sprite AthenaWinImg;
+    public Sprite AthenaLoseImg;
     public Sprite AthenaBorder;
     public Sprite RaImg;
+    public Sprite RaWinImg;
+    public Sprite RaLoseImg;
     public Sprite RaBorder;
     public Sprite ThorImg;
+    public Sprite ThorWinImg;
+    public Sprite ThorLoseImg;
     public Sprite ThorBorder;
 
     public Text turnText;
@@ -362,7 +368,14 @@ public class BoardManager : MonoBehaviour {
         newPosition.z = tileZPos;
 
         LeanTween.cancelAll();
-        LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 0, 0), .01f);
+        if (isPlayer1White)
+        {
+            LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 0, 0), .01f);
+        }
+        else
+        {
+            LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 180, 0), .01f);
+        }
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
         
         string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
@@ -527,16 +540,22 @@ public class BoardManager : MonoBehaviour {
             {
                 //player1 win
                 winText.text = "Player One Wins";
+                SetCharacterWinLoseImage(true, true, whiteCharacter);
+                SetCharacterWinLoseImage(false, false, blackCharacter);
             }
             else if (whitePlayer == PlayerType.Local)
             {
                 //you win
                 winText.text = "You Won!";
+                SetCharacterWinLoseImage(true, true, whiteCharacter);
+                SetCharacterWinLoseImage(false, false, blackCharacter);
             }
             else
             {
                 //you lost
                 winText.text = "You Lost!";
+                SetCharacterWinLoseImage(true, false, whiteCharacter);
+                SetCharacterWinLoseImage(false, true, blackCharacter);
             }
 
             log.ShowWin(true);
@@ -550,16 +569,22 @@ public class BoardManager : MonoBehaviour {
             {
                 //player2 win
                 winText.text = "Player Two Wins";
+                SetCharacterWinLoseImage(true, false, whiteCharacter);
+                SetCharacterWinLoseImage(false, true, blackCharacter);
             }
             else if (blackPlayer == PlayerType.Local)
             {
                 //you win
                 winText.text = "You Won!";
+                SetCharacterWinLoseImage(true, true, whiteCharacter);
+                SetCharacterWinLoseImage(false, false, blackCharacter);
             }
             else
             {
                 //you lost
                 winText.text = "You Lost!";
+                SetCharacterWinLoseImage(true, false, whiteCharacter);
+                SetCharacterWinLoseImage(false, true, blackCharacter);
             }
 
             log.ShowWin(false);
@@ -569,6 +594,62 @@ public class BoardManager : MonoBehaviour {
         }
 
         return _core.HasWon(y);
+    }
+
+    private void SetCharacterWinLoseImage(bool player1, bool won, int character)
+    {
+        Image playerImg = null;
+
+        //setting player1's image
+        if (player1)
+        {
+            playerImg = player1img.transform.GetChild(1).GetComponent<Image>();
+        }
+        //setting player2's image
+        else
+        {
+            playerImg = player2img.transform.GetChild(1).GetComponent<Image>();
+        }
+
+        if (won)
+        {
+            //win pose
+            if (character == 0)
+            {
+                //athena
+                playerImg.sprite = AthenaWinImg;
+            }
+            else if (character == 1)
+            {
+                //ra
+                playerImg.sprite = RaWinImg;
+            }
+            else
+            {
+                //thor
+                playerImg.sprite = ThorWinImg;
+            }
+        }
+        else
+        {
+            ////loss pose
+            ////TODO: add in loss sprites when get them from Colin
+            //if (character == 0)
+            //{
+            //    //athena
+            //    playerImg.sprite = AthenaLoseImg;
+            //}
+            //else if (character == 1)
+            //{
+            //    //ra
+            //    playerImg.sprite = RaLoseImg;
+            //}
+            //else
+            //{
+            //    //thor
+            //    playerImg.sprite = ThorLoseImg;
+            //}
+        }
     }
 
     private void setPrefs()
@@ -676,6 +757,7 @@ public class BoardManager : MonoBehaviour {
             playerImg = player2img.transform.GetChild(1).GetComponent<Image>();
             playerBorder = player2img.transform.GetChild(2).GetComponent<Image>();
         }
+
         if (character == 0)
         {
             //Debug.Log("player " + player + " is Athena");

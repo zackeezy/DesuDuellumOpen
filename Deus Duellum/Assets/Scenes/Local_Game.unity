@@ -20235,10 +20235,13 @@ MonoBehaviour:
   player1img: {fileID: 1893615704}
   player2img: {fileID: 612183609}
   AthenaImg: {fileID: 21300000, guid: a698daa3a8c7f4d4e87c4668c9db2089, type: 3}
+  AthenaWinImg: {fileID: 21300000, guid: 02f1e1c992113ee44a7d3d11181e9287, type: 3}
   AthenaBorder: {fileID: 21300000, guid: 42d136e7014cbf240aaa211f6ab8526b, type: 3}
   RaImg: {fileID: 21300000, guid: 5a954bbc621a23e49a0bd28bae630b92, type: 3}
+  RaWinImg: {fileID: 21300000, guid: 8b77973ec4d66604e900b52725606619, type: 3}
   RaBorder: {fileID: 21300000, guid: 5a4c0b6a2fe000743a9ea6f6d1fe67b1, type: 3}
   ThorImg: {fileID: 21300000, guid: 4d4a2357f2c56e243bd7a5ee0bdfdfa1, type: 3}
+  ThorWinImg: {fileID: 21300000, guid: 6c14396c090359f4f81d2157a54bc389, type: 3}
   ThorBorder: {fileID: 21300000, guid: 7dd9b54c4c658a24a87348fdd85626dc, type: 3}
   turnText: {fileID: 1996608110}
   gameOverPanel: {fileID: 15643098}
