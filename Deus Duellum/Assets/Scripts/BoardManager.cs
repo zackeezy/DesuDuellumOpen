@@ -104,7 +104,7 @@ public class BoardManager : MonoBehaviour {
         Camera.main.enabled = true;
 
         //starting timer
-        StartCoroutine("LoseTime");
+       // StartCoroutine("LoseTime");
 
         notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
@@ -148,13 +148,13 @@ public class BoardManager : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        countdownText.text = ("Time Left: \n " + timeLeft + " seconds");
+        //countdownText.text = ("Time Left: \n " + timeLeft + " seconds");
 
-        if (timeLeft <= 0)
-        {
-            StopCoroutine("LoseTime");
-            countdownText.text = "Time's up!";
-        }
+        //if (timeLeft <= 0)
+        //{
+        //    StopCoroutine("LoseTime");
+        //    countdownText.text = "Time's up!";
+        //}
 
         if (_foreignMoveCompleted)
         {
@@ -399,7 +399,7 @@ public class BoardManager : MonoBehaviour {
             LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 180, 0), .01f);
         }
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
-        timeLeft = 60;
+       // timeLeft = 60;
         
         string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
 
@@ -565,7 +565,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "Player One Wins";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
-                StopCoroutine("LoseTime");
+               // StopCoroutine("LoseTime");
             }
             else if (whitePlayer == PlayerType.Local)
             {
@@ -573,7 +573,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "You Won!";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
-                StopCoroutine("LoseTime");
+                //StopCoroutine("LoseTime");
             }
             else
             {
@@ -596,7 +596,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "Player Two Wins";
                 SetCharacterWinLoseImage(true, false, whiteCharacter);
                 SetCharacterWinLoseImage(false, true, blackCharacter);
-                StopCoroutine("LoseTime");
+                //StopCoroutine("LoseTime");
             }
             else if (blackPlayer == PlayerType.Local)
             {
@@ -604,7 +604,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "You Won!";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
-                StopCoroutine("LoseTime");
+                //StopCoroutine("LoseTime");
             }
             else
             {
