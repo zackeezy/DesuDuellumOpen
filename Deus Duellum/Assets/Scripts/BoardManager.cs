@@ -399,6 +399,7 @@ public class BoardManager : MonoBehaviour {
             LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 180, 0), .01f);
         }
         LeanTween.move(selectedToken.gameObject, newPosition, .3f);
+        timeLeft = 60;
         
         string moveforLog = log.CoordsToNotations(selectedToken.currentX, selectedToken.currentY);
 
@@ -564,6 +565,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "Player One Wins";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
+                StopCoroutine("LoseTime");
             }
             else if (whitePlayer == PlayerType.Local)
             {
@@ -571,6 +573,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "You Won!";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
+                StopCoroutine("LoseTime");
             }
             else
             {
@@ -593,6 +596,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "Player Two Wins";
                 SetCharacterWinLoseImage(true, false, whiteCharacter);
                 SetCharacterWinLoseImage(false, true, blackCharacter);
+                StopCoroutine("LoseTime");
             }
             else if (blackPlayer == PlayerType.Local)
             {
@@ -600,6 +604,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "You Won!";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
+                StopCoroutine("LoseTime");
             }
             else
             {
