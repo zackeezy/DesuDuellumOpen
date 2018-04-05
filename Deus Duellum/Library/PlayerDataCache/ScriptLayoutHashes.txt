@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Andres/Documents/GitHub/DeusDuellum/Deus Duellum/try1.exe
+C:/Users/Andres/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0405.exe
 SceneListBegin?
 Assets/Scenes/_MainMenu.unity
 Assets/Scenes/Local_CharacterSelectMenu.unity
