@@ -84,6 +84,9 @@ public class BoardManager : MonoBehaviour {
     private string player1;
     private string player2;
 
+    public int timeLeft = 60;
+    public Text countdownText;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -99,6 +102,9 @@ public class BoardManager : MonoBehaviour {
 		Instance = this;
         blackCam.enabled = false;
         Camera.main.enabled = true;
+
+        //starting timer
+        StartCoroutine("LoseTime");
 
         notationsToggleUI = GameObject.FindGameObjectWithTag("NotationsToggle");
         notationsToggle = notationsToggleUI.GetComponent<Toggle>();
@@ -142,6 +148,14 @@ public class BoardManager : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
+        countdownText.text = ("Time Left: \n " + timeLeft + " seconds");
+
+        if (timeLeft <= 0)
+        {
+            StopCoroutine("LoseTime");
+            countdownText.text = "Time's up!";
+        }
+
         if (_foreignMoveCompleted)
         {
             if (_core.IsMoveAllowed(_awaitMoveX, _awaitMoveY, _awaitMoveDirection))
@@ -155,6 +169,14 @@ public class BoardManager : MonoBehaviour {
             }
             _foreignMoveCompleted = false;
             gameMode = PlayerType.Local;
+        }
+    }
+    IEnumerator LoseTime()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            timeLeft--;
         }
     }
 
