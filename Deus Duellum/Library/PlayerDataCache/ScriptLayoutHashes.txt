@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Heather/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0403.exe
+C:/Users/Andres/Documents/GitHub/DeusDuellum/Deus Duellum/try1.exe
 SceneListBegin?
 Assets/Scenes/_MainMenu.unity
 Assets/Scenes/Local_CharacterSelectMenu.unity
@@ -199,7 +199,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 bea11f7778ba08bebb5755aad2173bf0 Assembly-CSharp.dll:.EmoteController
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f49f4863272689244b774579270d34da Assembly-CSharp.dll:.TestingIssue2
-a81a5bf9d07dc43eaa2354c723761b92 Assembly-CSharp.dll:.BoardManager
+14d97102a0de48ecb0bea6f8e806268c Assembly-CSharp.dll:.BoardManager
 dbb09a3b70f825f13ce7a78b6151b335 Assembly-CSharp.dll:.MuteOther
 8c247cb09a6459153e96b5332168046d Assembly-CSharp.dll:.ButtonDescription
 872e272b3af04602a12204b9278180d6 Assembly-CSharp.dll:.LoadSceneOnClick
