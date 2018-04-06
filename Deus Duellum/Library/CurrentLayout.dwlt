@@ -62,8 +62,8 @@ MonoBehaviour:
     y: 0
     width: 1426
     height: 846
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 100, y: 122}
+  m_MaxSize: {x: 4000, y: 4022}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -176,10 +176,10 @@ MonoBehaviour:
     y: 30
     width: 1440
     height: 767
-  m_MinSize: {x: 681, y: 492}
-  m_MaxSize: {x: 14002, y: 14042}
+  m_MinSize: {x: 683, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 83
+  controlID: 145
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 10
+  controlID: 100
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -246,8 +246,8 @@ MonoBehaviour:
     y: 0
     width: 204
     height: 489
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -323,8 +323,8 @@ MonoBehaviour:
     y: 0
     width: 290
     height: 767
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -436,9 +436,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: 04060000
     m_LastClickedID: 0
-    m_ExpandedIDs: 604bfcff5458fcffc66cfcff7490fcff7c91fcff6a96fcff9ca7fcff5cb8fcff36c9fcff92cefcff5ed3fcff30d8fcff38d8fcff9cfbfcff4aedfeff0806ffff4e1fffffde35ffff8436ffff763bffffac4cffff6e5dffffbe65ffff1e6bffffee6fffffc474ffffd074ffff328effff14e7ffff9efbffff000000007c4c0000d280000062810000c6c200000ae80000f6eb0000c6ec0000
+    m_ExpandedIDs: 54e4ffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -522,7 +522,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.02130775, y: 0.011094552, z: -0.00023644176, w: -0.9997114}
     speed: 2
-    m_Value: {x: -0.02130775, y: 0.011094552, z: -0.00023644176, w: -0.9997114}
+    m_Value: {x: -0.021307748, y: 0.011094552, z: -0.00023644175, w: -0.99971133}
   m_Size:
     m_Target: 911.6563
     speed: 2
@@ -604,19 +604,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scenes
+    - Assets/Scripts/networking
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Scripts/networking
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Users\Andres\Documents\GitHub\DeusDuellum\Deus Duellum
+  m_LastProjectPath: C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\Deus Duellum
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 48}
-    m_SelectedIDs: 66300000
-    m_LastClickedID: 12390
-    m_ExpandedIDs: 000000001c280000ce290000622a0000d62b00002c30000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 180}
+    m_SelectedIDs: d8390000
+    m_LastClickedID: 14808
+    m_ExpandedIDs: 00000000b83900003e3b0000bc3b0000c83b0000fe3c0000ee40000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -644,7 +644,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000001c280000ce290000622a0000d62b00002c300000
+    m_ExpandedIDs: 00000000b83900003e3b0000c83b0000fe3c0000ee400000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -675,18 +675,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: SplashTeamLogo
-      m_OriginalName: SplashTeamLogo
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 11216
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 13}
     m_CreateAssetUtility:
