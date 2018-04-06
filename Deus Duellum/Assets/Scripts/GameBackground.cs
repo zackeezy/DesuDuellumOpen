@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameBackground : MonoBehaviour {
 
@@ -18,7 +19,9 @@ public class GameBackground : MonoBehaviour {
     void OnMouseDown()
     {
         //Debug.Log("this function works....?");
-        ToggleOpen panelManager = GameObject.FindGameObjectWithTag("panelManager").GetComponent<ToggleOpen>();
-        panelManager.ClosePanel();        
+        if (!EventSystem.current.IsPointerOverGameObject()) {
+            ToggleOpen panelManager = GameObject.FindGameObjectWithTag("panelManager").GetComponent<ToggleOpen>();
+            panelManager.ClosePanel();
+        }     
     }
 }
