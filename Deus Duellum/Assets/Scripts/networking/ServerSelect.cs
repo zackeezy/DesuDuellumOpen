@@ -37,7 +37,7 @@ public class ServerSelect : MonoBehaviour {
                         netcontroller.ServerSelected(index);
                         serverFound = true;
                         LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
-                        scenechanger.LoadByIndex(2);
+                        scenechanger.LoadByIndex(4);
                         break;
                     }
                     index++;

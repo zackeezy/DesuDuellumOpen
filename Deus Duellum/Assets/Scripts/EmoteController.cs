@@ -125,7 +125,7 @@ public class EmoteController : MonoBehaviour {
         if (!emotesMuted)
         {
             //get the emote panel
-            emotePanel = transform.GetChild(3).gameObject;
+            //emotePanel = transform.GetChild(3).gameObject;
             emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
             PlayEmoteAudio(emote);

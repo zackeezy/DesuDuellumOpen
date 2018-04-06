@@ -269,7 +269,7 @@ public class CharacterSelect : MonoBehaviour {
         {
             //move to next scene
             LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
-            scenechanger.LoadByIndex(5);
+            scenechanger.LoadByIndex(7);
             CancelInvoke();
         }
         else if (!opponentChose)
