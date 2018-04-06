@@ -86,7 +86,7 @@ public class CharacterSelect : MonoBehaviour {
             SetCharacterHighlight(character, true);
 
             //let player2 pick a character for a local game
-            if (gameIndex == 1)
+            if (gameIndex == 2)
             {
                 characterSelectText.text = "Player Two: Select a character";
                 //show a cancel button? to go back to player1?
@@ -106,7 +106,7 @@ public class CharacterSelect : MonoBehaviour {
     {
         turnSelected = true;
         Button btn;
-        if (gameIndex != 1)
+        if (gameIndex != 2)
         {
             if (first)
             {
@@ -173,17 +173,17 @@ public class CharacterSelect : MonoBehaviour {
     public void CheckSettings()
     {
         //if local, only characters must be selected
-        if (gameIndex == 1 && charactersSelected)
+        if (gameIndex == 2 && charactersSelected)
         {
             canPlay = true;
         }
         //if network, must also choose turn, an
-        else if (gameIndex == 2 && charactersSelected)
+        else if (gameIndex == 4 && charactersSelected)
         {
             canPlay = true;
         }
         //if ai, must also choose difficulty
-        else if (gameIndex == 3 && charactersSelected && turnSelected && difficultySelected)
+        else if (gameIndex == 5 && charactersSelected && turnSelected && difficultySelected)
         {
             canPlay = true;
         }

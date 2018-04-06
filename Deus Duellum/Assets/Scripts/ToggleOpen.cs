@@ -27,6 +27,16 @@ public class ToggleOpen : MonoBehaviour {
         }
     }
 
+    public void ClosePanel()
+    {
+        if (SelectedPanel != null)
+        {
+            //Debug.Log("clicked on the thing");
+            SelectedPanel.SetActive(false);
+            SelectedPanel = null;
+        }
+    }
+
     public void CloseQuit()
     {
         //to close the quit game panel when click on the gear button

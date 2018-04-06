@@ -2,14 +2,15 @@ WindowsStandalone
 PlayerPath?
 C:/Users/Andres/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0405.exe
 SceneListBegin?
+Assets/Scenes/SplashTeamLogo.unity
 Assets/Scenes/_MainMenu.unity
 Assets/Scenes/Local_CharacterSelectMenu.unity
+Assets/Scenes/Online_Connection.unity
 Assets/Scenes/Online_CharacterSelectMenu.unity
 Assets/Scenes/AI_CharacterSelectMenu.unity
 Assets/Scenes/Local_Game.unity
 Assets/Scenes/Online_Game.unity
 Assets/Scenes/AI_Game.unity
-Assets/Scenes/Online_Connection.unity
 SceneListEnd?
 78a28a48c2ded27a3fedcad1f807ebf3 Assembly-CSharp.dll:.LogoCinematic
 2493304bac448739d50f708564415122 Assembly-CSharp.dll:.GeneralBasics2d
@@ -196,7 +197,7 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-bea11f7778ba08bebb5755aad2173bf0 Assembly-CSharp.dll:.EmoteController
+08e0882b17ec0a933f3672b84219b83a Assembly-CSharp.dll:.EmoteController
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f49f4863272689244b774579270d34da Assembly-CSharp.dll:.TestingIssue2
 14d97102a0de48ecb0bea6f8e806268c Assembly-CSharp.dll:.BoardManager

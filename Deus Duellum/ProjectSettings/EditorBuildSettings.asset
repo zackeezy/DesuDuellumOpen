@@ -6,11 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SplashTeamLogo.unity
+    guid: 7b034dc8457141f468e0647e691c0171
+  - enabled: 1
     path: Assets/Scenes/_MainMenu.unity
     guid: 1475797e397af3c4e8ea2f905b1ad1e9
   - enabled: 1
     path: Assets/Scenes/Local_CharacterSelectMenu.unity
     guid: e087f007ff47eff4d92599649265de05
+  - enabled: 1
+    path: Assets/Scenes/Online_Connection.unity
+    guid: e01e61c484888984888c8765e2a56d1a
   - enabled: 1
     path: Assets/Scenes/Online_CharacterSelectMenu.unity
     guid: 65237696a71bb4c47b08e25929c8ae86
@@ -26,6 +32,3 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AI_Game.unity
     guid: a68d309edc30f614387356dd84fbbb46
-  - enabled: 1
-    path: Assets/Scenes/Online_Connection.unity
-    guid: e01e61c484888984888c8765e2a56d1a

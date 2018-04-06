@@ -770,6 +770,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3a74555333e6d654d83fda56679e33b7, type: 3}
   - {fileID: 8300000, guid: ba566fd72e30391429f521600a422ac5, type: 3}
   - {fileID: 8300000, guid: ba4a85ff5608a2d4bb51db97a20b54af, type: 3}
+  VictoryVoices:
+  - {fileID: 8300000, guid: 6e296122a1845dd40a48400fe931d272, type: 3}
+  - {fileID: 8300000, guid: 1914bbbad6c733f46b2a02cbdf54e63e, type: 3}
+  - {fileID: 8300000, guid: 47836a1ee8a4cad4fabe823862ac1cb7, type: 3}
+  emotesMuted: 0
 --- !u!114 &114192497940174524
 MonoBehaviour:
   m_ObjectHideFlags: 1

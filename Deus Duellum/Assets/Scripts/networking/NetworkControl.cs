@@ -57,7 +57,7 @@ public class NetworkControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
-        if(gameIndex == 0)
+        if(gameIndex == 1)
         {
             Debug.Log("destroyed the netcontroller");
             Destroy(gameObject);

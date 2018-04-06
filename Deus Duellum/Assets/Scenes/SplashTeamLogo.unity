@@ -512,10 +512,10 @@ GameObject:
   - component: {fileID: 1974338708}
   - component: {fileID: 1974338710}
   - component: {fileID: 1974338709}
-  - component: {fileID: 1974338711}
+  - component: {fileID: 1974338712}
   m_Layer: 5
   m_Name: SplashTeamLogo
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -536,7 +536,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 8, y: 13.010803}
-  m_SizeDelta: {x: 300, y: 250}
+  m_SizeDelta: {x: 550, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1974338709
 MonoBehaviour:
@@ -571,17 +571,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1974338707}
---- !u!111 &1974338711
-Animation:
+--- !u!114 &1974338712
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1974338707}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 62778020f6be96e42b47daf6e6680b1b, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c51b41ae5b433934398fc5f3dae1040c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: 1
+  newNetButton: {fileID: 0}
+  joinNetButton: {fileID: 0}

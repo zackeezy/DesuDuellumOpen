@@ -11,11 +11,13 @@ public class EmoteController : MonoBehaviour {
     private string HelloEmote;
     private string WowEmote;
     private string TauntEmote;
+    private string VictoryEmote;
 
     private float voiceLineLength;
     public AudioClip[] HelloVoices;
     public AudioClip[] WowVoices;
     public AudioClip[] TauntVoices;
+    public AudioClip[] VictoryVoices;
 
     private GameObject emoteButtons;
     private GameObject emotePanel;
@@ -74,6 +76,7 @@ public class EmoteController : MonoBehaviour {
             HelloEmote = "Yamas! Good health to all.";
             WowEmote = "Even the goddess of strategy \ncouldn't see that one coming.";
             TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know...";
+            VictoryEmote = "All according to plan!";
         }
         else if (character == 1)
         {
@@ -81,6 +84,7 @@ public class EmoteController : MonoBehaviour {
             HelloEmote = "Good morrow from the Sun.";
             WowEmote = "You shine brighter than the sun!";
             TauntEmote = "Even Anubis couldn't tip \nthe scales in your favor.";
+            VictoryEmote = "I... am a star!";
         }
         else if (character == 2)
         {
@@ -89,6 +93,7 @@ public class EmoteController : MonoBehaviour {
             WowEmote = "By Odin's beard!";
             //TauntEmote = "You can't even spell Meal-near!";
             TauntEmote = "Ha! You can't even spell Mjölnir!";
+            VictoryEmote = "Ha! another victory for the mighty Thor!";
         }
     }
 
@@ -106,7 +111,7 @@ public class EmoteController : MonoBehaviour {
         StartCoroutine(AnimateLocalEmotePanel());
 
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
-        if (gameIndex == 5)
+        if (gameIndex == 7)
         {
             //send the emote over the network
             netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
@@ -126,6 +131,15 @@ public class EmoteController : MonoBehaviour {
             PlayEmoteAudio(emote);
             StartCoroutine(AnimateLocalEmotePanel());
         }
+    }
+
+    public void PlayVictoryEmote()
+    {
+        //get the emote text
+        emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
+
+        PlayEmoteAudio(3);
+        StartCoroutine(AnimateLocalEmotePanel());
     }
 
     public void PlayEmoteAudio(int emote)
@@ -149,6 +163,12 @@ public class EmoteController : MonoBehaviour {
             //taunt
             emoteText.text = TauntEmote;
             emoteClip = TauntVoices[character];
+        }
+        else if (emote == 3)
+        {
+            //victory
+            emoteText.text = VictoryEmote;
+            emoteClip = VictoryVoices[character];
         }
         voiceLineLength = emoteClip.length;
 

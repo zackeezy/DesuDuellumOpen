@@ -429,11 +429,14 @@ public class BoardManager : MonoBehaviour {
 
         //Debug.Log(moveforLog);
     
-        //toggle the turn
 		BoardHighlights.Instance.HideHighlights ();
 		selectedToken = null;
+
         if(!GameWon(y))
-        { ChangeTurn(); }
+        {
+            //toggle the turn
+            ChangeTurn();
+        }
         
     }
 
@@ -557,6 +560,9 @@ public class BoardManager : MonoBehaviour {
         GameObject winTextobj = gameOverPanel.transform.GetChild(3).gameObject;
         Text winText = winTextobj.GetComponent<Text>();
 
+        GameObject player1 = GameObject.FindWithTag("Player1");
+        GameObject player2 = GameObject.FindWithTag("Player2");
+
         if (_core.whiteWon)
         {
             if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
@@ -565,7 +571,7 @@ public class BoardManager : MonoBehaviour {
                 winText.text = "Player One Wins";
                 SetCharacterWinLoseImage(true, true, whiteCharacter);
                 SetCharacterWinLoseImage(false, false, blackCharacter);
-               // StopCoroutine("LoseTime");
+                // StopCoroutine("LoseTime");
             }
             else if (whitePlayer == PlayerType.Local)
             {
@@ -583,10 +589,34 @@ public class BoardManager : MonoBehaviour {
                 SetCharacterWinLoseImage(false, true, blackCharacter);
             }
 
+            if (whitePlayer == PlayerType.Local)
+            {
+                LeanTween.scale(player1, player1.transform.localScale * 1.5f, 0.1f);
+                Vector3 moveTo;
+                moveTo.x = player1.transform.position.x + 20;
+                moveTo.y = player1.transform.position.y + 30;
+                moveTo.z = player1.transform.position.z;
+                LeanTween.move(player1, moveTo, 0.1f);
+                //show/play win emote
+                player1emote.PlayVictoryEmote();
+            }
+            else
+            {
+                LeanTween.scale(player2, player2.transform.localScale * 1.5f, 0.1f);
+                Vector3 moveTo;
+                moveTo.x = player2.transform.position.x - 20;
+                moveTo.y = player2.transform.position.y - 5;
+                moveTo.z = player2.transform.position.z;
+                LeanTween.move(player2, moveTo, 0.1f);
+                //show/play win emote
+                player2emote.PlayVictoryEmote();
+            }
+
             log.ShowWin(true);
             
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
+            return true;
         }
         else if (_core.blackWon)
         {
@@ -614,13 +644,38 @@ public class BoardManager : MonoBehaviour {
                 SetCharacterWinLoseImage(false, true, blackCharacter);
             }
 
+            if (blackPlayer == PlayerType.Local)
+            {
+                LeanTween.scale(player2, player2.transform.localScale * 1.15f, 0.1f);
+                Vector3 moveTo;
+                moveTo.x = player2.transform.position.x - 20;
+                moveTo.y = player2.transform.position.y -5;
+                moveTo.z = player2.transform.position.z;
+                LeanTween.move(player2, moveTo, 0.1f);
+                //show/play win emote
+                player2emote.PlayVictoryEmote();
+            }
+            else
+            {
+                LeanTween.scale(player1, player1.transform.localScale * 1.15f, 0.1f);
+                Vector3 moveTo;
+                moveTo.x = player1.transform.position.x + 20;
+                moveTo.y = player1.transform.position.y + 30;
+                moveTo.z = player1.transform.position.z;
+                LeanTween.move(player1, moveTo, 0.1f);
+                //show/play win emote
+                player1emote.PlayVictoryEmote();
+            }
+
             log.ShowWin(false);
 
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
+            return true;
         }
 
-        return _core.HasWon(y);
+        return false;
+        //return _core.HasWon(y);
     }
 
     private void SetCharacterWinLoseImage(bool player1, bool won, int character)
@@ -688,18 +743,18 @@ public class BoardManager : MonoBehaviour {
         //set the player portraits
         setCharacterImage(1, player1character);
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
-        if (gameIndex == 4)
+        if (gameIndex == 6)
         {
             gameMode = PlayerType.Local;
             //set the player2 character
             player2character = PlayerPrefs.GetInt("Player2Character");
         }
-        else if (gameIndex == 5)
+        else if (gameIndex == 7)
         {
             gameMode = PlayerType.Network;
             //more in another function because need the game core by then
         }
-        else if (gameIndex == 6)
+        else if (gameIndex == 8)
         {
             gameMode = PlayerType.AI;
             //pick a random character for the AI

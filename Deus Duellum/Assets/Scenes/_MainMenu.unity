@@ -1105,6 +1105,11 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 734469872}
+    - target: {fileID: 114386573391716810, guid: b4aa11011065232499933d1e1f64a81c,
+        type: 2}
+      propertyPath: player
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b4aa11011065232499933d1e1f64a81c, type: 2}
   m_IsPrefabParent: 0
@@ -1392,7 +1397,7 @@ Prefab:
     - target: {fileID: 114287183887222788, guid: b4aa11011065232499933d1e1f64a81c,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114287183887222788, guid: b4aa11011065232499933d1e1f64a81c,
         type: 2}
@@ -1428,6 +1433,11 @@ Prefab:
     - target: {fileID: 114287183887222788, guid: b4aa11011065232499933d1e1f64a81c,
         type: 2}
       propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114386573391716810, guid: b4aa11011065232499933d1e1f64a81c,
+        type: 2}
+      propertyPath: player
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3795,6 +3805,11 @@ Prefab:
       propertyPath: m_RaycastTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114287183887222788, guid: b4aa11011065232499933d1e1f64a81c,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b4aa11011065232499933d1e1f64a81c, type: 2}
   m_IsPrefabParent: 0
@@ -4037,7 +4052,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -98}
+  m_AnchoredPosition: {x: 0, y: -223}
   m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1182545949
@@ -6121,6 +6136,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114118600237427636, guid: d8320560931a591458c7cef0e9e9e52c,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1355588194}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8320560931a591458c7cef0e9e9e52c, type: 2}
   m_IsPrefabParent: 0

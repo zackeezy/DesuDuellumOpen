@@ -10,6 +10,26 @@ public class LoadSceneOnClick : MonoBehaviour {
     public Button newNetButton;
     public Button joinNetButton;
 
+    private GameObject Logo = null;
+
+    void Awake()
+    {
+        Logo = GameObject.FindGameObjectWithTag("Finish");
+        if (Logo)
+        {
+            LeanTween.alpha(Logo, 0f, 4f).setOnComplete(LoadMainMenu);
+        }
+    }
+
+    private void LoadMainMenu()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    void Update(){
+
+    }
+
     public void LoadByIndex(int sceneIndex)
     {
         //do a cool scene transition
@@ -29,12 +49,12 @@ public class LoadSceneOnClick : MonoBehaviour {
                 if (server)
                 {
                     PlayerPrefs.SetInt("server", 1);
-                    AutoFade.LoadLevel(7, 1, 1, Color.black);
+                    AutoFade.LoadLevel(3, 1, 1, Color.black);
                 }
                 else
                 {
                     PlayerPrefs.SetInt("server", 0);
-                    AutoFade.LoadLevel(7, 1, 1, Color.black);
+                    AutoFade.LoadLevel(3, 1, 1, Color.black);
                 }
             }
         }
@@ -54,5 +74,4 @@ public class LoadSceneOnClick : MonoBehaviour {
             joinNetButton.interactable = false;
         }
     }
-
 }
