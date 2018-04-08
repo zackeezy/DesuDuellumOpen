@@ -20,6 +20,7 @@ public class NetworkControl : MonoBehaviour {
     private GameObject clientstuff;
 
     public GameCore _core;
+    public bool waitingForResponse;
 
     void Awake()
     {
@@ -52,6 +53,8 @@ public class NetworkControl : MonoBehaviour {
             serverstuff.SetActive(false);
             clientstuff.SetActive(true);
         }
+
+
 	}
 	
 	// Update is called once per frame
@@ -132,6 +135,9 @@ public class NetworkControl : MonoBehaviour {
                 EmoteController player2Emotes = GameObject.FindGameObjectWithTag("Player2").GetComponent<EmoteController>();
                 int emote = int.Parse(messages[1]);
                 player2Emotes.OtherEmote(emote);
+                break;
+            case "received":
+                _waitingForResponse = false;
                 break;
         }
     }
