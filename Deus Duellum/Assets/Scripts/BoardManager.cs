@@ -596,7 +596,7 @@ public class BoardManager : MonoBehaviour {
 
             if (whitePlayer == PlayerType.Local)
             {
-                LeanTween.scale(player1, player1.transform.localScale * 1.5f, 0.1f);
+                LeanTween.scale(player1, player1.transform.localScale * 1.2f, 0.1f);
                 Vector3 moveTo;
                 moveTo.x = player1.transform.position.x + 20;
                 moveTo.y = player1.transform.position.y + 30;
@@ -607,7 +607,7 @@ public class BoardManager : MonoBehaviour {
             }
             else
             {
-                LeanTween.scale(player2, player2.transform.localScale * 1.5f, 0.1f);
+                LeanTween.scale(player2, player2.transform.localScale * 1.2f, 0.1f);
                 Vector3 moveTo;
                 moveTo.x = player2.transform.position.x - 20;
                 moveTo.y = player2.transform.position.y - 5;
