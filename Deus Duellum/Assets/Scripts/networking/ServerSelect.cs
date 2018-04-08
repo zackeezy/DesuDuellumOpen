@@ -9,6 +9,7 @@ public class ServerSelect : MonoBehaviour {
 
     public NetworkControl netcontroller;
     public Text descText;
+    public Text selectionText;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +23,8 @@ public class ServerSelect : MonoBehaviour {
 
     public void ServerSelection()
     {
-        string servername = GetComponent<InputField>().text;
+        //string servername = GetComponent<InputField>().text;
+        string servername = selectionText.text;
         bool serverFound = false;
         if (servername != "")
         {

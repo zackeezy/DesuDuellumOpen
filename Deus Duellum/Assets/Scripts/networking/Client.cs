@@ -232,6 +232,7 @@ public class Client : MonoBehaviour {
     {
         PlayerInfo[] list = new PlayerInfo[serverList.Count];
         serverList.CopyTo(list);
+        serverList.Clear();
         return list;
     }
 
