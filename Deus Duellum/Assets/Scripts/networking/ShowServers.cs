@@ -85,7 +85,7 @@ public class ShowServers : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
-                PlayerInfo[] servers = netcontroller.GetServerListFromClient();
+                PlayerInfo[] servers = netcontroller.GetServerListFromClient(true);
 
                 for (int i = 0; i < servers.Length; i++)
                 //for (int i = 0; i < 5; i++)

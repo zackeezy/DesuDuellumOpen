@@ -228,11 +228,14 @@ public class Client : MonoBehaviour {
         return val;
     }
 
-    public PlayerInfo[] GetServers()
+    public PlayerInfo[] GetServers(bool reset)
     {
         PlayerInfo[] list = new PlayerInfo[serverList.Count];
         serverList.CopyTo(list);
-        serverList.Clear();
+        if(reset == true)
+        {
+            serverList.Clear();
+        }
         return list;
     }
 

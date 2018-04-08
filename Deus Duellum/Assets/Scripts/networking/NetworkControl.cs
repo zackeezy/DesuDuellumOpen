@@ -20,7 +20,7 @@ public class NetworkControl : MonoBehaviour {
     private GameObject clientstuff;
 
     public GameCore _core;
-    public bool waitingForResponse;
+    public bool _waitingForResponse;
 
     void Awake()
     {
@@ -93,9 +93,9 @@ public class NetworkControl : MonoBehaviour {
             .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
     }
 
-    public PlayerInfo[] GetServerListFromClient()
+    public PlayerInfo[] GetServerListFromClient(bool reset)
     {
-        return client.GetServers();
+        return client.GetServers(reset);
     }
 
     public void ServerSelected(int index)

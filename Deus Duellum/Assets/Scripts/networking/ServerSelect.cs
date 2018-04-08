@@ -30,7 +30,7 @@ public class ServerSelect : MonoBehaviour {
         {
             try
             {
-                PlayerInfo[] servers = netcontroller.GetServerListFromClient();
+                PlayerInfo[] servers = netcontroller.GetServerListFromClient(false);
                 int index = 0;
                 foreach (PlayerInfo info in servers)
                 {
