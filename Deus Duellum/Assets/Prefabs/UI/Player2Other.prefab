@@ -1042,9 +1042,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: 0
-  HelloVoices: []
-  WowVoices: []
-  TauntVoices: []
+  HelloVoices:
+  - {fileID: 8300000, guid: abe76c4340e0aae46b6f2e73c601d029, type: 3}
+  - {fileID: 8300000, guid: ca64d2ed27ac1ad42b88c214f7130008, type: 3}
+  - {fileID: 8300000, guid: 21df927e197e4f5429b91bc945471d62, type: 3}
+  WowVoices:
+  - {fileID: 8300000, guid: a7884c7044252be4c89fc4fc64e7efe8, type: 3}
+  - {fileID: 8300000, guid: ae2edffa112508d4786999adac81b634, type: 3}
+  - {fileID: 8300000, guid: b0a16932c66d2134a87988fb412c8fa8, type: 3}
+  TauntVoices:
+  - {fileID: 8300000, guid: 3a74555333e6d654d83fda56679e33b7, type: 3}
+  - {fileID: 8300000, guid: ba566fd72e30391429f521600a422ac5, type: 3}
+  - {fileID: 8300000, guid: ba4a85ff5608a2d4bb51db97a20b54af, type: 3}
+  VictoryVoices:
+  - {fileID: 8300000, guid: 6e296122a1845dd40a48400fe931d272, type: 3}
+  - {fileID: 8300000, guid: 1914bbbad6c733f46b2a02cbdf54e63e, type: 3}
+  - {fileID: 8300000, guid: 47836a1ee8a4cad4fabe823862ac1cb7, type: 3}
+  emotesMuted: 0
 --- !u!114 &114695903516026172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1085,6 +1099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mutedImg: {fileID: 21300000, guid: 5f393014c067b4ee09b975d451aa3385, type: 3}
   unMutedImg: {fileID: 21300000, guid: b38084635d70f4ab79ffe4aae48b7a2c, type: 3}
+  player2Emotes: {fileID: 114680165122121032}
 --- !u!114 &114728132677460904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1468,14 +1483,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.90588236, g: 0.7882353, b: 0.5568628, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 707a6638b8f856c4ba111d1f899a3ebf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70038c3175d79c44a9eaeab879aac482, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1842,7 +1857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -104, y: -312}
+  m_AnchoredPosition: {x: -104, y: -307}
   m_SizeDelta: {x: 375, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224482298984220458

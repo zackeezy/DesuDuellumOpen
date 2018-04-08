@@ -14,11 +14,11 @@ public class LoadSceneOnClick : MonoBehaviour {
 
     void Awake()
     {
-        Logo = GameObject.FindGameObjectWithTag("Finish");
-        if (Logo)
-        {
-            LeanTween.alpha(Logo, 0f, 4f).setOnComplete(LoadMainMenu);
-        }
+        //Logo = GameObject.FindGameObjectWithTag("Finish");
+        //if (Logo)
+        //{
+        //    LeanTween.alpha(Logo, 0f, 4f).setOnComplete(LoadMainMenu);
+        //}
     }
 
     private void LoadMainMenu()

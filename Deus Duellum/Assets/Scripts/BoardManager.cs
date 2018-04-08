@@ -22,18 +22,23 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject player1img;
     public GameObject player2img;
-    public Sprite AthenaImg;
-    public Sprite AthenaWinImg;
-    public Sprite AthenaLoseImg;
-    public Sprite AthenaBorder;
-    public Sprite RaImg;
-    public Sprite RaWinImg;
-    public Sprite RaLoseImg;
-    public Sprite RaBorder;
-    public Sprite ThorImg;
-    public Sprite ThorWinImg;
-    public Sprite ThorLoseImg;
-    public Sprite ThorBorder;
+
+    //Image order: default(0), border(1), win(2), lose(3), hi(4), wow(5), taunt(6)
+    public Sprite[] AthenaImgs;
+    //public Sprite AthenaImg;
+    //public Sprite AthenaWinImg;
+    //public Sprite AthenaLoseImg;
+    //public Sprite AthenaBorder;
+    public Sprite[] RaImgs;
+    //public Sprite RaImg;
+    //public Sprite RaWinImg;
+    //public Sprite RaLoseImg;
+    //public Sprite RaBorder;
+    public Sprite[] ThorImgs;
+    //public Sprite ThorImg;
+    //public Sprite ThorWinImg;
+    //public Sprite ThorLoseImg;
+    //public Sprite ThorBorder;
 
     public Text turnText;
 	public GameObject gameOverPanel;
@@ -71,9 +76,9 @@ public class BoardManager : MonoBehaviour {
     private AudioSource effectSource;
     public AudioClip captureSound;
     public AudioClip moveSound;
-    public AudioClip athenaTurnSound;
-    public AudioClip raTurnSound;
-    public AudioClip thorTurnSound;
+    //public AudioClip athenaTurnSound;
+    //public AudioClip raTurnSound;
+    //public AudioClip thorTurnSound;
 
     private EmoteController player1emote;
     private EmoteController player2emote;
@@ -699,38 +704,37 @@ public class BoardManager : MonoBehaviour {
             if (character == 0)
             {
                 //athena
-                playerImg.sprite = AthenaWinImg;
+                playerImg.sprite = AthenaImgs[2];
             }
             else if (character == 1)
             {
                 //ra
-                playerImg.sprite = RaWinImg;
+                playerImg.sprite = RaImgs[2];
             }
             else
             {
                 //thor
-                playerImg.sprite = ThorWinImg;
+                playerImg.sprite = ThorImgs[2];
             }
         }
         else
         {
-            ////loss pose
-            ////TODO: add in loss sprites when get them from Colin
-            //if (character == 0)
-            //{
-            //    //athena
-            //    playerImg.sprite = AthenaLoseImg;
-            //}
-            //else if (character == 1)
-            //{
-            //    //ra
-            //    playerImg.sprite = RaLoseImg;
-            //}
-            //else
-            //{
-            //    //thor
-            //    playerImg.sprite = ThorLoseImg;
-            //}
+            //loss pose
+            if (character == 0)
+            {
+                //athena
+                playerImg.sprite = AthenaImgs[3];
+            }
+            else if (character == 1)
+            {
+                //ra
+                playerImg.sprite = RaImgs[3];
+            }
+            else
+            {
+                //thor
+                playerImg.sprite = ThorImgs[3];
+            }
         }
     }
 
@@ -843,8 +847,8 @@ public class BoardManager : MonoBehaviour {
         if (character == 0)
         {
             //Debug.Log("player " + player + " is Athena");
-            playerImg.sprite = AthenaImg;
-            playerBorder.sprite = AthenaBorder;
+            playerImg.sprite = AthenaImgs[0];
+            playerBorder.sprite = AthenaImgs[1];
             borderWidth = 260;
             borderHeight = 260;
 
@@ -861,8 +865,8 @@ public class BoardManager : MonoBehaviour {
         else if (character == 1)
         {
             //Debug.Log("player " + player + " is Ra");
-            playerImg.sprite = RaImg;
-            playerBorder.sprite = RaBorder;
+            playerImg.sprite = RaImgs[0];
+            playerBorder.sprite = RaImgs[1];
             borderWidth = 275;
             borderHeight = 275;
 
@@ -879,8 +883,8 @@ public class BoardManager : MonoBehaviour {
         else if (character == 2)
         {
             //Debug.Log("player " + player + " is Thor");
-            playerImg.sprite = ThorImg;
-            playerBorder.sprite = ThorBorder;
+            playerImg.sprite = ThorImgs[0];
+            playerBorder.sprite = ThorImgs[1];
             borderWidth = 230;
             borderHeight = 230;
 
@@ -993,30 +997,30 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void PlayTurnChangeSoundEffect(int character)
-    {
-        //make sure it will be able to play
-        if (effectSource)
-        {
-            if (character == 0)
-            {
-                //choose the athena turn change sound effect
-                effectSource.clip = athenaTurnSound;
-            }
-            else if (character == 1)
-            {
-                //choose the ra turn change sound effect
-                effectSource.clip = raTurnSound;
-            }
-            else if (character == 2)
-            {
-                //choose the thor turn change sound effect
-                effectSource.clip = thorTurnSound;
-            }
-            //play the clip
-            effectSource.Play();
-        }
-    }
+    //public void PlayTurnChangeSoundEffect(int character)
+    //{
+    //    //make sure it will be able to play
+    //    if (effectSource)
+    //    {
+    //        if (character == 0)
+    //        {
+    //            //choose the athena turn change sound effect
+    //            effectSource.clip = athenaTurnSound;
+    //        }
+    //        else if (character == 1)
+    //        {
+    //            //choose the ra turn change sound effect
+    //            effectSource.clip = raTurnSound;
+    //        }
+    //        else if (character == 2)
+    //        {
+    //            //choose the thor turn change sound effect
+    //            effectSource.clip = thorTurnSound;
+    //        }
+    //        //play the clip
+    //        effectSource.Play();
+    //    }
+    //}
 
     public GameCore GetGameCore()
     {

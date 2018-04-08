@@ -13,11 +13,15 @@ public class EmoteController : MonoBehaviour {
     private string TauntEmote;
     private string VictoryEmote;
 
+    private Sprite helloImg;
+    private Sprite wowImg;
+    private Sprite tauntImg;
+
     private float voiceLineLength;
     public AudioClip[] HelloVoices;
     public AudioClip[] WowVoices;
     public AudioClip[] TauntVoices;
-    public AudioClip[] VictoryVoices;
+    public AudioClip[] VictoryVoices;    
 
     private GameObject emoteButtons;
     private GameObject emotePanel;
@@ -26,6 +30,8 @@ public class EmoteController : MonoBehaviour {
     AudioSource emoteSource;
 
     NetworkControl netController;
+
+    BoardManager boardmanager;
 
     public bool emotesMuted = false;
 
@@ -69,6 +75,7 @@ public class EmoteController : MonoBehaviour {
     {
         //function is called in BoardManager's setPrefs()
 
+        boardmanager = GameObject.FindGameObjectWithTag("boardManager").GetComponent<BoardManager>();
         character = givenCharacter;
         if (character == 0)
         {
@@ -77,6 +84,10 @@ public class EmoteController : MonoBehaviour {
             WowEmote = "Even the goddess of strategy \ncouldn't see that one coming.";
             TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know...";
             VictoryEmote = "All according to plan!";
+
+            helloImg = boardmanager.AthenaImgs[4];
+            wowImg = boardmanager.AthenaImgs[5];
+            tauntImg = boardmanager.AthenaImgs[6];
         }
         else if (character == 1)
         {
@@ -85,6 +96,10 @@ public class EmoteController : MonoBehaviour {
             WowEmote = "You shine brighter than the sun!";
             TauntEmote = "Even Anubis couldn't tip \nthe scales in your favor.";
             VictoryEmote = "I... am a star!";
+
+            helloImg = boardmanager.RaImgs[4];
+            wowImg = boardmanager.RaImgs[5];
+            tauntImg = boardmanager.RaImgs[6];
         }
         else if (character == 2)
         {
@@ -94,6 +109,10 @@ public class EmoteController : MonoBehaviour {
             //TauntEmote = "You can't even spell Meal-near!";
             TauntEmote = "Ha! You can't even spell Mjölnir!";
             VictoryEmote = "Ha! another victory for the mighty Thor!";
+
+            helloImg = boardmanager.ThorImgs[4];
+            wowImg = boardmanager.ThorImgs[5];
+            tauntImg = boardmanager.ThorImgs[6];
         }
     }
 
@@ -108,7 +127,7 @@ public class EmoteController : MonoBehaviour {
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
         PlayEmoteAudio(emote);
-        StartCoroutine(AnimateLocalEmotePanel());
+        StartCoroutine(AnimateLocalEmotePanel(emote));
 
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
         if (gameIndex == 7)
@@ -129,7 +148,7 @@ public class EmoteController : MonoBehaviour {
             emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
             PlayEmoteAudio(emote);
-            StartCoroutine(AnimateLocalEmotePanel());
+            StartCoroutine(AnimateOtherEmotePanel(emote));
         }
     }
 
@@ -139,7 +158,8 @@ public class EmoteController : MonoBehaviour {
         emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
         PlayEmoteAudio(3);
-        StartCoroutine(AnimateLocalEmotePanel());
+        StartCoroutine(AnimateLocalEmotePanel(3));
+        //image gets changed in boardmanager
     }
 
     public void PlayEmoteAudio(int emote)
@@ -182,7 +202,7 @@ public class EmoteController : MonoBehaviour {
         }
     }
 
-    IEnumerator AnimateLocalEmotePanel()
+    IEnumerator AnimateLocalEmotePanel(int emote)
     {
         //activate the emote panel
         emotePanel.SetActive(true);
@@ -191,7 +211,26 @@ public class EmoteController : MonoBehaviour {
         Button emoteButton = transform.GetChild(3).GetChild(2).GetComponent<Button>();
         emoteButton.interactable = false;
 
-        //animate the emote button
+        //change the image to match the emote
+        Image playerImg = transform.GetChild(0).GetChild(1).GetComponent<Image>();
+        Sprite old = playerImg.sprite;
+        if (emote == 0)
+        {
+            //hello
+            playerImg.sprite = helloImg;
+        }
+        else if (emote == 1)
+        {
+            //wow
+            playerImg.sprite = wowImg;
+        }
+        else if (emote == 2)
+        {
+            //taunt
+            playerImg.sprite = tauntImg;
+        }
+
+        //animate the emote bubble
         Vector3 oldScale = emotePanel.transform.localScale;
         LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.1f);
         LeanTween.scale(emotePanel, oldScale, 0.1f).setDelay(.1f);
@@ -199,17 +238,42 @@ public class EmoteController : MonoBehaviour {
         yield return new WaitForSeconds(voiceLineLength);
         emotePanel.SetActive(false);
 
+        //change the image back
+        playerImg.sprite = old;
+
         //reactivate emote button
         emoteButton.interactable = true;
     }
 
-    IEnumerator AnimateOtherEmotePanel()
+    IEnumerator AnimateOtherEmotePanel(int emote)
     {
+        //change the image to match the emote
+        Image playerImg = transform.GetChild(0).GetChild(1).GetComponent<Image>();
+        Sprite old = playerImg.sprite;
+        if (emote == 0)
+        {
+            //hello
+            playerImg.sprite = helloImg;
+        }
+        else if (emote == 1)
+        {
+            //wow
+            playerImg.sprite = wowImg;
+        }
+        else if (emote == 2)
+        {
+            //taunt
+            playerImg.sprite = tauntImg;
+        }
+
         Vector3 oldScale = emotePanel.transform.localScale;
         LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.15f);
         LeanTween.scale(emotePanel, oldScale, 0.15f).setDelay(.15f);
 
         yield return new WaitForSeconds(voiceLineLength);
         emotePanel.SetActive(false);
+
+        //change the image back
+        playerImg.sprite = old;
     }
 }

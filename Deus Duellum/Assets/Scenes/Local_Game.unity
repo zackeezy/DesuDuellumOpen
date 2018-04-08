@@ -3429,6 +3429,36 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: blackCam
+      value: 
+      objectReference: {fileID: 2016053101}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: player1img
+      value: 
+      objectReference: {fileID: 1893615704}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: player2img
+      value: 
+      objectReference: {fileID: 612183609}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: turnText
+      value: 
+      objectReference: {fileID: 1996608110}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: gameOverPanel
+      value: 
+      objectReference: {fileID: 15643098}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: countdownText
+      value: 
+      objectReference: {fileID: 643627643}
     - target: {fileID: 114024930349838264, guid: a75c3327317d4bf4c930d20322c3016d,
         type: 2}
       propertyPath: whiteLog
@@ -3469,36 +3499,6 @@ Prefab:
       propertyPath: logButtonText
       value: 
       objectReference: {fileID: 270182516}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: blackCam
-      value: 
-      objectReference: {fileID: 2016053101}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: player1img
-      value: 
-      objectReference: {fileID: 1893615704}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: player2img
-      value: 
-      objectReference: {fileID: 612183609}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: turnText
-      value: 
-      objectReference: {fileID: 1996608110}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: gameOverPanel
-      value: 
-      objectReference: {fileID: 15643098}
-    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
-        type: 2}
-      propertyPath: countdownText
-      value: 
-      objectReference: {fileID: 643627643}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
   m_IsPrefabParent: 0
