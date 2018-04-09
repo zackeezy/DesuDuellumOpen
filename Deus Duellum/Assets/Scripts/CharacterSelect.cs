@@ -20,7 +20,9 @@ public class CharacterSelect : MonoBehaviour {
     private GameObject difficultyHighlight;
     private GameObject turnHighlight;
 
-    private bool charactersSelected = false;
+    //private bool charactersSelected = false;
+    private bool p1Selected = false;
+    private bool p2Selected = false;
     private bool difficultySelected = false;
     private bool turnSelected = false;
     private int gameIndex;
@@ -70,37 +72,64 @@ public class CharacterSelect : MonoBehaviour {
     public void setCharacter(int character)
     {
         //add visual effect to show it was picked
-
-        if (player == 2)
+        if (gameIndex == 2)
         {
-            characterSelectText.text = "Press Play";
-            PlayerPrefs.SetInt("Player2Character", character);
-            SetCharacterHighlight(character, false);
-            charactersSelected = true;
-            setFirst(true);
+            if (player == 2)
+            {
+                characterSelectText.text = "Press Play";
+                PlayerPrefs.SetInt("Player2Character", character);
+                SetCharacterHighlight(character, false);
+                p2Selected = true;
+                setFirst(true);
+                player = 3;
+                if (!p1Selected)
+                {
+                    player = 1;
+                }
+                Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
+                backButton.interactable = true;
+            }
+            else if (player == 1)
+            {
+                player1character = character;
+                PlayerPrefs.SetInt("Player1Character", character);
+
+                if (!p1Selected)
+                {
+                    SetCharacterHighlight(character, true);
+                    p1Selected = true;
+                }
+
+                //let player2 pick a character for a local game
+                if (gameIndex == 2 && !p2Selected)
+                {
+                    characterSelectText.text = "Player Two: Select a character";
+                    //show a cancel button? to go back to player1?
+                    player = 2;
+
+                    Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
+                    backButton.interactable = true;
+                }
+                else
+                {
+                    //charactersSelected = true;
+                    characterSelectText.text = "Press Play";
+                    player = 3;
+                }
+            }
+            else
+            {
+                //???
+            }
         }
         else
         {
             player1character = character;
             PlayerPrefs.SetInt("Player1Character", character);
-
             SetCharacterHighlight(character, true);
-
-            //let player2 pick a character for a local game
-            if (gameIndex == 2)
-            {
-                characterSelectText.text = "Player Two: Select a character";
-                //show a cancel button? to go back to player1?
-                player = 2;
-
-                Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
-                backButton.interactable = true;
-            }
-            else
-            {
-                charactersSelected = true;
-            }
+            characterSelectText.text = "Press Play";
         }
+        
     }
 
     public void setFirst(bool first)
@@ -174,17 +203,17 @@ public class CharacterSelect : MonoBehaviour {
     public void CheckSettings()
     {
         //if local, only characters must be selected
-        if (gameIndex == 2 && charactersSelected)
+        if (gameIndex == 2 && p1Selected && p2Selected)
         {
             canPlay = true;
         }
-        //if network, must also choose turn, an
-        else if (gameIndex == 4 && charactersSelected)
+        //if network
+        else if (gameIndex == 4 && p1Selected)
         {
             canPlay = true;
         }
         //if ai, must also choose difficulty
-        else if (gameIndex == 5 && charactersSelected && turnSelected && difficultySelected)
+        else if (gameIndex == 5 && p1Selected && turnSelected && difficultySelected)
         {
             canPlay = true;
         }
@@ -198,9 +227,12 @@ public class CharacterSelect : MonoBehaviour {
         GameObject highlight;
         if (player1)
         {
-            foreach(GameObject h in CharacterHighlights)
+            if (gameIndex != 2)
             {
-                h.SetActive(false);
+                foreach (GameObject h in CharacterHighlights)
+                {
+                    h.SetActive(false);
+                }
             }
             highlight = btn.transform.GetChild(0).gameObject;
             player1Highlight = highlight;
@@ -233,7 +265,13 @@ public class CharacterSelect : MonoBehaviour {
             characterSelectText.text = "Player Two: Select a Character";
             playButton.interactable = false;
             player = 2;
+            if (!p1Selected)
+            {
+                player = 1;
+            }
+            p2Selected = false;
             canPlay = false;
+            
         }
         else if (player1Highlight)
         {
@@ -241,11 +279,50 @@ public class CharacterSelect : MonoBehaviour {
             player1Highlight = null;
             characterSelectText.text = "Player One: Select a Character";
             player = 1;
-
+            p1Selected = false;
+            Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
+            backButton.interactable = false;
+            canPlay = false;
+        }
+        if(!player1Highlight && !player2Highlight)
+        {
             Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
             backButton.interactable = false;
         }
-        charactersSelected = false;
+        //charactersSelected = false;
+    }
+
+    public void HighlightClicked(bool p1)
+    {
+        if (p1)
+        {
+            player1Highlight.SetActive(false);
+            player1Highlight = null;
+            characterSelectText.text = "Player One: Select a Character";
+            player = 1;
+            p1Selected = false;
+            //Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
+            //backButton.interactable = false;
+            canPlay = false;
+            playButton.interactable = false;
+        }
+        else
+        {
+            player2Highlight.SetActive(false);
+            player2Highlight = null;
+            characterSelectText.text = "Player Two: Select a Character";
+            playButton.interactable = false;
+            player = 2;
+            p2Selected = false;
+            canPlay = false;
+            playButton.interactable = false;
+        }
+        if (!player1Highlight && !player2Highlight)
+        {
+            Button backButton = transform.GetChild(0).GetChild(5).GetComponent<Button>();
+            backButton.interactable = false;
+        }
+        //charactersSelected = false;
     }
 
     public void OtherPlayerSelected(int character)
