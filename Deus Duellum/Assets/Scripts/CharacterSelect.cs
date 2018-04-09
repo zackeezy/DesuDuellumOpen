@@ -178,7 +178,7 @@ public class CharacterSelect : MonoBehaviour {
             canPlay = true;
         }
         //if network, must also choose turn, an
-        else if (gameIndex == 4 && charactersSelected)
+        else if (gameIndex == 4 && charactersSelected)//And both are locked in. Im just not sure how to lock in.
         {
             canPlay = true;
         }

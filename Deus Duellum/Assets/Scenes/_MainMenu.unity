@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -5962,6 +5962,35 @@ Prefab:
     - target: {fileID: 1453699674640246, guid: 006ddea639fc99644bf2ac43ad56b7d9, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114902432009848248, guid: 006ddea639fc99644bf2ac43ad56b7d9,
+        type: 2}
+      propertyPath: m_Text
+      value: Deus Duellum is played with 32 pieces, 16 per player. Pieces start on
+        the back two rows closest to their owner.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114956164936010390, guid: 006ddea639fc99644bf2ac43ad56b7d9,
+        type: 2}
+      propertyPath: m_Text
+      value: A piece can move one square forward, vertically or diagonally. Pieces
+        cannot move backwards or sideways.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114512458329831738, guid: 006ddea639fc99644bf2ac43ad56b7d9,
+        type: 2}
+      propertyPath: m_Text
+      value: Pieces can kill opponent pieces only by moving diagonally forward.  You
+        cannot take a piece moving vertically forward.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114749180483218626, guid: 006ddea639fc99644bf2ac43ad56b7d9,
+        type: 2}
+      propertyPath: m_Text
+      value: To win the game, you must reach the farthest row on the opposite side
+        of the board with any one of your pieces. The first player to reach this row
+        wins!
+      objectReference: {fileID: 0}
+    - target: {fileID: 1276671257566654, guid: 006ddea639fc99644bf2ac43ad56b7d9, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 006ddea639fc99644bf2ac43ad56b7d9, type: 2}
