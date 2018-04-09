@@ -25,7 +25,6 @@ public class MusicInfo : MonoBehaviour {
 
     private void Start()
     {
-
     }
 
     void Update()
@@ -48,12 +47,27 @@ public class MusicInfo : MonoBehaviour {
         if (!musicSource.isPlaying)
         {
             clip++;
-            if (clip >= musicClips.Length)
+            if (clip >= 3)
             {
                 clip = 0;
             }
             musicSource.clip = musicClips[clip];
             musicSource.Play();
         }
+    }
+
+    public void ChangeMusic(int gameIndex)
+    {
+        if(gameIndex == 6 || gameIndex == 7 || gameIndex == 8)
+        {
+            //play game music
+            musicSource.clip = musicClips[3];
+        }
+        else
+        {
+            //play menu music
+            musicSource.clip = musicClips[clip];
+        }
+        musicSource.Play();
     }
 }

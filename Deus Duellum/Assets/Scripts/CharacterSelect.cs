@@ -124,6 +124,7 @@ public class CharacterSelect : MonoBehaviour {
         }
         else
         {
+            p1Selected = true;
             player1character = character;
             PlayerPrefs.SetInt("Player1Character", character);
             SetCharacterHighlight(character, true);

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -5442,7 +5442,7 @@ Prefab:
     - target: {fileID: 114489082391045398, guid: f02f6345406757a42886db0736a81a17,
         type: 2}
       propertyPath: musicClips.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4632930641288620, guid: f02f6345406757a42886db0736a81a17, type: 2}
       propertyPath: m_LocalPosition.x
@@ -5505,22 +5505,27 @@ Prefab:
         type: 2}
       propertyPath: musicClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 9ed184a89d7124142b91e9c1a04287e2, type: 3}
+      objectReference: {fileID: 8300000, guid: 50f7368e086496d4a881e4944112c867, type: 3}
     - target: {fileID: 114489082391045398, guid: f02f6345406757a42886db0736a81a17,
         type: 2}
       propertyPath: musicClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: ebcd8c9141357c24298998f3be48dea0, type: 3}
+      objectReference: {fileID: 8300000, guid: 9ed184a89d7124142b91e9c1a04287e2, type: 3}
     - target: {fileID: 114489082391045398, guid: f02f6345406757a42886db0736a81a17,
         type: 2}
       propertyPath: musicClips.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: 50f7368e086496d4a881e4944112c867, type: 3}
+      objectReference: {fileID: 8300000, guid: 8b7270c274320ec419cdce4536e1ce13, type: 3}
     - target: {fileID: 82884206481747584, guid: f02f6345406757a42886db0736a81a17,
         type: 2}
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 50f7368e086496d4a881e4944112c867, type: 3}
+    - target: {fileID: 114489082391045398, guid: f02f6345406757a42886db0736a81a17,
+        type: 2}
+      propertyPath: musicClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a58b876375f32142972630fb39b201f, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f02f6345406757a42886db0736a81a17, type: 2}
   m_IsPrefabParent: 0
