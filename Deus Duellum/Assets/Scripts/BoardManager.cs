@@ -92,6 +92,8 @@ public class BoardManager : MonoBehaviour {
     public int timeLeft = 60;
     public Text countdownText;
 
+    int _connectionTester;
+
     private float[] tilePositionX =
     {
         -4.371f, -3.121f, -1.871f, -0.621f, 0.629f, 1.879f, 3.129f, 4.379f, 
@@ -174,6 +176,21 @@ public class BoardManager : MonoBehaviour {
             }
             _foreignMoveCompleted = false;
             gameMode = PlayerType.Local;
+        }
+
+        string sceneName = SceneManager.GetActiveScene().name;
+        if(sceneName == "Online_Game")
+        {
+            _connectionTester = _connectionTester++ % 4500;
+            if(!netController._waitingForResponse && _connectionTester == 4499)
+            {
+                netController.CheckConnection();
+            }
+            else if(netController._waitingForResponse)
+            {
+                //TODO: Ask if they want to wait longer
+            }
+
         }
     }
     IEnumerator LoseTime()
@@ -389,11 +406,12 @@ public class BoardManager : MonoBehaviour {
 	private void MoveToken(int x, int y, float tileXPos, float tileZPos)
     {
         //Tween the position 
-        Vector3 newPosition = new Vector3();
-        newPosition.x = tileXPos;
-        newPosition.y = flatTokenYpos;
-        newPosition.z = tileZPos;
-
+        Vector3 newPosition = new Vector3()
+        {
+            x = tileXPos,
+            y = flatTokenYpos,
+            z = tileZPos
+        };
         LeanTween.cancelAll();
         if (isPlayer1White)
         {

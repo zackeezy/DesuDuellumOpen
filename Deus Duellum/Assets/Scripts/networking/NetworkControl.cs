@@ -136,6 +136,9 @@ public class NetworkControl : MonoBehaviour {
                 int emote = int.Parse(messages[1]);
                 player2Emotes.OtherEmote(emote);
                 break;
+            case "checkconnection":
+                Send("received");
+                break;
             case "received":
                 _waitingForResponse = false;
                 break;
@@ -217,5 +220,11 @@ public class NetworkControl : MonoBehaviour {
         {
             return server.IsConnected();
         }
+    }
+
+    public void CheckConnection()
+    {
+        Send("checkconnection");
+        _waitingForResponse = true;
     }
 }
