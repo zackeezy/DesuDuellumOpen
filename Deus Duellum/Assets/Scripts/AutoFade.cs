@@ -27,6 +27,8 @@ public class AutoFade : MonoBehaviour
         get { return Instance.m_Fading; }
     }
 
+    private static GameObject AudioObj;
+
     //private void Awake()
     //{
     //    DontDestroyOnLoad(this);
@@ -65,6 +67,10 @@ public class AutoFade : MonoBehaviour
 #endif
     }
 
+    private void Start()
+    {
+        AudioObj = GameObject.FindGameObjectWithTag("Audio");
+    }
 
     private void DrawQuad(Color aColor, float aAlpha)
     {
@@ -124,5 +130,7 @@ public class AutoFade : MonoBehaviour
         Instance.m_LevelName = "";
         Instance.m_LevelIndex = aLevelIndex;
         Instance.StartFade(aFadeOutTime, aFadeInTime, aColor);
+        MusicInfo mInfo = AudioObj.GetComponent<MusicInfo>();
+        mInfo.ChangeMusic(aLevelIndex);
     }
 }
