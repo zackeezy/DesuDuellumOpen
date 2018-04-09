@@ -435,7 +435,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1473016152331904
 GameObject:
   m_ObjectHideFlags: 1
@@ -1555,8 +1555,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: If you are diagonal from an opposing piece, you can take it and remove it
-    from the board.  You cannot do so moving forward.
+  m_Text: Pieces can kill opponent pieces only by moving diagonally forward.  You
+    cannot take a piece moving vertically forward.
 --- !u!114 &114532490035232846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1865,8 +1865,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Once either player gets one of their pieces to the opponents home row or
-    takes all their opponents pieces, the game has been won.
+  m_Text: To win the game, you must reach the farthest row on the opposite side of
+    the board with any one of your pieces. The first player to reach this row wins!
 --- !u!114 &114773409129600302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2115,8 +2115,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Deus Duellum is played with 32 pieces, 16 for each player, placed on the
-    board with two rows of 8 for each player.  '
+  m_Text: Deus Duellum is played with 32 pieces, 16 per player. Pieces start on the
+    back two rows closest to their owner.
 --- !u!114 &114909759132258278
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2230,8 +2230,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'The game rules are fairly simple. A piece can move forward one or diagonal
-    one heading towards the opponent''s side of the board.  '
+  m_Text: A piece can move one square forward, vertically or diagonally. Pieces cannot
+    move backwards or sideways.
 --- !u!222 &222004612654846160
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -3074,7 +3074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2}
+  m_AnchoredPosition: {x: 0, y: 4}
   m_SizeDelta: {x: 1050, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224563448720677296

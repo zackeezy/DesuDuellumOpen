@@ -25,6 +25,7 @@ public class CharacterSelect : MonoBehaviour {
     private bool turnSelected = false;
     private int gameIndex;
     private bool canPlay = false;
+    private bool localChose = false;
     private bool opponentChose = false;
     private GameObject waitPanel;
     private GameObject timeoutPanel;
@@ -178,7 +179,7 @@ public class CharacterSelect : MonoBehaviour {
             canPlay = true;
         }
         //if network, must also choose turn, an
-        else if (gameIndex == 4 && charactersSelected)//And both are locked in. Im just not sure how to lock in.
+        else if (gameIndex == 4 && charactersSelected)
         {
             canPlay = true;
         }
@@ -259,13 +260,14 @@ public class CharacterSelect : MonoBehaviour {
         //send the character
         string tosend = "character|" + player1character;
         netController.Send(tosend);
+        localChose = true;
 
         CheckNetworkSelections();
     }
 
     private void CheckNetworkSelections()
     {
-        if (canPlay && opponentChose)
+        if (localChose && opponentChose)
         {
             //move to next scene
             LoadSceneOnClick scenechanger = GetComponent<LoadSceneOnClick>();
