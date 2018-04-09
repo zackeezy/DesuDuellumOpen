@@ -59,8 +59,8 @@ public class BoardManager : MonoBehaviour {
 
     public List<GameObject> boardTokens;
 
-    private bool whiteWon = false;
-	private bool blackWon = false;
+    public bool whiteWon = false;
+	public bool blackWon = false;
     private GameObject _capturedPiece;
     private GameObject notationsToggleUI;
     private Toggle notationsToggle;
@@ -218,7 +218,7 @@ public class BoardManager : MonoBehaviour {
                 flatpos.z = selectedToken.transform.position.z;
                 //if already a selected token, make it stop floating                  
                 LeanTween.move(selectedToken.gameObject, flatpos, 0.25f);
-                
+
                 //check to see if this is the same token
                 if (selectedToken.currentX == selected.currentX && selectedToken.currentY == selected.currentY)
                 {
@@ -288,11 +288,11 @@ public class BoardManager : MonoBehaviour {
                         BoardHighlights.Instance.HighlightTile(x - 1, y - 1);
                     }
                 }
-            }        
+            }
         }
         else
         {
-            if(!whiteWon && !blackWon && selected.isWhite != isWhiteTurn)
+            if (!whiteWon && !blackWon && selected.isWhite != isWhiteTurn)
             {
                 //they are trying to capture a piece
                 TileClicked(x, y, selected.transform.position.x, selected.transform.position.z);
@@ -429,8 +429,6 @@ public class BoardManager : MonoBehaviour {
         }
 
         moveforLog += log.CoordsToNotations(x, y);
-        //send the move to the log
-        log.ShowNotations(moveforLog, isWhiteTurn);
 
         //Debug.Log(moveforLog);
     
@@ -441,6 +439,13 @@ public class BoardManager : MonoBehaviour {
         {
             //toggle the turn
             ChangeTurn();
+            //send the move to the log
+            log.ShowNotations(moveforLog, !isWhiteTurn);
+        }
+        else
+        {
+            //send the move to the log
+            log.ShowNotations(moveforLog, isWhiteTurn);
         }
         
     }
@@ -570,6 +575,7 @@ public class BoardManager : MonoBehaviour {
 
         if (_core.whiteWon)
         {
+            whiteWon = true;
             if (whitePlayer == PlayerType.Local && blackPlayer == PlayerType.Local)
             {
                 //player1 win
@@ -617,7 +623,7 @@ public class BoardManager : MonoBehaviour {
                 player2emote.PlayVictoryEmote();
             }
 
-            log.ShowWin(true);
+            //log.ShowWin(true);
             
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
@@ -625,6 +631,7 @@ public class BoardManager : MonoBehaviour {
         }
         else if (_core.blackWon)
         {
+            blackWon = true;
             if (blackPlayer == PlayerType.Local && whitePlayer == PlayerType.Local)
             {
                 //player2 win
@@ -672,7 +679,7 @@ public class BoardManager : MonoBehaviour {
                 player1emote.PlayVictoryEmote();
             }
 
-            log.ShowWin(false);
+            //log.ShowWin(false);
 
             //show that the game was won and who won
             gameOverPanel.SetActive(true);

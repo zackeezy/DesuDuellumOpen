@@ -213,3 +213,4 @@ b4bd1a2169092ca325406b98fe5a325d Assembly-CSharp.dll:.TestingRotate
 b4b76894132f29ac4da74e1abb2fdf80 Assembly-CSharp.dll:.NetworkControl
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GeneralEventsListeners
 48ddff96f17b93c27762041529c640e1 Assembly-CSharp.dll:.OldGUIExamplesCS
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BuildLogTesting

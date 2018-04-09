@@ -21,6 +21,8 @@ public class MoveLog : MonoBehaviour {
     private string recentWhite;
     private string recentBlack;
 
+    private BoardManager manager;
+
     //private List<string> whiteMoves;
     //private List<string> blackMoves;
 
@@ -29,6 +31,8 @@ public class MoveLog : MonoBehaviour {
         smallLog.SetActive(true);
         bigLog.SetActive(false);
         logButtonText.text = "Expand Log";
+
+        manager = GameObject.FindGameObjectWithTag("boardManager").GetComponent<BoardManager>();
     }
 	
 	// Update is called once per frame
@@ -76,6 +80,12 @@ public class MoveLog : MonoBehaviour {
         string notations;
         if (isWhite)
         {
+            if (manager.whiteWon)
+            {
+                //ShowWin(true);
+                smallWhiteLog.text += '#';
+                notation += "#";
+            }
             notations = whiteLog.text;
             //notations += '\n';
             //notations += notation;
@@ -87,6 +97,12 @@ public class MoveLog : MonoBehaviour {
         }
         else
         {
+            if (manager.blackWon)
+            {
+                //ShowWin(false);
+                smallBlackLog.text += '#';
+                notation += "#";
+            }
             notations = blackLog.text;
             //notations += '\n';
             //notations += notation;
@@ -98,31 +114,20 @@ public class MoveLog : MonoBehaviour {
         }
     }
 
-    public void ShowWin(bool white)
-    {
-        string notations;
-        if (white)
-        {
-            notations = whiteLog.text;
-            smallWhiteLog.text += '#';
-        }
-        else
-        {
-            notations = blackLog.text;
-            smallWhiteLog.text += '#';
-        }
-
-        notations += '#';
-
-        if (white)
-        {
-           whiteLog.text = notations;
-        }
-        else
-        {
-            blackLog.text = notations;
-        }
-    }
+    //public void ShowWin(bool white)
+    //{
+    //    //string notations;
+    //    if (white)
+    //    {
+    //        //notations = whiteLog.text;
+    //        smallWhiteLog.text += '#';
+    //    }
+    //    else
+    //    {
+    //        //notations = blackLog.text;
+    //        smallBlackLog.text += '#';
+    //    }
+    //}
 
     public void ToggleLog()
     {
