@@ -1440,6 +1440,16 @@ Prefab:
       propertyPath: AthenaImgs.Array.size
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.size
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4110934182555182, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2254,6 +2264,102 @@ Prefab:
       propertyPath: ThorImgs.Array.data[7]
       value: 
       objectReference: {fileID: 21300000, guid: a93de9becdfd7454cb14729a3061c233,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 525e796c3e34a414786d5c30bdd9f029,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 455a37ccb2637c449930175e7e9859ff,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 42d136e7014cbf240aaa211f6ab8526b,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 42d136e7014cbf240aaa211f6ab8526b,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: bbf13c8009ccaae4d999b5daafb0cb29,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: a32928ef59a9c244bb3614bff77d25d2,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 86ad3f58279d3d449a6e111702e303e3,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: d778d7e65f4f44149a44fd5ecc93ebd5,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 948d056cd0856f642a7c7a6c04fd88a2,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5bc07997e5edcb64bb187920719c686d,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8c4e2e5c166e7274fbe0d8f1e72020d3,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: ebccb30aef647fa4c9e36148d7e2a23c,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: db11c9f19e8970c4aa8a6e128c6b1dc4,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 19ebd27a1e14e8c45bd47b2bab601d53,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsLeft.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95187df84f56c4247a4cf20c453fc85c,
+        type: 3}
+    - target: {fileID: 114915758484427866, guid: a75c3327317d4bf4c930d20322c3016d,
+        type: 2}
+      propertyPath: AthenaImgsRight.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 95187df84f56c4247a4cf20c453fc85c,
         type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}

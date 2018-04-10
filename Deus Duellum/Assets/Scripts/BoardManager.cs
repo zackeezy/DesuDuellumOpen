@@ -24,7 +24,8 @@ public class BoardManager : MonoBehaviour {
     public GameObject player2img;
 
     //Image order: default(0), border(1), win(2), lose(3), hi(4), wow(5), taunt(6), background(7)
-    public Sprite[] AthenaImgs;
+    public Sprite[] AthenaImgsLeft;
+    public Sprite[] AthenaImgsRight;
     //public Sprite AthenaImg;
     //public Sprite AthenaWinImg;
     //public Sprite AthenaLoseImg;
@@ -752,7 +753,14 @@ public class BoardManager : MonoBehaviour {
             if (character == 0)
             {
                 //athena
-                playerImg.sprite = AthenaImgs[2];
+                if (player1)
+                {
+                    playerImg.sprite = AthenaImgsLeft[2];
+                }
+                else
+                {
+                    playerImg.sprite = AthenaImgsRight[2];
+                }
             }
             else if (character == 1)
             {
@@ -771,7 +779,14 @@ public class BoardManager : MonoBehaviour {
             if (character == 0)
             {
                 //athena
-                playerImg.sprite = AthenaImgs[3];
+                if (player1)
+                {
+                    playerImg.sprite = AthenaImgsLeft[3];
+                }
+                else
+                {
+                    playerImg.sprite = AthenaImgsRight[3];
+                }
             }
             else if (character == 1)
             {
@@ -866,8 +881,8 @@ public class BoardManager : MonoBehaviour {
         tokenScript.SetTokens(player1white, player1character, player2character);
 
         //set the character for the emotes
-        player1emote.SetCharacter(player1character);
-        player2emote.SetCharacter(player2character);
+        player1emote.SetCharacter(player1character, true);
+        player2emote.SetCharacter(player2character, false);
 
         //set the log's characters
         log.SetCharacters(whiteCharacter, blackCharacter);
@@ -900,20 +915,25 @@ public class BoardManager : MonoBehaviour {
         if (character == 0)
         {
             //Debug.Log("player " + player + " is Athena");
-            playerImg.sprite = AthenaImgs[0];
-            playerBorder.sprite = AthenaImgs[1];
-            playerBackground.sprite = AthenaImgs[7];
-            borderWidth = 260;
-            borderHeight = 260;
-
             //set the text for the turn indicator
             if (isplayer1)
             {
+                player1img.transform.rotation = Quaternion.Euler(0, 0, 0);
                 player1 = "Athena";
+                playerImg.sprite = AthenaImgsLeft[0];
+                playerBorder.sprite = AthenaImgsLeft[1];
+                playerBackground.sprite = AthenaImgsLeft[7];
+                borderWidth = 260;
+                borderHeight = 260;
             }
             else
             {
                 player2 = "Athena";
+                playerImg.sprite = AthenaImgsRight[0];
+                playerBorder.sprite = AthenaImgsRight[1];
+                playerBackground.sprite = AthenaImgsRight[7];
+                borderWidth = 260;
+                borderHeight = 260;
             }
         }
         else if (character == 1)
