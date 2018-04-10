@@ -12,13 +12,13 @@ public class Logo_to_Intro : MonoBehaviour {
 	{
 		int delayScreenTransition = 2;
 		yield return new WaitForSeconds(delayScreenTransition);
-		SceneManager.LoadScene(1);
+		SceneManager.LoadScene(9);
 	}
 	// Update is called once per frame
 	void Update () {
 		if (Input.anyKey)
 		{
-			SceneManager.LoadScene(1);
+			SceneManager.LoadScene(9);
 		}	
 	}
 }

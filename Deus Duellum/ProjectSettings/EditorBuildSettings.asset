@@ -32,3 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AI_Game.unity
     guid: a68d309edc30f614387356dd84fbbb46
+  - enabled: 1
+    path: Assets/Scenes/Intro_Scene.unity
+    guid: 8364d0aad0ba9a545b660ba30e2f6ec8
