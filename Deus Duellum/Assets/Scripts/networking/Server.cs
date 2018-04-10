@@ -165,7 +165,7 @@ public class Server : MonoBehaviour
 
         Connect();
 
-        responseThread.Abort();
+       responseThread.Abort();
     }
 
     public void Disconnect()
