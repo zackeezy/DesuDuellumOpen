@@ -171,12 +171,15 @@ public class Client : MonoBehaviour {
                 string strData = Encoding.ASCII.GetString(data);
                 Debug.Log(strData);
                 string[] splitData = strData.Split('|');
-                PlayerInfo server = new PlayerInfo()
+                if (splitData.Length > 1)
                 {
-                    Name = splitData[0],
-                    IP = splitData[1]
-                };
-                AddServer(server);
+                    PlayerInfo server = new PlayerInfo()
+                    {
+                        Name = splitData[0],
+                        IP = splitData[1]
+                    };
+                    AddServer(server);
+                }
             }
             catch (Exception e)
             {

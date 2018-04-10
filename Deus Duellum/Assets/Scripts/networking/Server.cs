@@ -60,6 +60,11 @@ public class Server : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        Debug.Log("Server Awake");
+    }
+
     // Use this for initialization
     void Start () {
         NetworkTransport.Init();
@@ -124,6 +129,7 @@ public class Server : MonoBehaviour
         }
         if (!csharpconnected)
         {
+            Debug.Log("Sending server name and IP");
             sendingSocket.Send(sendByteArray, sendByteArray.Length, ipep);
         }
     }
@@ -143,11 +149,6 @@ public class Server : MonoBehaviour
     {
         byte[] buffer = Encoding.Unicode.GetBytes(message);
         NetworkTransport.Send(hostIdClient, connectionIdClient, reliableChannelId, buffer, message.Length * sizeof(char), out error);
-    }
-
-    private void OnApplicationQuit()
-    {
-        sendingSocket.Close();
     }
 
     void WaitForResponse()
@@ -180,6 +181,9 @@ public class Server : MonoBehaviour
 
     private void OnDestroy()
     {
+        Debug.Log("Server OnDestroy");
+        sendingSocket.Send(Encoding.ASCII.GetBytes("clear"), 5);
         NetworkTransport.RemoveHost(hostId);
+        sendingSocket.Close();
     }
 }
