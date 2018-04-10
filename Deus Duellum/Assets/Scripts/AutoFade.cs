@@ -126,7 +126,10 @@ public class AutoFade : MonoBehaviour
         Instance.m_LevelName = "";
         Instance.m_LevelIndex = aLevelIndex;
         Instance.StartFade(aFadeOutTime, aFadeInTime, aColor);
-        MusicInfo mInfo = AudioObj.GetComponent<MusicInfo>();
-        mInfo.ChangeMusic(aLevelIndex);
+        if (AudioObj)
+        {
+            MusicInfo mInfo = AudioObj.GetComponent<MusicInfo>();
+            mInfo.ChangeMusic(aLevelIndex);
+        }
     }
 }

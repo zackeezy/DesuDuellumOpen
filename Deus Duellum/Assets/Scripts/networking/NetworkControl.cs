@@ -168,7 +168,8 @@ public class NetworkControl : MonoBehaviour {
 
     public void ServerConnected()
     {
-        serverstuff.transform.GetChild(1).GetComponent<Text>().text = "connection found";
+        //maybe try to put the name of the client here?
+        serverstuff.transform.GetChild(1).GetComponent<Text>().text = "Connection found!";
         serverstuff.transform.GetChild(2).GetComponent<Button>().interactable = true;
     }
 
