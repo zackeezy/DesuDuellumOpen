@@ -2032,7 +2032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: 1
-  characterSelectText: {fileID: 0}
+  characterSelectText: {fileID: 2110209945}
   playButton: {fileID: 328950574}
 --- !u!114 &1476545500
 MonoBehaviour:
@@ -3036,6 +3036,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224748442448251262, guid: 09eee636c6fc6164eb94de96bcc771d9,
     type: 2}
   m_PrefabInternal: {fileID: 2110209937}
+--- !u!114 &2110209945 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114545636454631854, guid: 09eee636c6fc6164eb94de96bcc771d9,
+    type: 2}
+  m_PrefabInternal: {fileID: 2110209937}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &2137020785
 GameObject:
   m_ObjectHideFlags: 0

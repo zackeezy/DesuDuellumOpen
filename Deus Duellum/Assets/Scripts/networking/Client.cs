@@ -243,4 +243,12 @@ public class Client : MonoBehaviour {
     {
         return connected;
     }
+
+    public void OnDestroy()
+    {
+        if (IsConnected())
+        {
+            NetworkTransport.RemoveHost(hostId);
+        }
+    }
 }

@@ -12,6 +12,7 @@ public class MusicInfo : MonoBehaviour {
 
     public AudioClip[] musicClips;
     private int clip = 0;
+    private int prevGameIndex = 1; 
 
     void Awake () {
 		//to keep the same audio throughout, so doesn't restart music/ or reset volume
@@ -58,16 +59,24 @@ public class MusicInfo : MonoBehaviour {
 
     public void ChangeMusic(int gameIndex)
     {
-        if(gameIndex == 6 || gameIndex == 7 || gameIndex == 8)
+        //don't restart music if reloading the same scene (ex. replaying a game)
+        if (prevGameIndex != gameIndex)
         {
-            //play game music
-            musicSource.clip = musicClips[3];
+            if (gameIndex == 6 || gameIndex == 7 || gameIndex == 8)
+            {
+                //play game music
+                musicSource.clip = musicClips[2];
+                musicSource.loop = true;
+                musicSource.Play();
+            }
+            else if(prevGameIndex == 6 || prevGameIndex == 7 || prevGameIndex == 8)
+            {
+                //play menu music when going from a game to menu
+                musicSource.clip = musicClips[clip];
+                musicSource.loop = false;
+                musicSource.Play();
+            }
         }
-        else
-        {
-            //play menu music
-            musicSource.clip = musicClips[clip];
-        }
-        musicSource.Play();
+        prevGameIndex = gameIndex;
     }
 }

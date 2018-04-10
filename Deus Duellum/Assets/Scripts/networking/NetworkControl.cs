@@ -227,4 +227,17 @@ public class NetworkControl : MonoBehaviour {
         Send("checkconnection");
         _waitingForResponse = true;
     }
+
+    //private void OnDestroy()
+    //{
+    //    if (isClient)
+    //    {
+    //        client.CloseSocket();
+    //    }
+    //    else
+    //    {
+    //        server.CloseSocket();
+    //    }
+    //}
+    
 }

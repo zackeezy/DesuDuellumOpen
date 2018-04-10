@@ -78,7 +78,8 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         sendingSocket.JoinMulticastGroup(ip, 32);
         ipep = new IPEndPoint(ip, multicastPort);
 
-        sendByteArray = Encoding.ASCII.GetBytes(name + "|" + NetworkControl.LocalIPAddress().ToString());
+        sendByteArray = Encoding.ASCII.GetBytes(name + "|" + 
+            NetworkControl.LocalIPAddress().ToString());
 
         //recvThread = new Thread(WaitForResponse);
         //recvThread.Start();
@@ -86,6 +87,11 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
+        
+        //see if socketport has beeen previously used
+        //?????
+        //either free it up or use a new one?
+
         hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
     }
@@ -185,5 +191,10 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
     public bool IsConnected()
     {
         return connected;
+    }
+
+    private void OnDestroy()
+    {
+        NetworkTransport.RemoveHost(hostId);
     }
 }

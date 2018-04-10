@@ -18,6 +18,7 @@ public class AutoFade : MonoBehaviour
             if (m_Instance == null)
             {
                 m_Instance = (new GameObject("AutoFade")).AddComponent<AutoFade>();
+                AudioObj = GameObject.FindGameObjectWithTag("Audio");
             }
             return m_Instance;
         }
@@ -65,11 +66,6 @@ public class AutoFade : MonoBehaviour
 
         }
 #endif
-    }
-
-    private void Start()
-    {
-        AudioObj = GameObject.FindGameObjectWithTag("Audio");
     }
 
     private void DrawQuad(Color aColor, float aAlpha)

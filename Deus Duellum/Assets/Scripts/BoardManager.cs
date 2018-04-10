@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour {
     public GameObject player1img;
     public GameObject player2img;
 
-    //Image order: default(0), border(1), win(2), lose(3), hi(4), wow(5), taunt(6)
+    //Image order: default(0), border(1), win(2), lose(3), hi(4), wow(5), taunt(6), background(7)
     public Sprite[] AthenaImgs;
     //public Sprite AthenaImg;
     //public Sprite AthenaWinImg;
@@ -852,6 +852,7 @@ public class BoardManager : MonoBehaviour {
     {
         Image playerImg = null;
         Image playerBorder = null;
+        Image playerBackground = null;
         float borderWidth = 0f;
         float borderHeight = 0f;
 
@@ -859,12 +860,15 @@ public class BoardManager : MonoBehaviour {
 
         if (player == 1)
         {
+            playerBackground = player1img.transform.GetChild(0).GetComponent<Image>();
             playerImg = player1img.transform.GetChild(1).GetComponent<Image>();
             playerBorder = player1img.transform.GetChild(2).GetComponent<Image>();
+
             isplayer1 = true;
         }
         else if (player == 2)
         {
+            playerBackground = player2img.transform.GetChild(0).GetComponent<Image>();
             playerImg = player2img.transform.GetChild(1).GetComponent<Image>();
             playerBorder = player2img.transform.GetChild(2).GetComponent<Image>();
         }
@@ -874,6 +878,7 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Athena");
             playerImg.sprite = AthenaImgs[0];
             playerBorder.sprite = AthenaImgs[1];
+            playerBackground.sprite = AthenaImgs[7];
             borderWidth = 260;
             borderHeight = 260;
 
@@ -892,6 +897,7 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Ra");
             playerImg.sprite = RaImgs[0];
             playerBorder.sprite = RaImgs[1];
+            playerBackground.sprite = RaImgs[7];
             borderWidth = 275;
             borderHeight = 275;
 
@@ -910,6 +916,7 @@ public class BoardManager : MonoBehaviour {
             //Debug.Log("player " + player + " is Thor");
             playerImg.sprite = ThorImgs[0];
             playerBorder.sprite = ThorImgs[1];
+            playerBackground.sprite = ThorImgs[7];
             borderWidth = 230;
             borderHeight = 230;
 
