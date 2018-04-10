@@ -626,8 +626,7 @@ public class BoardManager : MonoBehaviour {
                 moveTo.y = player1.transform.position.y + 30;
                 moveTo.z = player1.transform.position.z;
                 LeanTween.move(player1, moveTo, 0.1f);
-                //show/play win emote
-                player1emote.PlayVictoryEmote();
+                
             }
             else
             {
@@ -637,11 +636,21 @@ public class BoardManager : MonoBehaviour {
                 moveTo.y = player2.transform.position.y - 5;
                 moveTo.z = player2.transform.position.z;
                 LeanTween.move(player2, moveTo, 0.1f);
-                //show/play win emote
-                player2emote.PlayVictoryEmote();
+                
             }
 
             //log.ShowWin(true);
+
+            if (isPlayer1White)
+            {
+                //show/play win emote
+                player1emote.PlayVictoryEmote();
+            }
+            else
+            {
+                //show/play win emote
+                player2emote.PlayVictoryEmote();
+            }
             
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
@@ -654,24 +663,24 @@ public class BoardManager : MonoBehaviour {
             {
                 //player2 win
                 winText.text = "Player Two Wins";
-                SetCharacterWinLoseImage(true, false, whiteCharacter);
-                SetCharacterWinLoseImage(false, true, blackCharacter);
+                SetCharacterWinLoseImage(true, false, blackCharacter);
+                SetCharacterWinLoseImage(false, true, whiteCharacter);
                 //StopCoroutine("LoseTime");
             }
             else if (blackPlayer == PlayerType.Local)
             {
                 //you win
                 winText.text = "You Won!";
-                SetCharacterWinLoseImage(true, true, whiteCharacter);
-                SetCharacterWinLoseImage(false, false, blackCharacter);
+                SetCharacterWinLoseImage(true, true, blackCharacter);
+                SetCharacterWinLoseImage(false, false, whiteCharacter);
                 //StopCoroutine("LoseTime");
             }
             else
             {
                 //you lost
                 winText.text = "You Lost!";
-                SetCharacterWinLoseImage(true, false, whiteCharacter);
-                SetCharacterWinLoseImage(false, true, blackCharacter);
+                SetCharacterWinLoseImage(true, false, blackCharacter);
+                SetCharacterWinLoseImage(false, true, whiteCharacter);
             }
 
             if (blackPlayer == PlayerType.Local)
@@ -682,8 +691,6 @@ public class BoardManager : MonoBehaviour {
                 moveTo.y = player2.transform.position.y -5;
                 moveTo.z = player2.transform.position.z;
                 LeanTween.move(player2, moveTo, 0.1f);
-                //show/play win emote
-                player2emote.PlayVictoryEmote();
             }
             else
             {
@@ -693,11 +700,20 @@ public class BoardManager : MonoBehaviour {
                 moveTo.y = player1.transform.position.y + 30;
                 moveTo.z = player1.transform.position.z;
                 LeanTween.move(player1, moveTo, 0.1f);
-                //show/play win emote
-                player1emote.PlayVictoryEmote();
             }
 
             //log.ShowWin(false);
+
+            if (!isPlayer1White)
+            {
+                //show/play win emote
+                player1emote.PlayVictoryEmote();
+            }
+            else
+            {
+                //show/play win emote
+                player2emote.PlayVictoryEmote();
+            }
 
             //show that the game was won and who won
             gameOverPanel.SetActive(true);
@@ -769,8 +785,6 @@ public class BoardManager : MonoBehaviour {
         int player1character = PlayerPrefs.GetInt("Player1Character");
         int player2character = PlayerPrefs.GetInt("Player2Character");
 
-        //set the player portraits
-        setCharacterImage(1, player1character);
         int gameIndex = SceneManager.GetActiveScene().buildIndex;
         if (gameIndex == 6)
         {
@@ -806,7 +820,6 @@ public class BoardManager : MonoBehaviour {
                 Debug.Log("hard AI selected");
             }
         }
-        setCharacterImage(2, player2character);
 
         int player1white = PlayerPrefs.GetInt("player1", 0);
         if (player1white == 0)
@@ -833,6 +846,11 @@ public class BoardManager : MonoBehaviour {
             whiteCharacter = player2character;
             isPlayer1White = false;
         }
+
+        //set the player portraits
+        setCharacterImage(1, player1character);
+        setCharacterImage(2, player2character);
+
         gameMode = whitePlayer;
         //testfirst();
 
@@ -845,7 +863,7 @@ public class BoardManager : MonoBehaviour {
         player2emote.SetCharacter(player2character);
 
         //set the log's characters
-        log.SetCharacters(player1character, player2character);
+        log.SetCharacters(whiteCharacter, blackCharacter);
     }
 
     private void setCharacterImage(int player, int character)
@@ -863,7 +881,6 @@ public class BoardManager : MonoBehaviour {
             playerBackground = player1img.transform.GetChild(0).GetComponent<Image>();
             playerImg = player1img.transform.GetChild(1).GetComponent<Image>();
             playerBorder = player1img.transform.GetChild(2).GetComponent<Image>();
-
             isplayer1 = true;
         }
         else if (player == 2)
@@ -932,7 +949,14 @@ public class BoardManager : MonoBehaviour {
         }
 
         //set the turn indicator banner
-        turnText.text = player1 + "'s Turn";
+        if (isPlayer1White)
+        {
+            turnText.text = player1 + "'s Turn";
+        }
+        else
+        {
+            turnText.text = player2 + "'s Turn";
+        }
 
         //set the banners for each character
         Text player1BannerText = GameObject.FindGameObjectWithTag("Player1").transform.GetChild(2).GetComponent<Text>();
