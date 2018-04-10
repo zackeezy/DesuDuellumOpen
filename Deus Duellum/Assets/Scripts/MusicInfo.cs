@@ -48,7 +48,7 @@ public class MusicInfo : MonoBehaviour {
         if (!musicSource.isPlaying)
         {
             clip++;
-            if (clip >= 3)
+            if (clip >= musicClips.Length-1)
             {
                 clip = 0;
             }

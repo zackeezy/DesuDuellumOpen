@@ -226,7 +226,14 @@ public class BoardManager : MonoBehaviour {
             if (selectedToken != null)
             {
                 LeanTween.cancelAll();
-                LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 0, 0), .01f);
+                if (isPlayer1White)
+                {
+                    LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 0, 0), .01f);
+                }
+                else
+                {
+                    LeanTween.rotate(selectedToken.gameObject, new Vector3(0, 180, 0), .01f);
+                }
 
                 BoardHighlights.Instance.HideHighlights();
                 Vector3 flatpos;

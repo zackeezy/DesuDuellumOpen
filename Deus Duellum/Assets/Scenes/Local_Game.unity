@@ -1685,11 +1685,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114557839629170018, guid: 8c58584b534e06441b9ac915336c9f0e,
-        type: 2}
-      propertyPath: m_Text
-      value: Player One's turn
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c58584b534e06441b9ac915336c9f0e, type: 2}
   m_IsPrefabParent: 0

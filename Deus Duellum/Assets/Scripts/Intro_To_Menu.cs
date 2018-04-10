@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +9,7 @@ public class Intro_To_Menu : MonoBehaviour {
     }
     IEnumerator DelayTransition()
     {
-        int delayScreenTransition = 7;
+        float delayScreenTransition = 7;
         yield return new WaitForSeconds(delayScreenTransition);
         SceneManager.LoadScene(1);
     }

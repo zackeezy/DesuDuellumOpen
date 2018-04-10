@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,7 +14,8 @@ public class Logo_to_Intro : MonoBehaviour {
 		SceneManager.LoadScene(9);
 	}
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		if (Input.anyKey)
 		{
 			SceneManager.LoadScene(9);
