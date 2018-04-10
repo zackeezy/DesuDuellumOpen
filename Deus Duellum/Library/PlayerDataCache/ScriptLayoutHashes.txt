@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Andres/Documents/GitHub/DeusDuellum/Deus Duellum/iconAdded2.exe
+C:/Users/Andres/Documents/GitHub/DeusDuellum/Deus Duellum/iconAdded3.exe
 SceneListBegin?
 Assets/Scenes/SplashTeamLogo.unity
 Assets/Scenes/_MainMenu.unity
@@ -11,6 +11,7 @@ Assets/Scenes/AI_CharacterSelectMenu.unity
 Assets/Scenes/Local_Game.unity
 Assets/Scenes/Online_Game.unity
 Assets/Scenes/AI_Game.unity
+Assets/Scenes/Intro_Scene.unity
 SceneListEnd?
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Logo_to_Intro
 78a28a48c2ded27a3fedcad1f807ebf3 Assembly-CSharp.dll:.LogoCinematic
@@ -187,6 +188,7 @@ e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TestingMaxTweens
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Intro_To_Menu
 9e0ef5bf862444b5dc48b5a99554ce7c UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
