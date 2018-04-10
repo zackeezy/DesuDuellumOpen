@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Networking;
-using System;
 using System.Threading;
 
-public class Server : MonoBehaviour /*NetworkDiscovery*/
+public class Server : MonoBehaviour 
 {
 
     bool connected = false;
@@ -33,14 +30,9 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
     //C# networking stuff
     bool csharpconnected = false;
     UdpClient sendingSocket;
-    IPAddress sendToAddress;
-    IPEndPoint sendingEndPoint;
-    Thread recvThread;
-    bool broadcasting = true;
     byte[] sendByteArray;
     int multicastPort = 10101;
     IPEndPoint ipep;
-    Thread responseThread;
 
     public string ClientIP
     {
@@ -81,16 +73,9 @@ public class Server : MonoBehaviour /*NetworkDiscovery*/
         sendByteArray = Encoding.ASCII.GetBytes(name + "|" + 
             NetworkControl.LocalIPAddress().ToString());
 
-        //recvThread = new Thread(WaitForResponse);
-        //recvThread.Start();
-
         ConnectionConfig config = new ConnectionConfig();
         reliableChannelId = config.AddChannel(QosType.ReliableSequenced);
         HostTopology topology = new HostTopology(config, maxConnections);
-        
-        //see if socketport has beeen previously used
-        //?????
-        //either free it up or use a new one?
 
         hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);

@@ -132,7 +132,8 @@ public class NetworkControl : MonoBehaviour {
                 break;
             case "emote":
                 //call "OtherEmote" on player2's emotecontroller
-                EmoteController player2Emotes = GameObject.FindGameObjectWithTag("Player2").GetComponent<EmoteController>();
+                EmoteController player2Emotes = GameObject.FindGameObjectWithTag("Player2")
+                    .GetComponent<EmoteController>();
                 int emote = int.Parse(messages[1]);
                 player2Emotes.OtherEmote(emote);
                 break;
@@ -227,17 +228,4 @@ public class NetworkControl : MonoBehaviour {
         Send("checkconnection");
         _waitingForResponse = true;
     }
-
-    //private void OnDestroy()
-    //{
-    //    if (isClient)
-    //    {
-    //        client.CloseSocket();
-    //    }
-    //    else
-    //    {
-    //        server.CloseSocket();
-    //    }
-    //}
-    
 }
