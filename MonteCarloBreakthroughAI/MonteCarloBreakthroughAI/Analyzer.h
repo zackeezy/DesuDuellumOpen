@@ -21,6 +21,7 @@ public:
     ~Analyzer();
 
     static Move GetMove(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
+    static Move GetMoveImproved(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
     static int GetTotalPlayOuts();
     static void RunPlayOut(Node * root);
     static PlayerColor IsGameOver(Node * node);
