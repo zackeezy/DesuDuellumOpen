@@ -154,7 +154,6 @@ public class EmoteController : MonoBehaviour {
         if (!emotesMuted)
         {
             //get the emote panel
-            //emotePanel = transform.GetChild(3).gameObject;
             emoteText = emotePanel.transform.GetChild(0).GetComponent<Text>();
 
             PlayEmoteAudio(emote);
@@ -276,9 +275,10 @@ public class EmoteController : MonoBehaviour {
             playerImg.sprite = tauntImg;
         }
 
+        //animate the emote bubble
         Vector3 oldScale = emotePanel.transform.localScale;
-        LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.15f);
-        LeanTween.scale(emotePanel, oldScale, 0.15f).setDelay(.15f);
+        LeanTween.scale(emotePanel, emotePanel.transform.localScale * 1.2f, 0.1f);
+        LeanTween.scale(emotePanel, oldScale, 0.1f).setDelay(.1f);
 
         yield return new WaitForSeconds(voiceLineLength);
         emotePanel.SetActive(false);

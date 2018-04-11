@@ -11,7 +11,7 @@ public class MusicInfo : MonoBehaviour {
     public AudioSource emotesSource;
 
     public AudioClip[] musicClips;
-    private int clip = 0;
+    public int clip = -1;
     private int prevGameIndex = 1; 
 
     void Awake () {
@@ -48,7 +48,7 @@ public class MusicInfo : MonoBehaviour {
         if (!musicSource.isPlaying)
         {
             clip++;
-            if (clip >= musicClips.Length-1)
+            if (clip >= musicClips.Length - 1)
             {
                 clip = 0;
             }
@@ -72,6 +72,7 @@ public class MusicInfo : MonoBehaviour {
             else if(prevGameIndex == 6 || prevGameIndex == 7 || prevGameIndex == 8)
             {
                 //play menu music when going from a game to menu
+                clip = 0;
                 musicSource.clip = musicClips[clip];
                 musicSource.loop = false;
                 musicSource.Play();
