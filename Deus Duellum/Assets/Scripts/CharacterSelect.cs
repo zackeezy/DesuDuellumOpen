@@ -47,6 +47,7 @@ public class CharacterSelect : MonoBehaviour {
         if (net)
         {
             netController = net.GetComponent<NetworkControl>();
+            netController.SetCharacterSelect(this);
             if (netController.isClient)
             {
                 //player1 is black
@@ -378,5 +379,21 @@ public class CharacterSelect : MonoBehaviour {
     public void Disconnect()
     {
         netController.Disconnect();
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void CancelGoTo()
+    {
+        CancelInvoke();
+    }
+
+    public void SetTimeoutPanelToActive()
+    {
+        timeoutPanel.SetActive(true);
+        Invoke("GoToMainMenu", 7);
     }
 }

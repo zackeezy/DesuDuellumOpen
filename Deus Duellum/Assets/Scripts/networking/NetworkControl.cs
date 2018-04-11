@@ -23,7 +23,8 @@ public class NetworkControl : MonoBehaviour {
     public GameCore _core;
     public bool _waitingForResponse;
 
-    BoardManager boardManager;
+    BoardManager _boardManager;
+    CharacterSelect _characterSelect;
 
     void Awake()
     {
@@ -72,7 +73,13 @@ public class NetworkControl : MonoBehaviour {
 
     public void SetBoardManager(BoardManager b)
     {
-        boardManager = b;
+        _boardManager = b;
+        _characterSelect = null;
+    }
+
+    public void SetCharacterSelect(CharacterSelect characterSelect)
+    {
+        _characterSelect = characterSelect;
     }
 
     public void Send(string s)
@@ -244,7 +251,16 @@ public class NetworkControl : MonoBehaviour {
     {
         if (!_disconnected)
         {
-            boardManager.SetTimeoutPanelToActive();
+            if (_boardManager)
+            {
+                _boardManager.SetTimeoutPanelToActive();
+            }
+            else if (_characterSelect)
+            {
+                _characterSelect.SetTimeoutPanelToActive();
+            }
         }
+         
+        
     }
 }
