@@ -71,7 +71,7 @@ public class EmoteController : MonoBehaviour {
         emoteButtons.SetActive(false);  
     }
 
-    public void SetCharacter(int givenCharacter)
+    public void SetCharacter(int givenCharacter, bool player1)
     {
         //function is called in BoardManager's setPrefs()
 
@@ -85,9 +85,19 @@ public class EmoteController : MonoBehaviour {
             TauntEmote = "You remind me a lot of Koalemos. \nHe's the god of stupidity.\n Not that you would know...";
             VictoryEmote = "All according to plan!";
 
-            helloImg = boardmanager.AthenaImgs[4];
-            wowImg = boardmanager.AthenaImgs[5];
-            tauntImg = boardmanager.AthenaImgs[6];
+            if(player1)
+            {
+                helloImg = boardmanager.AthenaImgsLeft[4];
+                wowImg = boardmanager.AthenaImgsLeft[5];
+                tauntImg = boardmanager.AthenaImgsLeft[6];
+            }
+            else
+            {
+                helloImg = boardmanager.AthenaImgsRight[4];
+                wowImg = boardmanager.AthenaImgsRight[5];
+                tauntImg = boardmanager.AthenaImgsRight[6];
+            }
+
         }
         else if (character == 1)
         {
