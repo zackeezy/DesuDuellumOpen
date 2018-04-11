@@ -26,6 +26,7 @@ public class MusicInfo : MonoBehaviour {
 
     private void Start()
     {
+        AutoFade.setAudio();
     }
 
     void Update()
