@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class NetworkControl : MonoBehaviour {
 
+    private bool _disconnected = false;
     public Client client;
     public Server server;
     public bool isClient;
@@ -209,6 +210,8 @@ public class NetworkControl : MonoBehaviour {
 
     public void Disconnect()
     {
+        _disconnected = true;
+
         if (isClient)
         {
             client.Disconnect();
@@ -239,6 +242,9 @@ public class NetworkControl : MonoBehaviour {
 
     public void GameTimedOut()
     {
-        boardManager.SetTimeoutPanelToActive();
+        if (!_disconnected)
+        {
+            boardManager.SetTimeoutPanelToActive();
+        }
     }
 }
