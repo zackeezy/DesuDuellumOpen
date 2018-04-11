@@ -68,6 +68,7 @@ public class BoardManager : MonoBehaviour {
 
     private GameCore _core;
     NetworkControl netController;
+    GameObject timeoutPanel;
 
     private float floatTokenYpos = 1.8f;
     private float flatTokenYpos = 1.084f;
@@ -133,6 +134,7 @@ public class BoardManager : MonoBehaviour {
         if (whitePlayer == PlayerType.Network || blackPlayer == PlayerType.Network)
         {
             netController = GameObject.FindGameObjectWithTag("network").GetComponent<NetworkControl>();
+            netController.SetBoardManager(this);
             SetNetworkStuff();
         }
 
@@ -151,6 +153,8 @@ public class BoardManager : MonoBehaviour {
         //WILL NOT WORK IF DO NOT START AT MAIN MENU
         GameObject Audio = GameObject.FindGameObjectWithTag("Audio");
         effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
+
+        timeoutPanel = GameObject.FindGameObjectWithTag("timeoutPanel");
     }
 
     // Update is called once per frame
@@ -189,7 +193,7 @@ public class BoardManager : MonoBehaviour {
             }
             else if(netController._waitingForResponse)
             {
-                //TODO: Ask if they want to wait longer
+                SetTimeoutPanelToActive();
             }
 
         }
@@ -1163,6 +1167,22 @@ public class BoardManager : MonoBehaviour {
         _core = null;
         System.GC.Collect();
         System.GC.WaitForPendingFinalizers();
+    }
+
+    public void SetTimeoutPanelToActive()
+    {
+        timeoutPanel.SetActive(true);
+        Invoke("GoToMainMenu", 7);
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void CancelGoTo()
+    {
+        CancelInvoke();
     }
 }
 

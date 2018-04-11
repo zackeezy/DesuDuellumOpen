@@ -33,8 +33,6 @@ public class Server : MonoBehaviour
     int multicastPort = 10101;
     IPEndPoint ipep;
 
-    int _offset;
-
     public string ClientIP
     {
         get
@@ -122,7 +120,7 @@ public class Server : MonoBehaviour
                 break;
             case NetworkEventType.DisconnectEvent:
                 connected = false;
-                //TODO: add something to tell UI got disconnected from
+                networkControl.GameTimedOut();
                 break;
         }
         

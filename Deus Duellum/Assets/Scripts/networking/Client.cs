@@ -32,10 +32,8 @@ public class Client : MonoBehaviour {
     public NetworkControl networkControl;
 
     //C# Networking variables
-    bool csharpconnected = false;
     UdpClient listener;
     IPEndPoint groupEP;
-    string received_data;
     byte[] receive_byte_array;
     Thread receiveThread;
     int multicastPort = 10101;
@@ -74,7 +72,6 @@ public class Client : MonoBehaviour {
         servers = new List<PlayerInfo>();
         
         IPAddress ip = IPAddress.Parse("224.5.6.7");
-        received_data = "";
         IPEndPoint localEP = new IPEndPoint(NetworkControl.LocalIPAddress(), multicastPort);
         listener = new UdpClient();
         listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
@@ -112,6 +109,7 @@ public class Client : MonoBehaviour {
                 break;
             case NetworkEventType.DisconnectEvent:
                 connected = false;
+                networkControl.GameTimedOut();
                 break;
             case NetworkEventType.DataEvent:
                 string msg = Encoding.Unicode.GetString(recvBuffer, 0, datasize);

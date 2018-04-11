@@ -22,6 +22,8 @@ public class NetworkControl : MonoBehaviour {
     public GameCore _core;
     public bool _waitingForResponse;
 
+    BoardManager boardManager;
+
     void Awake()
     {
         //to keep the same networkcontroller throughout
@@ -65,6 +67,11 @@ public class NetworkControl : MonoBehaviour {
             Debug.Log("destroyed the netcontroller");
             Destroy(gameObject);
         }
+    }
+
+    public void SetBoardManager(BoardManager b)
+    {
+        boardManager = b;
     }
 
     public void Send(string s)
@@ -228,5 +235,10 @@ public class NetworkControl : MonoBehaviour {
     {
         Send("checkconnection");
         _waitingForResponse = true;
+    }
+
+    public void GameTimedOut()
+    {
+        boardManager.SetTimeoutPanelToActive();
     }
 }
