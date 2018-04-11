@@ -247,9 +247,8 @@ public class Client : MonoBehaviour {
 
     public void OnDestroy()
     {
-        if (IsConnected())
-        {
-            NetworkTransport.RemoveHost(hostId);
-        }
+        Debug.Log("Client OnDestroy");
+        NetworkTransport.RemoveHost(hostId);
+        listener.Close();
     }
 }
