@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Heather/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0411.exe
+C:/Users/JohnEaton/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0411.exe
 SceneListBegin?
 Assets/Scenes/SplashTeamLogo.unity
 Assets/Scenes/_MainMenu.unity
@@ -33,7 +33,7 @@ df374c01140c2d578bf70cbd60073d1d UnityEngine.Timeline.dll:UnityEngine.Timeline.T
 5d5b0ea7d0a410763f438ae52ca7916e Assembly-CSharp.dll:.Client
 e8529d96c5a5366f4e7ab987b8eb6b18 Assembly-CSharp.dll:.ShowServers
 87d692c77fddfcc63de97fabcb29d2f1 Assembly-CSharp.dll:.BoardHighlights
-a3daaac308c2a1b874cee7e6a4eacc22 Assembly-CSharp.dll:.MusicInfo
+c0379ccb81a826af46a8aa2cafb3eef7 Assembly-CSharp.dll:.MusicInfo
 445f780139ebf5524f55eda007c74b5b Assembly-CSharp.dll:.PathSpline2d
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.QuitOnClick
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
