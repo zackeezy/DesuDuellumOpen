@@ -1702,16 +1702,21 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1476545497}
+      objectReference: {fileID: 1476545499}
     - target: {fileID: 114963531459162952, guid: a871692f20a0a504798cfdcd03216dab,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: CancelGoTo
       objectReference: {fileID: 0}
     - target: {fileID: 114090141540364056, guid: a871692f20a0a504798cfdcd03216dab,
         type: 2}
       propertyPath: m_Text
       value: Connection lost.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114963531459162952, guid: a871692f20a0a504798cfdcd03216dab,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a871692f20a0a504798cfdcd03216dab, type: 2}

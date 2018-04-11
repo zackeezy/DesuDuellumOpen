@@ -1185,7 +1185,8 @@ public class BoardManager : MonoBehaviour {
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene(1);
+        //SceneManager.LoadScene(1);
+        timeoutPanel.GetComponent<LoadSceneOnClick>().LoadByIndex(1);
     }
 
     public void CancelGoTo()

@@ -459,7 +459,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 3e3bffff403cffff8e3dffffd84fffffcc61ffffba73fffff078fffff878ffff8c7cffff2a81ffffe284ffffec84ffff349bffff369cffff849dffffceafffffc2c1ffffb0d3ffffe6d8ffffeed8ffff82dcffff20e1ffffd8e4ffffe2e4ffff98fbffff0000000056320000545600003c5a0000
+    m_ExpandedIDs: bc09ffffbc0affff0a0cffff541effff4630ffff3442ffff6a47ffff2e4cffffc24fffff6254ffff3458ffff3c58ffff0e5dffffcc82ffff14aaffff14abffff62acffffacbeffffa0d0ffff8ee2ffffc4e7ffffcce7ffff60ebfffffeefffffb6f3ffffc0f3ffff98fbffff000000004e560000365a0000f65c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -478,7 +478,7 @@ MonoBehaviour:
       m_ClientGUIView: {fileID: 4}
     m_SearchString: 
   m_ExpandedScenes:
-  - Online_CharacterSelectMenu
+  - SplashTeamLogo
   m_CurrenRootInstanceID: 0
   m_Locked: 0
   m_CurrentSortingName: TransformSorting
