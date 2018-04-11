@@ -155,7 +155,10 @@ public class BoardManager : MonoBehaviour {
         effectSource = Audio.GetComponent<MusicInfo>().effectsSource.GetComponent<AudioSource>();
 
         timeoutPanel = GameObject.FindGameObjectWithTag("timeoutPanel");
-        timeoutPanel.SetActive(false);
+        if (timeoutPanel)
+        {
+            timeoutPanel.SetActive(false);
+        }
     }
 
     // Update is called once per frame

@@ -32,6 +32,7 @@ public class CharacterSelect : MonoBehaviour {
     private GameObject waitPanel;
     private GameObject timeoutPanel;
     private NetworkControl netController;
+    public bool PlayClicked = false;
 
     private Thread characterWaitThread;
 
@@ -124,13 +125,15 @@ public class CharacterSelect : MonoBehaviour {
         }
         else
         {
-            p1Selected = true;
-            player1character = character;
-            PlayerPrefs.SetInt("Player1Character", character);
-            SetCharacterHighlight(character, true);
-            characterSelectText.text = "Press Play";
-        }
-        
+            if (!PlayClicked)
+            {
+                p1Selected = true;
+                player1character = character;
+                PlayerPrefs.SetInt("Player1Character", character);
+                SetCharacterHighlight(character, true);
+                characterSelectText.text = "Press Play";
+            }
+        }     
     }
 
     public void setFirst(bool first)
@@ -335,6 +338,8 @@ public class CharacterSelect : MonoBehaviour {
 
     public void MoveToNetworkGame()
     {
+        PlayClicked = true;
+
         //send the character
         string tosend = "character|" + player1character;
         netController.Send(tosend);
