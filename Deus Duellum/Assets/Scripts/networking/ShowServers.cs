@@ -63,7 +63,7 @@ public class ShowServers : MonoBehaviour
     {
         selectionText = selection.GetComponent<Text>();
 
-        InvokeRepeating("ReceivePing", 0, 5);
+        InvokeRepeating("ReceivePing", 0, 3);
     }
 
     private void ButtonClicked(int number, string name)
