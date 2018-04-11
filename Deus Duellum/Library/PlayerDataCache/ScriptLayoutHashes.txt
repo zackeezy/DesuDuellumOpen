@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Heather/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0410.exe
+C:/Users/JohnEaton/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0410.exe
 SceneListBegin?
 Assets/Scenes/SplashTeamLogo.unity
 Assets/Scenes/_MainMenu.unity
@@ -204,7 +204,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GameBackground
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f49f4863272689244b774579270d34da Assembly-CSharp.dll:.TestingIssue2
-9797fbc944d4ae2a59327a31151fe2c5 Assembly-CSharp.dll:.BoardManager
+73b0e69c9f9b6a54ac76258ccff947de Assembly-CSharp.dll:.BoardManager
 dbb09a3b70f825f13ce7a78b6151b335 Assembly-CSharp.dll:.MuteOther
 8c247cb09a6459153e96b5332168046d Assembly-CSharp.dll:.ButtonDescription
 872e272b3af04602a12204b9278180d6 Assembly-CSharp.dll:.LoadSceneOnClick

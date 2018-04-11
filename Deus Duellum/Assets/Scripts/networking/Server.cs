@@ -28,11 +28,12 @@ public class Server : MonoBehaviour
     public NetworkControl networkControl;
 
     //C# networking stuff
-    bool csharpconnected = false;
     UdpClient sendingSocket;
     byte[] sendByteArray;
     int multicastPort = 10101;
     IPEndPoint ipep;
+
+    int _offset;
 
     public string ClientIP
     {
@@ -60,11 +61,6 @@ public class Server : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        Debug.Log("Server Awake");
-    }
-
     // Use this for initialization
     void Start () {
         NetworkTransport.Init();
@@ -84,6 +80,8 @@ public class Server : MonoBehaviour
 
         hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
+
+        InvokeRepeating("PingClient", 0, 5);
     }
 	
 	// Update is called once per frame
@@ -123,15 +121,11 @@ public class Server : MonoBehaviour
                 networkControl.ParseMessage(splitData);
                 break;
             case NetworkEventType.DisconnectEvent:
-                csharpconnected = false;
+                connected = false;
                 //TODO: add something to tell UI got disconnected from
                 break;
         }
-        if (!csharpconnected)
-        {
-            Debug.Log("Sending server name and IP");
-            sendingSocket.Send(sendByteArray, sendByteArray.Length, ipep);
-        }
+        
     }
 
     public void Connect()
@@ -165,8 +159,6 @@ public class Server : MonoBehaviour
         ClientIP = IPAddressStr;
 
         Connect();
-
-       //responseThread.Abort();
     }
 
     public void Disconnect()
@@ -182,8 +174,20 @@ public class Server : MonoBehaviour
     private void OnDestroy()
     {
         Debug.Log("Server OnDestroy");
-        sendingSocket.Send(Encoding.ASCII.GetBytes("clear"), 5);
         NetworkTransport.RemoveHost(hostId);
         sendingSocket.Close();
+    }
+
+    private void PingClient()
+    {
+        if (!connected)
+        {
+            Debug.Log("Sending server name and IP");
+            sendingSocket.Send(sendByteArray, sendByteArray.Length, ipep);
+        }
+        else
+        {
+            CancelInvoke();
+        }
     }
 }

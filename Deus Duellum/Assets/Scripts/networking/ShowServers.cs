@@ -62,6 +62,8 @@ public class ShowServers : MonoBehaviour
     void Start()
     {
         selectionText = selection.GetComponent<Text>();
+
+        InvokeRepeating("ReceivePing", 0, 5);
     }
 
     private void ButtonClicked(int number, string name)
@@ -76,41 +78,44 @@ public class ShowServers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    private void ReceivePing()
+    {
         try
         {
-            if (_updateCount >= 200)
+            Debug.Log("Searching for Games.");
+            foreach (Transform child in ParentPanel.transform)
             {
-                Debug.Log("Searching for Games.");
-                foreach (Transform child in ParentPanel.transform)
-                {
-                    Destroy(child.gameObject);
-                }
-                PlayerInfo[] servers = netcontroller.GetServerListFromClient(true);
-
-                for (int i = 0; i < servers.Length; i++)
-                //for (int i = 0; i < 5; i++)
-                {
-                    GameObject goButton = (GameObject)Instantiate(prefabButton);
-                    goButton.transform.SetParent(ParentPanel.GetComponent<RectTransform>(), false);
-                    goButton.transform.localScale = new Vector3(1, 1, 1);
-                    goButton.GetComponentInChildren<Text>().text = servers[i].Name;
-                    //goButton.GetComponentInChildren<Text>().text = "Button " + i;
-                    Button tempButton = goButton.GetComponent<Button>();
-
-                    //int tempInt = i;
-                    string temp = tempButton.transform.GetChild(0).GetComponent<Text>().text;
-                    tempButton.onClick.AddListener(() => ButtonClicked(i, temp));
-                }
-                _updateCount = 0;
+                Destroy(child.gameObject);
             }
-            else
+            PlayerInfo[] servers = netcontroller.GetServerListFromClient(false);
+
+            for (int i = 0; i < servers.Length; i++)
+            //for (int i = 0; i < 5; i++)
             {
-                _updateCount++;
+                GameObject goButton = (GameObject)Instantiate(prefabButton);
+                goButton.transform.SetParent(ParentPanel.GetComponent<RectTransform>(), false);
+                goButton.transform.localScale = new Vector3(1, 1, 1);
+                goButton.GetComponentInChildren<Text>().text = servers[i].Name;
+                //goButton.GetComponentInChildren<Text>().text = "Button " + i;
+                Button tempButton = goButton.GetComponent<Button>();
+
+                //int tempInt = i;
+                string temp = tempButton.transform.GetChild(0).GetComponent<Text>().text;
+                tempButton.onClick.AddListener(() => ButtonClicked(i, temp));
             }
+                
         }
         catch (Exception e)
         {
             Debug.Log(e.Message);
         }
+    }
+
+    private void OnDestroy()
+    {
+        CancelInvoke();
     }
 }

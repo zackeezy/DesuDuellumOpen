@@ -5,8 +5,14 @@ using UnityEngine.EventSystems;
 
 public class GameBackground : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 
