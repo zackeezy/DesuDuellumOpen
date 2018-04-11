@@ -1,8 +1,0 @@
-﻿  stdafx.cpp
-  AI_CPP.cpp
-  dllmain.cpp
-     Creating library C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AI_CPP\Release\AI_CPP.lib and object C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AI_CPP\Release\AI_CPP.exp
-  Generating code
-  All 2 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  AI_CPP.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\AI_CPP\Release\AI_CPP.dll
