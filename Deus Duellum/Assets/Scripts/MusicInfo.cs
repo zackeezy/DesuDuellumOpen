@@ -11,8 +11,8 @@ public class MusicInfo : MonoBehaviour {
     public AudioSource emotesSource;
 
     public AudioClip[] musicClips;
-    public int clip = -1;
-    private int prevGameIndex = 1; 
+    public int clip = 0;
+    private int currGameIndex = 1; 
 
     void Awake () {
 		//to keep the same audio throughout, so doesn't restart music/ or reset volume
@@ -45,10 +45,13 @@ public class MusicInfo : MonoBehaviour {
         emotesSource.volume = PlayerPrefs.GetFloat("emotes", 1);
 
         //switch to new track if ended
-        if (!musicSource.isPlaying)
+        if (!musicSource.isPlaying && currGameIndex != 6 && currGameIndex != 7 && currGameIndex != 8)
         {
-            clip++;
-            if (clip >= musicClips.Length - 1)
+            if (clip == 0)
+            {
+                clip = 1;
+            }
+            else
             {
                 clip = 0;
             }
@@ -57,19 +60,19 @@ public class MusicInfo : MonoBehaviour {
         }
     }
 
-    public void ChangeMusic(int gameIndex)
+    public void ChangeMusic(int newGameIndex)
     {
         //don't restart music if reloading the same scene (ex. replaying a game)
-        if (prevGameIndex != gameIndex)
+        if (currGameIndex != newGameIndex)
         {
-            if (gameIndex == 6 || gameIndex == 7 || gameIndex == 8)
+            if (newGameIndex == 6 || newGameIndex == 7 || newGameIndex == 8)
             {
                 //play game music
                 musicSource.clip = musicClips[2];
                 musicSource.loop = true;
                 musicSource.Play();
             }
-            else if(prevGameIndex == 6 || prevGameIndex == 7 || prevGameIndex == 8)
+            else if(currGameIndex == 6 || currGameIndex == 7 || currGameIndex == 8)
             {
                 //play menu music when going from a game to menu
                 clip = 0;
@@ -78,6 +81,6 @@ public class MusicInfo : MonoBehaviour {
                 musicSource.Play();
             }
         }
-        prevGameIndex = gameIndex;
+        currGameIndex = newGameIndex;
     }
 }

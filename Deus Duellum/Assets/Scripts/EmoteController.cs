@@ -256,6 +256,9 @@ public class EmoteController : MonoBehaviour {
 
     IEnumerator AnimateOtherEmotePanel(int emote)
     {
+        //activate the emote panel
+        emotePanel.SetActive(true);
+
         //change the image to match the emote
         Image playerImg = transform.GetChild(0).GetChild(1).GetComponent<Image>();
         Sprite old = playerImg.sprite;

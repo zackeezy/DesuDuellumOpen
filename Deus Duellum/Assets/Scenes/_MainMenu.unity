@@ -6439,7 +6439,7 @@ Prefab:
     - target: {fileID: 114489082391045398, guid: f02f6345406757a42886db0736a81a17,
         type: 2}
       propertyPath: clip
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f02f6345406757a42886db0736a81a17, type: 2}

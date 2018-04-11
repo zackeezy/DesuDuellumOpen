@@ -47,6 +47,16 @@ public class CharacterSelect : MonoBehaviour {
         if (net)
         {
             netController = net.GetComponent<NetworkControl>();
+            if (netController.isClient)
+            {
+                //player1 is black
+                PlayerPrefs.SetInt("player1", 1);
+            }
+            else
+            {
+                //player1 is white
+                PlayerPrefs.SetInt("player1", 0);
+            }
         }
 
         waitPanel = GameObject.FindGameObjectWithTag("waitPanel");

@@ -1845,11 +1845,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1153841496}
     m_Modifications:
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 224137490134494296, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -1893,12 +1888,12 @@ Prefab:
     - target: {fileID: 224137490134494296, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -550
+      value: -515
       objectReference: {fileID: 0}
     - target: {fileID: 224137490134494296, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 237
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 224137490134494296, guid: 1db18a0234f7e6343984e65f68699571,
         type: 2}
@@ -1939,64 +1934,6 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1315010785199184, guid: 1db18a0234f7e6343984e65f68699571, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1315010785199184, guid: 1db18a0234f7e6343984e65f68699571, type: 2}
-      propertyPath: m_TagString
-      value: QuitPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1344728399}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107091654561734, guid: 1db18a0234f7e6343984e65f68699571,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1db18a0234f7e6343984e65f68699571, type: 2}

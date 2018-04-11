@@ -1567,7 +1567,7 @@ Prefab:
         type: 2}
       propertyPath: altNotations
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 505557814}
     - target: {fileID: 114024930349838264, guid: a75c3327317d4bf4c930d20322c3016d,
         type: 2}
       propertyPath: whiteLog
@@ -2420,6 +2420,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a75c3327317d4bf4c930d20322c3016d, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &505557814 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1350328099220084, guid: a75c3327317d4bf4c930d20322c3016d,
+    type: 2}
+  m_PrefabInternal: {fileID: 505557813}
 --- !u!114 &505557815 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114024930349838264, guid: a75c3327317d4bf4c930d20322c3016d,
