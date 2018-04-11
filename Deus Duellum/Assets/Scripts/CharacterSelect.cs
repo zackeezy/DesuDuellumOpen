@@ -33,6 +33,7 @@ public class CharacterSelect : MonoBehaviour {
     private GameObject timeoutPanel;
     private NetworkControl netController;
     public bool PlayClicked = false;
+    private bool netTimeout = false;
 
     private Thread characterWaitThread;
 
@@ -83,6 +84,11 @@ public class CharacterSelect : MonoBehaviour {
 
     public void setCharacter(int character)
     {
+        if (netTimeout)
+        {
+            //dont let anything happen if they click a character after net disconnected
+            return;
+        }
         //add visual effect to show it was picked
         if (gameIndex == 2)
         {
@@ -394,6 +400,7 @@ public class CharacterSelect : MonoBehaviour {
     public void SetTimeoutPanelToActive()
     {
         timeoutPanel.SetActive(true);
+        playButton.interactable = false;
         Invoke("GoToMainMenu", 7);
     }
 }

@@ -1708,6 +1708,11 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114090141540364056, guid: a871692f20a0a504798cfdcd03216dab,
+        type: 2}
+      propertyPath: m_Text
+      value: Connection lost.
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a871692f20a0a504798cfdcd03216dab, type: 2}
   m_IsPrefabParent: 0
