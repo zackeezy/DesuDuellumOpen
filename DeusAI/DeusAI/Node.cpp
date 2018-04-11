@@ -19,11 +19,11 @@ Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, Node 
     _wins = 0;
     _games = 0;
     _confidence = 0;
-   
+
     _nextToPlay = FlipColor(_parent->GetNextToPlay());
 }
 
-Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color) 
+Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color)
 {
     _whitePieces = whitePieces;
     _blackPieces = blackPieces;
@@ -47,11 +47,11 @@ Node::~Node()
     delete _nextSibling;
     /*if ( _firstChild != NULL)
     {
-        _firstChild->~Node();
-        if (_nextSibling != NULL) 
-        {
-            _nextSibling->~Node();
-        }
+    _firstChild->~Node();
+    if (_nextSibling != NULL)
+    {
+    _nextSibling->~Node();
+    }
     }*/
 }
 
@@ -61,36 +61,36 @@ void Node::GenerateConfidence()
 
     _confidence = INT_MAX;
 
-    if (_games != 0) 
+    if (_games != 0)
     {
-        _confidence = (_wins / _games) + (2  / sqrt(2) * sqrt( (2 * log(Analyzer::GetTotalPlayOuts())) / _games));
+        _confidence = (_wins / _games) + (2 / sqrt(2) * sqrt((2 * log(Analyzer::GetTotalPlayOuts())) / _games));
     }
 
-   /* if (_firstChild != NULL) 
+    /* if (_firstChild != NULL)
     {
-        _firstChild->GenerateConfidence();
+    _firstChild->GenerateConfidence();
     }
 
     if (_nextSibling != NULL)
     {
-        _nextSibling->GenerateConfidence();
+    _nextSibling->GenerateConfidence();
     }*/
 }
 
-void Node::InitializeWins(int wins) 
+void Node::InitializeWins(int wins)
 {
     _wins = wins;
     _games = 100;
 }
 
-int Node::GenerateChildren() 
+int Node::GenerateChildren()
 {
-    if (_firstChild != NULL) 
+    if (_firstChild != NULL)
     {
         return -1;
     }
 
-    if (Analyzer::IsGameOver(this) != Neither) 
+    if (Analyzer::IsGameOver(this) != Neither)
     {
         return 0;
     }
@@ -110,12 +110,12 @@ int Node::GenerateChildren()
                 unsigned long long west = Masks::WhiteMasks::WestAttack[iterator];
 
                 if (forward != 0 && (forward & CombinedBoard()) == 0)
-                {   
+                {
                     childCount++;
                     if (_firstChild == NULL)
                     {
-                        _firstChild = new Node((_whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | forward, 
-                            _blackPieces, 
+                        _firstChild = new Node((_whitePieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | forward,
+                            _blackPieces,
                             this);
 
                         int initialWins = 0;
@@ -148,7 +148,7 @@ int Node::GenerateChildren()
                             if (protectCount >= attackCount)
                             {
                                 int row = Masks::OrientationMasks::CurrentRow[Masks::OrientationMasks::IndexOf[forward]];
-                                switch (row) 
+                                switch (row)
                                 {
                                 case 8:
                                     initialWins = 100;
@@ -170,11 +170,11 @@ int Node::GenerateChildren()
                                     break;
                                 }
                             }
-                            /*else if (//Captured a piece) 
+                            /*else if (//Captured a piece)
                             {
-                                initialWins = 60;
+                            initialWins = 60;
                             }*/
-                            else  
+                            else
                             {
                                 initialWins = 30;
                             }
@@ -182,10 +182,10 @@ int Node::GenerateChildren()
 
                         _firstChild->InitializeWins(initialWins);
                     }
-                    else 
+                    else
                     {
                         Node * temp = _firstChild;
-                        while (temp->_nextSibling != NULL) 
+                        while (temp->_nextSibling != NULL)
                         {
                             temp = temp->_nextSibling;
                         }
@@ -637,7 +637,7 @@ int Node::GenerateChildren()
                             }
                             /*else if ((forward & _blackPieces) != 0)
                             {
-                                initialWins = 60;
+                            initialWins = 60;
                             }*/
                             else
                             {
@@ -655,7 +655,7 @@ int Node::GenerateChildren()
                             temp = temp->_nextSibling;
                         }
 
-                        temp->_nextSibling = new Node(_whitePieces, 
+                        temp->_nextSibling = new Node(_whitePieces,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | forward,
                             this);
 
@@ -735,7 +735,7 @@ int Node::GenerateChildren()
                         _firstChild = new Node(_whitePieces & ~east,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | east,
                             this);
-                       
+
                         int initialWins = 0;
                         //Safety Bonus
                         {
@@ -808,10 +808,10 @@ int Node::GenerateChildren()
                             temp = temp->_nextSibling;
                         }
 
-                        temp->_nextSibling = new Node(_whitePieces & ~east, 
+                        temp->_nextSibling = new Node(_whitePieces & ~east,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | east,
                             this);
-                        
+
                         int initialWins = 0;
                         //Safety Bonus
                         {
@@ -885,7 +885,7 @@ int Node::GenerateChildren()
                     childCount++;
                     if (_firstChild == NULL)
                     {
-                        _firstChild = new Node(_whitePieces & ~west, 
+                        _firstChild = new Node(_whitePieces & ~west,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | west,
                             this);
 
@@ -965,8 +965,8 @@ int Node::GenerateChildren()
 
                         temp->_nextSibling = new Node(_whitePieces & ~west,
                             (_blackPieces & ~Masks::OrientationMasks::CurrentSquare[iterator]) | west,
-                            this); 
-                        
+                            this);
+
                         int initialWins = 0;
                         //Safety Bonus
                         {
@@ -1045,25 +1045,40 @@ PlayerColor Node::GetNextToPlay()
     return _nextToPlay;
 }
 
-void Node::SetPrevSibling(Node * prevSibling) 
+void Node::SetPrevSibling(Node * prevSibling)
 {
-    if (_prevSibling == NULL) 
+    if (_prevSibling == NULL)
     {
         _prevSibling = prevSibling;
     }
 }
 
-unsigned long long Node::CombinedBoard() 
+void Node::SetNextSibling(Node * nextSibling)
+{
+    _nextSibling = nextSibling;
+}
+
+void Node::SetParent(Node * parent)
+{
+    _parent = parent;
+}
+
+void Node::SetFirstChild(Node * firstChild)
+{
+    _firstChild = firstChild;
+}
+
+unsigned long long Node::CombinedBoard()
 {
     return _whitePieces | _blackPieces;
 }
 
-Node * Node::GetFirstChild() 
+Node * Node::GetFirstChild()
 {
     return _firstChild;
 }
 
-Node * Node::GetNextSibling() 
+Node * Node::GetNextSibling()
 {
     return _nextSibling;
 }
@@ -1074,38 +1089,38 @@ int Node::GetConfidence()
     return _confidence;
 }
 
-unsigned long long Node::GetBlackPieces() 
+unsigned long long Node::GetBlackPieces()
 {
     return _blackPieces;
 }
 
-unsigned long long Node::GetWhitePieces() 
+unsigned long long Node::GetWhitePieces()
 {
     return _whitePieces;
 }
 
-void Node::AddWin() 
+void Node::AddWin()
 {
     _wins++;
     _games++;
 }
 
-void Node::AddLoss() 
+void Node::AddLoss()
 {
     _games++;
 }
 
-int Node::GetGames() 
+int Node::GetGames()
 {
     return _games;
 }
 
-Node * Node::GetParent() 
+Node * Node::GetParent()
 {
     return _parent;
 }
 
-int Node::GetWins() 
+int Node::GetWins()
 {
     return _wins;
 }

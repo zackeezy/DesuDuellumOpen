@@ -2,7 +2,7 @@
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
   Analyzer.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
-c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(27): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(28): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
@@ -10,13 +10,14 @@ c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(49): warni
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
 Analyzer.cpp(104): warning C4101: 'bestMove': unreferenced local variable
-Analyzer.cpp(325): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+Analyzer.cpp(138): warning C4101: 'bestMove': unreferenced local variable
+Analyzer.cpp(679): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   BitsMagic.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
   DeusAI.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
-c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(27): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(28): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
@@ -35,17 +36,17 @@ c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(49): warni
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
   Node.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
-c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(27): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(28): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\BitsMagic.h(13): warning C4091: 'static ': ignored on left of 'BitsMagic' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(49): warning C4091: 'static ': ignored on left of 'Masks' when no variable is declared
-Node.cpp(1074): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+Node.cpp(1089): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
   TestDriver.cpp
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Grid.h(110): warning C4091: 'static ': ignored on left of 'Grid' when no variable is declared
-c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(27): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
+c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Analyzer.h(28): warning C4091: 'static ': ignored on left of 'Analyzer' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(22): warning C4091: 'static ': ignored on left of 'Masks::WhiteMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(35): warning C4091: 'static ': ignored on left of 'Masks::BlackMasks' when no variable is declared
 c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(48): warning C4091: 'static ': ignored on left of 'Masks::OrientationMasks' when no variable is declared
@@ -54,6 +55,6 @@ c:\users\johneaton\documents\github\deusduellum\deusai\deusai\Masks.h(49): warni
 c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
      Creating library C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\DeusAI\x64\Release\DeusAI.lib and object C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\DeusAI\x64\Release\DeusAI.exp
   Generating code
-  All 293 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 297 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   DeusAI.vcxproj -> C:\Users\JohnEaton\Documents\GitHub\DeusDuellum\DeusAI\x64\Release\DeusAI.dll

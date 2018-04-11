@@ -1053,6 +1053,21 @@ void Node::SetPrevSibling(Node * prevSibling)
     }
 }
 
+void Node::SetNextSibling(Node * nextSibling)
+{
+    _nextSibling = nextSibling;
+}
+
+void Node::SetParent(Node * parent)
+{
+    _parent = parent;
+}
+
+void Node::SetFirstChild(Node * firstChild) 
+{
+    _firstChild = firstChild;
+}
+
 unsigned long long Node::CombinedBoard() 
 {
     return _whitePieces | _blackPieces;

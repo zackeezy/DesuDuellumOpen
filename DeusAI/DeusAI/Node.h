@@ -27,7 +27,7 @@ private:
     PlayerColor _nextToPlay;
 
     unsigned long long CombinedBoard();
-   
+
 
 public:
     Node(unsigned long long whitePieces, unsigned long long blackPieces, Node * parent);
@@ -39,8 +39,11 @@ public:
     int GenerateChildren();
     PlayerColor GetNextToPlay();
     Node * GetFirstChild();
+    void SetFirstChild(Node * firstChild);
     Node * GetNextSibling();
+    void SetNextSibling(Node * nextSibling);
     Node * GetParent();
+    void SetParent(Node * parent);
     int GetConfidence();
     unsigned long long GetBlackPieces();
     unsigned long long GetWhitePieces();

@@ -38,8 +38,6 @@ namespace Assets.Scripts
 
         public GameCore(PlayerType white, PlayerType black, List<GameObject> tokens)
         {
-            InitializeAI();
-
             WhitePlayer = white;
             BlackPlayer = black;
 
@@ -78,8 +76,14 @@ namespace Assets.Scripts
             }
         }
 
+        public void SetDifficulty(bool isHardMode)
+        {
+            InitializeAI(isHardMode);
+        }
+
         public void PrepForForeignMove()
         {
+
             if (IsWhiteTurn)
             {
                 if (WhitePlayer == PlayerType.AI)
@@ -193,7 +197,7 @@ namespace Assets.Scripts
         public static extern void FillOrigin(int x, int y, int color);
 
         [DllImport("DeusAI", CallingConvention = CallingConvention.StdCall)]
-        public static extern void InitializeAI();
+        public static extern void InitializeAI(bool isHardMode);
 
         public bool GetNetworkMove(ref int x, ref int y, ref Direction direction)
         {

@@ -131,6 +131,360 @@ Move Analyzer::GetMove(unsigned long long whitePieces, unsigned long long blackP
     return move;
 }
 
+Move Analyzer::GetMoveImproved(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color)
+{
+    clock_t startTime = clock();
+
+    Move bestMove;
+    Node * root = new Node(whitePieces, blackPieces, color);
+
+    _totalPlayOuts = 0;
+
+    root->GenerateChildren();
+    Node * winningMoves = NULL;
+    Node* savingMoves = NULL;
+    Node* safeCaptures = NULL;
+    Node* safeMoves = NULL;
+    Node* unsafeMoves = NULL;
+
+    Node* temp = root->GetFirstChild();
+
+    //Sort children;
+    while (temp != NULL)
+    {
+        Node * copy = new Node(temp->GetWhitePieces(), temp->GetBlackPieces(), temp->GetNextToPlay());
+
+        if (root->GetNextToPlay() == Black)
+        {
+            if (Analyzer::IsGameOver(temp) == White)
+            {
+                if (winningMoves == NULL) 
+                {
+                    winningMoves = copy;
+                }
+                else
+                {
+                    Node* t = winningMoves;
+                    while (t->GetNextSibling() != NULL) 
+                    {
+                        t = t->GetNextSibling();
+                    }
+                    t->SetNextSibling(copy);
+                    copy->SetPrevSibling(t);
+                }
+            }
+            else if ((root->GetBlackPieces() & Grid::Row2) != 0
+                && (root->GetBlackPieces() & Grid::Row2) == 0)
+            {
+                if (savingMoves == NULL)
+                {
+                    savingMoves = copy;
+                }
+                else
+                {
+                    Node* t = savingMoves;
+                    while (t->GetNextSibling() != NULL)
+                    {
+                        t = t->GetNextSibling();
+                    }
+                    t->SetNextSibling(copy);
+                    copy->SetPrevSibling(t);
+                }
+            }
+            else
+            {
+                unsigned long long movedPiece = root->GetWhitePieces() ^ temp->GetWhitePieces();
+                int destination = BitsMagic::BitScanForwardWithReset(movedPiece);
+
+                int attackCount = 0;
+                int protectCount = 0;
+
+
+                if ((temp->GetWhitePieces() & Masks::BlackMasks::EastAttack[destination]) != 0)
+                {
+                    protectCount++;
+                }
+
+                if ((temp->GetWhitePieces() & Masks::BlackMasks::WestAttack[destination]) != 0)
+                {
+                    protectCount++;
+                }
+
+                if ((temp->GetBlackPieces() & Masks::WhiteMasks::EastAttack[destination]) != 0)
+                {
+                    attackCount++;
+                }
+
+                if ((temp->GetBlackPieces() & Masks::WhiteMasks::WestAttack[destination]) != 0)
+                {
+                    attackCount++;
+                }
+
+
+                if (protectCount >= attackCount && root->GetWhitePieces() != temp->GetWhitePieces())
+                {
+                    if (safeCaptures == NULL)
+                    {
+                        safeCaptures = copy;
+                    }
+                    else
+                    {
+                        Node* t = safeCaptures;
+                        while (t->GetNextSibling() != NULL)
+                        {
+                            t = t->GetNextSibling();
+                        }
+                        t->SetNextSibling(copy);
+                        copy->SetPrevSibling(t);
+                    }
+                }
+                //If destination is safe and NOT capture
+                else if (protectCount >= attackCount)
+                {
+                    if (safeMoves == NULL)
+                    {
+                        safeMoves = copy;
+                    }
+                    else
+                    {
+                        Node* t = safeMoves;
+                        while (t->GetNextSibling() != NULL)
+                        {
+                            t = t->GetNextSibling();
+                        }
+                        t->SetNextSibling(copy);
+                        copy->SetPrevSibling(t);
+                    }
+                }
+                //If destination is not safe
+                else
+                {
+                    if (unsafeMoves == NULL)
+                    {
+                        unsafeMoves = copy;
+                    }
+                    else
+                    {
+                        Node* t = unsafeMoves;
+                        while (t->GetNextSibling() != NULL)
+                        {
+                            t = t->GetNextSibling();
+                        }
+                        t->SetNextSibling(copy);
+                        copy->SetPrevSibling(t);
+                    }
+                }
+            }
+        }
+        else
+        {
+
+            if (Analyzer::IsGameOver(temp) == Black)
+            {
+                if (winningMoves == NULL)
+                {
+                    winningMoves = copy;
+                }
+                else
+                {
+                    Node* t = winningMoves;
+                    while (t->GetNextSibling() != NULL)
+                    {
+                        t = t->GetNextSibling();
+                    }
+                    t->SetNextSibling(copy);
+                    copy->SetPrevSibling(t);
+                }
+            }
+            else if ((root->GetWhitePieces() & Grid::Row7) != 0
+                && (temp->GetWhitePieces() & Grid::Row7) == 0)
+            {
+                if (savingMoves == NULL)
+                {
+                    savingMoves = copy;
+                }
+                else
+                {
+                    Node* t = savingMoves;
+                    while (t->GetNextSibling() != NULL)
+                    {
+                        t = t->GetNextSibling();
+                    }
+                    t->SetNextSibling(copy);
+                    copy->SetPrevSibling(t);
+                }
+            }
+            else
+            {
+                unsigned long long movedPiece = root->GetBlackPieces() ^ temp->GetBlackPieces();
+                int start = BitsMagic::BitScanForwardWithReset(movedPiece);
+                int destination = BitsMagic::BitScanForwardWithReset(movedPiece);
+
+                int attackCount = 0;
+                int protectCount = 0;
+
+                if ((temp->GetBlackPieces() & Masks::WhiteMasks::EastAttack[destination]) != 0)
+                {
+                    protectCount++;
+                }
+
+                if ((temp->GetBlackPieces() & Masks::WhiteMasks::WestAttack[destination]) != 0)
+                {
+                    protectCount++;
+                }
+
+                if ((temp->GetWhitePieces() & Masks::BlackMasks::EastAttack[destination]) != 0)
+                {
+                    attackCount++;
+                }
+
+                if ((temp->GetWhitePieces() & Masks::BlackMasks::WestAttack[destination]) != 0)
+                {
+                    attackCount++;
+                }
+
+                //If destination is safe and a capture
+                if (protectCount >= attackCount && root->GetBlackPieces() != temp->GetBlackPieces())
+                {
+                    if (safeCaptures == NULL)
+                    {
+                        safeCaptures = copy;
+                    }
+                    else
+                    {
+                        Node* t = safeCaptures;
+                        while (t->GetNextSibling() != NULL)
+                        {
+                            t = t->GetNextSibling();
+                        }
+                        t->SetNextSibling(copy);
+                        copy->SetPrevSibling(t);
+                    }
+                }
+                //If destination is safe and NOT a capture
+                if (protectCount >= attackCount)
+                {
+                    if (safeMoves == NULL)
+                    {
+                        safeMoves = copy;
+                    }
+                    else
+                    {
+                        Node* t = safeMoves;
+                        while (t->GetNextSibling() != NULL)
+                        {
+                            t = t->GetNextSibling();
+                        }
+                        t->SetNextSibling(copy);
+                        copy->SetPrevSibling(t);
+                    }
+                }
+                //If destination is not safe
+                else
+                {
+                    if (unsafeMoves == NULL)
+                    {
+                        unsafeMoves = copy;
+                    }
+                    else
+                    {
+                        Node* t = unsafeMoves;
+                        while (t->GetNextSibling() != NULL)
+                        {
+                            t = t->GetNextSibling();
+                        }
+                        t->SetNextSibling(copy);
+                        copy->SetPrevSibling(t);
+                    }
+                }
+            }
+        }
+        temp = temp->GetNextSibling();
+    }
+
+    //Process results, put correct children as the real children, delete all others;
+    delete root->GetFirstChild();
+
+    if (winningMoves != NULL)
+    {
+        winningMoves->SetParent(root);
+        root->SetFirstChild(winningMoves);
+
+        //delete winningMoves;
+        delete savingMoves;
+        delete safeCaptures;
+        delete safeMoves;
+        delete unsafeMoves;
+    }
+    else if (savingMoves != NULL)
+    {
+        savingMoves->SetParent(root);
+        root->SetFirstChild(savingMoves);
+
+        //delete winningMoves;
+        //delete savingMoves;
+        delete safeCaptures;
+        delete safeMoves;
+        delete unsafeMoves;
+    }
+    else if (safeCaptures != NULL)
+    {
+        safeCaptures->SetParent(root);
+        root->SetFirstChild(safeCaptures);
+
+        //delete winningMoves;
+        //delete savingMoves;
+        //delete safeCaptures;
+        delete safeMoves;
+        delete unsafeMoves;
+    }
+    else if (safeMoves != NULL)
+    {
+        safeMoves->SetParent(root);
+        root->SetFirstChild(safeMoves);
+
+        //delete winningMoves;
+        //delete savingMoves;
+        //delete safeCaptures;
+        //delete safeMoves;
+        delete unsafeMoves;
+    }
+    else
+    {
+        unsafeMoves->SetParent(root);
+        root->SetFirstChild(unsafeMoves);
+
+        //delete winningMoves;
+        //delete savingMoves;
+        //delete safeCaptures;
+        //delete safeMoves;
+        //delete unsafeMoves;
+    }
+
+    while ((((float)(clock() - startTime))) < MAX_TIME)
+    {
+        RunPlayOut(root);
+    }
+
+    Node* children = root->GetFirstChild();
+    Node* bestChild = children;
+
+    while (children != NULL)
+    {
+        if (children->GetGames() > bestChild->GetGames())
+        {
+            bestChild = children;
+        }
+
+        children = children->GetNextSibling();
+    }
+
+    Move move = TranslateChildToMove(root, bestChild);
+
+    delete root;
+    return move;
+}
+
 PlayerColor Analyzer::IsGameOver(Node * node)
 {
    

@@ -19,6 +19,7 @@ public class BoardManager : MonoBehaviour {
     private int _awaitMoveY;
     private Direction _awaitMoveDirection;
     private bool _foreignMoveCompleted;
+    private bool _isHardMode;
 
     public GameObject player1img;
     public GameObject player2img;
@@ -128,6 +129,12 @@ public class BoardManager : MonoBehaviour {
         setPrefs();
 
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
+
+        if (gameMode == PlayerType.AI)
+        {
+            _core.SetDifficulty(_isHardMode);
+        }
+
         _capturedPiece = null;
         _foreignMoveCompleted = false;
 
@@ -837,16 +844,14 @@ public class BoardManager : MonoBehaviour {
                 aiCharacter = Random.Range(0, 2);
             }
             player2character = aiCharacter;
-            int difficulty = PlayerPrefs.GetInt("difficulty", 0);
-            if (difficulty == 0)
+            
+            if (PlayerPrefs.GetInt("difficulty", 0) == 1)
             {
-                //tell the game core to use the easy AI
-                Debug.Log("easy AI selected");
+                _isHardMode = true;
             }
-            else if (difficulty == 1)
+            else
             {
-                //tell the game core to use the harder AI
-                Debug.Log("hard AI selected");
+                _isHardMode = false;
             }
         }
 
