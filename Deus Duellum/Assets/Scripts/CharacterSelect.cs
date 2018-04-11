@@ -390,7 +390,7 @@ public class CharacterSelect : MonoBehaviour {
     public void GoToMainMenu()
     {
         //SceneManager.LoadScene(1);
-        timeoutPanel.GetComponent<LoadSceneOnClick>().LoadByIndex(1);
+        timeoutPanel.transform.GetChild(1).GetComponent<LoadSceneOnClick>().LoadByIndex(1);
     }
 
     public void CancelGoTo()
