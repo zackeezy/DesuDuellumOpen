@@ -636,8 +636,8 @@ public class BoardManager : MonoBehaviour {
             {
                 //you lost
                 winText.text = "You Lost!";
-                SetCharacterWinLoseImage(true, false, whiteCharacter);
-                SetCharacterWinLoseImage(false, true, blackCharacter);
+                SetCharacterWinLoseImage(false, false, whiteCharacter);
+                SetCharacterWinLoseImage(true, true, blackCharacter);
             }
 
             if (whitePlayer == PlayerType.Local)

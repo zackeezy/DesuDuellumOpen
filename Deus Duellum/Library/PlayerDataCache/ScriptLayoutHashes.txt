@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Zachary/Documents/GitHub/DeusDuellum/Deus Duellum/Builds/test0411.exe
+C:/Users/Zachary/Documents/GitHub/DeusDuellum/Deus Duellum/Showcase/DeusDuellum.exe
 SceneListBegin?
 Assets/Scenes/SplashTeamLogo.unity
 Assets/Scenes/_MainMenu.unity
