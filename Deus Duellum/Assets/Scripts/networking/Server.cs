@@ -123,7 +123,10 @@ public class Server : MonoBehaviour
                 networkControl.GameTimedOut();
                 break;
         }
-        
+        if (connected)
+        {
+            CancelInvoke();
+        }
     }
 
     public void Connect()
@@ -182,10 +185,6 @@ public class Server : MonoBehaviour
         {
             Debug.Log("Sending server name and IP");
             sendingSocket.Send(sendByteArray, sendByteArray.Length, ipep);
-        }
-        else
-        {
-            CancelInvoke();
         }
     }
 }

@@ -378,7 +378,7 @@ public class CharacterSelect : MonoBehaviour {
         {
             //popup
             waitPanel.SetActive(true);
-            Invoke("Disconnect", 60);
+            Invoke("SetTimeoutPanelToActive", 10);
         }
     }
 

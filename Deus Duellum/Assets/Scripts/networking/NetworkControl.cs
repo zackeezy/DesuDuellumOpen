@@ -158,6 +158,16 @@ public class NetworkControl : MonoBehaviour {
             case "received":
                 _waitingForResponse = false;
                 break;
+            case "hello":
+                if (isClient)
+                {
+                    client.responseReceived = true;
+                }
+                else
+                {
+                    Send("hello");
+                }
+                break;
         }
     }
 

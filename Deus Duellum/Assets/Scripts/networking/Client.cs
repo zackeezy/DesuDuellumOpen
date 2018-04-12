@@ -39,6 +39,8 @@ public class Client : MonoBehaviour {
     int multicastPort = 10101;
     List<PlayerInfo> serverList;
 
+    public bool responseReceived = true;
+
     public string RecvIP
     {
         get
@@ -86,7 +88,6 @@ public class Client : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
         int recvHostId;
         int recvConnectionId;
         int recvChannelId;
@@ -136,6 +137,7 @@ public class Client : MonoBehaviour {
         {
             Debug.Log(string.Format("Connected to {0}:{1} with hostId: {2}, connectionId: {3}, channelId: {4},", hostId, serverSocketPort, hostId, connectionId, reliableChannelId));
         }
+
         connected = true;
     }
 
@@ -250,5 +252,18 @@ public class Client : MonoBehaviour {
         Debug.Log("Client OnDestroy");
         NetworkTransport.RemoveHost(hostId);
         listener.Close();
+    }
+
+    public void PingServer()
+    {
+        if (responseReceived)
+        {
+            SendNetworkMessage("hello");
+            responseReceived = false;
+        }
+        else
+        {
+            networkControl.Disconnect();
+        }
     }
 }
