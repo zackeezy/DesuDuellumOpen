@@ -79,7 +79,7 @@ public class Server : MonoBehaviour
         hostId = NetworkTransport.AddHost(topology, socketPort);
         Debug.Log("Socket open. Host ID is: " + hostId);
 
-        InvokeRepeating("PingClient", 0, 3);
+        InvokeRepeating("PingClient", 0, 1);
     }
 	
 	// Update is called once per frame
