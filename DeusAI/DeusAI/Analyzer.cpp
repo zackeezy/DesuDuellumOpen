@@ -152,9 +152,9 @@ Move Analyzer::GetMoveImproved(unsigned long long whitePieces, unsigned long lon
     //Sort children;
     while (temp != NULL)
     {
-        Node * copy = new Node(temp->GetWhitePieces(), temp->GetBlackPieces(), temp->GetNextToPlay());
+        Node * copy = new Node(temp->GetWhitePieces(), temp->GetBlackPieces(), temp->GetNextToPlay(), temp->GetWins(), temp->GetGames());
 
-        if (root->GetNextToPlay() == Black)
+        if (root->GetNextToPlay() == White)
         {
             if (Analyzer::IsGameOver(temp) == White)
             {
@@ -221,7 +221,7 @@ Move Analyzer::GetMoveImproved(unsigned long long whitePieces, unsigned long lon
                 }
 
 
-                if (protectCount >= attackCount && root->GetWhitePieces() != temp->GetWhitePieces())
+                if (protectCount >= attackCount && (root->GetBlackPieces() & Masks::OrientationMasks::CurrentSquare[destination]) != 0)
                 {
                     if (safeCaptures == NULL)
                     {
@@ -344,7 +344,7 @@ Move Analyzer::GetMoveImproved(unsigned long long whitePieces, unsigned long lon
                 }
 
                 //If destination is safe and a capture
-                if (protectCount >= attackCount && root->GetBlackPieces() != temp->GetBlackPieces())
+                if (protectCount >= attackCount && (root->GetWhitePieces() & Masks::OrientationMasks::CurrentSquare[destination]) != 0)
                 {
                     if (safeCaptures == NULL)
                     {
@@ -362,7 +362,7 @@ Move Analyzer::GetMoveImproved(unsigned long long whitePieces, unsigned long lon
                     }
                 }
                 //If destination is safe and NOT a capture
-                if (protectCount >= attackCount)
+                else if (protectCount >= attackCount)
                 {
                     if (safeMoves == NULL)
                     {
@@ -782,8 +782,7 @@ void Analyzer::RunPlayOut(Node * root)
                 Node* savingMove = NULL;
                 while (temp != NULL)
                 {
-
-                    if (currentBoard->GetNextToPlay() == Black)
+                    if (currentBoard->GetNextToPlay() == White)
                     {
 
                         if (Analyzer::IsGameOver(temp) == White)

@@ -41,6 +41,24 @@ Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, Playe
     _nextToPlay = color;
 }
 
+Node::Node(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color, int wins, int games)
+{
+    _whitePieces = whitePieces;
+    _blackPieces = blackPieces;
+
+    _parent = NULL;
+
+    _nextSibling = NULL;
+    _prevSibling = NULL;
+    _firstChild = NULL;
+
+    _wins = wins;
+    _games = games;
+    _confidence = 0;
+
+    _nextToPlay = color;
+}
+
 Node::~Node()
 {
     delete _firstChild;

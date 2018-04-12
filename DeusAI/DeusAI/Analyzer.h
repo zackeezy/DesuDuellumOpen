@@ -10,7 +10,7 @@ static class Analyzer
 private:
     static int _totalPlayOuts;
 
-    static const int MAX_TIME = 5900;
+    static const int MAX_TIME = 5500;
     static const int PIECE_SCALAR = 10;
     static const int WhiteScoreArray[64];
     static const int BlackScoreArray[64];

@@ -28,12 +28,12 @@ private:
 
     unsigned long long CombinedBoard();
 
-
 public:
     Node(unsigned long long whitePieces, unsigned long long blackPieces, Node * parent);
     Node(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color);
     ~Node();
 
+    Node(unsigned long long whitePieces, unsigned long long blackPieces, PlayerColor color, int wins, int losses);
     void SetPrevSibling(Node * prevSibling);
     void GenerateConfidence();
     int GenerateChildren();

@@ -130,7 +130,7 @@ public class BoardManager : MonoBehaviour {
 
         _core = new GameCore(whitePlayer, blackPlayer, boardTokens);
 
-        if (gameMode == PlayerType.AI)
+        if (whitePlayer == PlayerType.AI || blackPlayer == PlayerType.AI)
         {
             _core.SetDifficulty(_isHardMode);
         }
@@ -685,8 +685,8 @@ public class BoardManager : MonoBehaviour {
             {
                 //player2 win
                 winText.text = "Player Two Wins";
-                SetCharacterWinLoseImage(true, false, blackCharacter);
-                SetCharacterWinLoseImage(false, true, whiteCharacter);
+                SetCharacterWinLoseImage(true, false, whiteCharacter);
+                SetCharacterWinLoseImage(false, true, blackCharacter);
                 //StopCoroutine("LoseTime");
             }
             else if (blackPlayer == PlayerType.Local)
