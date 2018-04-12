@@ -34,8 +34,13 @@ public class LoadSceneOnClick : MonoBehaviour {
     {
         if (sceneIndex == 8)
         {
-            CharacterSelect selection = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterSelect>();
-            selection.PlayClicked = true;
+            GameObject selectionobj = GameObject.FindGameObjectWithTag("Player");
+            if (selectionobj)
+            {
+                CharacterSelect selection = selectionobj.GetComponent<CharacterSelect>();
+                selection.PlayClicked = true;
+            }
+
         }
         //do a cool scene transition
         AutoFade.LoadLevel(sceneIndex, 1, 1, Color.black);
