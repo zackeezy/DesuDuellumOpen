@@ -107,7 +107,7 @@ public class Server : MonoBehaviour
                     connected = true;
                     networkControl.ServerConnected();
                 }
-                if(connected && recvConnectionId != connectionIdClient)
+                else if(recvConnectionId != connectionIdClient || recvHostId != hostIdClient)
                 {
                     NetworkTransport.Disconnect(recvHostId, recvConnectionId, out error);
                 }
